@@ -31,15 +31,23 @@ bid-slides/
 
 白底極簡、乾淨留白，但承載標案所需的密度（甘特圖／預算／備詢）。CSS/JS 全內嵌（除 Google Fonts）。
 
-- **設計 token（`:root`，沿用）**：`--ink:#1a1a1a`、`--muted:#6b6b6b`、`--soft:#9a9a9a`、`--line:#e6e6e6`、
-  `--bg:#ffffff`、`--paper:#f7f8fb`；強調色 `--blue:#2f4fb0`（+ `-700/-300/-50` 深淺階）、風險色 `--warn`（少量）。
+- **背景：暖紙白，不要純白。** 投影機打純白 `#ffffff` 會眩、體感冷硬（尤其搭冷色強調）。全庫一律
+  `--bg:#FBFAF7`（暖紙白）、`--ink:#211d1b`（暖近黑，別用 `#1a1a1a` 純黑）。淺底投影機友善的原則不變，只是冷白換暖白。
+- **設計 token（`:root`，沿用）**：`--ink:#211d1b`、`--muted:#6b6b6b`、`--soft:#9a9a9a`、`--line:#e6e6e6`、
+  `--bg:#FBFAF7`、`--paper:#f7f8fb`；強調色 `--blue:#2f4fb0`（+ `-700/-300/-50` 深淺階）、風險色 `--warn`（少量）。
 - **各標案可覆寫主色**（變數名沿用 `--blue*`）。例 `yilan-bids` 改桃紅 `--blue:#D6336C`（`#A61E4D/#F06595/#FFF0F6`）、
-  `--warn:#9A6700`；覆寫時記得一併改少數**寫死色票**（預算小長條、`#help`、填色卡淺色字）。`ctkpro-intro` 維持藍。
+  `--paper:#FBF4F0`（暖玫瑰）、`--warn:#9A6700`；覆寫時記得一併改少數**寫死色票**（預算小長條、`#help`、填色卡淺色字）。`ctkpro-intro` 維持藍。
+- **輔助色（圖表用）**：強調色只有一個，深淺同色相容易只剩「亮度差」，甘特圖等多軌時不好分。需要時加**第二色相**：
+  `yilan-bids` 用 `--teal:#0E7490`/`#155E75`（與桃紅區隔，白字皆達 AA）。原則：每條色帶**文字統一白色**，別讓底色一深一淺逼文字一下黑一下白。
 - **字體**：Noto Sans TC（900/700/500/400）。
 - **版型**：`yilan-bids` 用 1280×720 `#stage` 縮放舞台（dense 內容不溢出）；新標案**複製它當骨架**最省事。
 - **元件 / 導覽**：元件庫（`.card`/`.compare2`/`.gantt`/`.bud`/`.logo-wall`/`.thanks`/`#qa` 等）與導覽
   （右下可點頁碼 `‹ x / y ›`、← →／空白／Home／End、點畫面兩側、F 全螢幕、Q 備詢、進度條）皆見
   `yilan-bids/index.html`，照搬即可。新增一頁＝加一個 `.slide`，頁碼自動算。
+- **DEMO 影片（現場示範，不切畫面）**：見 `yilan-bids` P4／P5。影片放標案資料夾根目錄、**檔名不要有空白**（`demo0.mp4`…）、靜音 `.mp4`。
+  頁面放 `<button class="demo-btn" onclick="playDemos(['demo0.mp4'])">`；連播多段傳陣列 `playDemos(['demo1.mp4','demo2.mp4'])`，前段 `ended` 自動接下段（尺寸不同沒關係，`object-fit:contain` 各自滿版）。
+  播放層 `#vplayer`（`position:fixed;inset:0` 蓋滿畫面）＋ `playDemos()`/`closeVideo()` 已在 script 內：靜音自動播、空白暫停、Esc／點黑邊關閉、播放中擋翻頁。複製骨架一起帶走。
+- **置圖**：截圖丟 `images/`，**等比縮放**到寬約 1100px；命名對齊 deck 內既有 `<img src>`（如 `p06-tap.png`/`p07-fnac.png`），`onerror` 自動 fallback。
 
 ## 新標案流程
 

@@ -9,6 +9,7 @@ node_modules/
 Thumbs.db
 .vscode/
 .idea/
+.claude/
 *.swp
 
 # Logs / temp

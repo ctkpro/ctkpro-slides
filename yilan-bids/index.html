@@ -9,11 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#1a1a1a; --muted:#6b6b6b; --soft:#9a9a9a;
+    --ink:#211d1b; --muted:#6b6b6b; --soft:#9a9a9a;
     --line:#e6e6e6; --line2:#efefef;
     /* 本案（育兒資源網）主色＝桃紅 Raspberry；變數名沿用 --blue 以相容元件樣式 */
     --blue:#D6336C; --blue-700:#A61E4D; --blue-300:#F06595; --blue-50:#FFF0F6;
-    --bg:#ffffff; --paper:#f7f8fb; --warn:#9A6700;
+    /* 輔助色＝teal（甘特圖第二條色帶，與桃紅做色相區隔，白字皆達 AA） */
+    --teal:#0E7490; --teal-700:#155E75;
+    --bg:#FBFAF7; --paper:#FBF4F0; --warn:#9A6700;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html,body{height:100%;width:100%;overflow:hidden;background:#eceef2;}
@@ -166,6 +168,7 @@
   .thanks-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;}
   .thanks{font-weight:900;font-size:150px;line-height:1;letter-spacing:.06em;color:var(--ink);}
   .thanks-tag{font-weight:800;font-size:30px;color:var(--ink);margin-top:10px;}
+  .thanks .em{color:var(--blue);}
   .thanks-tag .em{color:var(--blue);}
   .thanks-foot{display:flex;align-items:center;gap:22px;margin-top:26px;}
   .thanks-foot .qr{display:flex;align-items:center;gap:14px;}
@@ -187,6 +190,19 @@
   .progress{position:fixed;left:0;bottom:0;height:3px;background:var(--blue);width:0;transition:width .35s ease;z-index:40;}
   #help{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;background:rgba(166,30,77,.94);
         color:#fff;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .6s;}
+
+  /* ---- DEMO 影片：按鈕 + 滿版播放層 ---- */
+  .demo-btn{display:inline-flex;align-items:center;gap:9px;font-family:inherit;font-size:18px;font-weight:800;
+            color:#fff;background:var(--blue);border:none;border-radius:12px;padding:12px 22px;cursor:pointer;
+            box-shadow:0 5px 14px rgba(214,51,108,.30);transition:background .2s,transform .1s;}
+  .demo-btn:hover{background:var(--blue-700);} .demo-btn:active{transform:translateY(1px);}
+  .demo-btn .ic{font-size:14px;}
+  #vplayer{position:fixed;inset:0;z-index:90;background:#000;display:none;align-items:center;justify-content:center;}
+  #vplayer.on{display:flex;}
+  #vplayer video{width:100%;height:100%;object-fit:contain;background:#000;}
+  #vplayer .vclose{position:absolute;top:18px;right:22px;font-size:24px;line-height:1;color:#fff;
+                   background:rgba(255,255,255,.16);border:none;border-radius:10px;padding:6px 14px;cursor:pointer;}
+  #vplayer .vclose:hover{background:rgba(255,255,255,.30);}
 </style>
 </head>
 <body>
@@ -285,6 +301,7 @@
         <div class="axis-msg">
           <div class="big">識別主鍵<br>由「家長」改為<em>「兒童」</em></div>
           <p>同一兒童只有<b class="now">一筆主檔、一個候補序位</b>；監護人改以綁定關係處理，公平看得見。</p>
+          <button class="demo-btn" style="margin-top:14px;align-self:flex-start;" onclick="playDemos(['demo0.mp4'])"><span class="ic">▶</span>播放示範｜一童一號</button>
         </div>
       </div>
     </div>
@@ -309,6 +326,9 @@
           <h3><span class="dot"></span>承辦端</h3>
           <ul class="flow"><li>線上審核</li><li class="key">自動去重排序</li><li>公告與遞補</li><li>稽核留痕</li></ul>
         </div>
+      </div>
+      <div style="display:flex;justify-content:center;margin-top:22px;">
+        <button class="demo-btn" onclick="playDemos(['demo1.mp4','demo2.mp4'])"><span class="ic">▶</span>播放示範｜報名到報到一條龍</button>
       </div>
     </div>
     <div class="brandmark">系統架構 ｜ 三端一條龍</div>
@@ -441,11 +461,11 @@
         <div class="tlabel" style="grid-row:3;">系統設計</div>
         <div class="bar" style="grid-row:3;grid-column:3/5;background:var(--blue);">UI／UX · 架構設計</div>
         <div class="tlabel" style="grid-row:4;">核心功能開發</div>
-        <div class="bar" style="grid-row:4;grid-column:5/8;background:var(--blue-300);color:#5a1030;">報名 · 候補 · 報到 · 後台</div>
+        <div class="bar" style="grid-row:4;grid-column:5/8;background:var(--blue);">報名 · 候補 · 報到 · 後台</div>
         <div class="tlabel" style="grid-row:5;">資料移轉與驗證</div>
-        <div class="bar" style="grid-row:5;grid-column:6/9;background:var(--blue);">一童一號重構 · 會員轉移</div>
+        <div class="bar" style="grid-row:5;grid-column:6/9;background:var(--teal);">一童一號重構 · 會員轉移</div>
         <div class="tlabel" style="grid-row:6;">資安與測試</div>
-        <div class="bar" style="grid-row:6;grid-column:8/9;background:var(--blue-700);">弱掃 · 滲透</div>
+        <div class="bar" style="grid-row:6;grid-column:8/9;background:var(--teal-700);">弱掃 · 滲透</div>
         <div class="tlabel" style="grid-row:7;">上線與一年保固</div>
         <div class="bar" style="grid-row:7;grid-column:9/10;background:var(--ink);">上線驗收 → 保固維運</div>
       </div>
@@ -511,8 +531,8 @@
   <section class="slide" data-page="13">
     <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
     <div class="thanks-wrap">
-      <h2 class="thanks">謝謝</h2>
-      <p class="thanks-tag">讓承辦<span class="em">少加班</span>，讓家長<span class="em">更放心</span>。</p>
+      <h2 class="thanks" style="font-size:68px;line-height:1.3;letter-spacing:.02em;">讓<span class="em">每個孩子</span>，<br>都排到自己的位置</h2>
+      <p class="thanks-tag">讓承辦少加班，讓家長更便利</p>
       <div class="thanks-foot">
         <div class="qr">
           <img src="images/qr-ctkpro.png" alt="ctkpro.com 官網 QR Code" onerror="this.style.display='none'">
@@ -524,6 +544,12 @@
     </div>
   </section>
 
+</div>
+
+<!-- DEMO 影片滿版播放層 -->
+<div id="vplayer">
+  <button class="vclose" onclick="closeVideo()">✕ 關閉</button>
+  <video playsinline muted preload="none"></video>
 </div>
 
 <!-- 備詢 QA -->
@@ -579,7 +605,21 @@
     stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
   window.addEventListener('resize',fit);
 
+  // ---- DEMO 影片：連播佇列、滿版、靜音 ----
+  const vp=document.getElementById('vplayer'), vEl=vp.querySelector('video');
+  let vQ=[], vI=0;
+  window.playDemos=function(list){vQ=list;vI=0;vp.classList.add('on');vEl.muted=true;vLoad();};
+  function vLoad(){vEl.src=vQ[vI];vEl.currentTime=0;vEl.play().catch(()=>{});}
+  window.closeVideo=function(){vp.classList.remove('on');vEl.pause();vEl.removeAttribute('src');vEl.load();};
+  vEl.addEventListener('ended',()=>{ (vI<vQ.length-1) ? (vI++,vLoad()) : closeVideo(); });
+  vp.addEventListener('click',e=>{ if(e.target===vp) closeVideo(); });  // 點黑邊關閉，點影片不關
+
   document.addEventListener('keydown',e=>{
+    if(vp.classList.contains('on')){
+      if(e.key==='Escape'){closeVideo();}
+      else if(e.key===' '){vEl.paused?vEl.play():vEl.pause();}  // 空白＝暫停/續播
+      e.preventDefault();return;  // 播放中吃掉翻頁鍵
+    }
     if(qa.classList.contains('show')){
       if(['q','Q','Escape'].includes(e.key)){qa.classList.remove('show');e.preventDefault();}
       return;
@@ -602,6 +642,7 @@
 
   // 點畫面左右半翻頁（避開備詢、按鈕、連結）
   document.addEventListener('click',e=>{
+    if(vp.classList.contains('on'))return;
     if(qa.classList.contains('show'))return;
     if(e.target.closest('#navbar')||e.target.closest('a')||e.target.closest('button'))return;
     (e.clientX>window.innerWidth/2)?next():prev();
@@ -611,6 +652,7 @@
   let tx=0,ty=0;
   document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY;},{passive:true});
   document.addEventListener('touchend',e=>{
+    if(vp.classList.contains('on'))return;
     if(qa.classList.contains('show'))return;
     const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
     if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev();}
