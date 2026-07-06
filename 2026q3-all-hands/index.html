@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>動手更少，動腦更多｜CTK Pro 2026 Q3 全員發表</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* ── CTK Pro 品牌色（取自 ctkpro.com，語意命名，本檔獨立，不影響其他 deck）── */
+    --ink:#221012;          /* 主文字＝品牌深酒紅褐（ctkpro.com 主視覺色 #221012） */
+    --muted:#6b5b5d; --soft:#9a8e90;
+    --line:#e8e2e3; --line2:#f1ecec;
+    --brand:#B01E24;        /* 品牌主色＝酒紅（標題強調、卡片主色、CTA 底） */
+    --brand-deep:#7E1519;   /* 主色加深（第三階、對比） */
+    --brand-soft:#E24C50;   /* 主色淺亮（點綴、副標） */
+    --brand-tint:#FBEEEE;   /* 主色極淺底（tag、after 區塊底） */
+    --accent:#e11f27;       /* 品牌鮮紅＝關鍵重點／進度條／最重一擊（ctkpro.com CTA 色） */
+    --navy:#29294B;         /* 輔助靛藍（多軌對比備用，取自 ctkpro.com #29294b） */
+    --bg:#FBFAF7; --paper:#FBF3F2; --warn:#9A6700; --ok:#2F7A3E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;width:100%;overflow:hidden;background:#eae6e6;}
+  body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+       color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+  #stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;background:var(--bg);}
+
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg);padding:50px 70px 60px;}
+  .slide.active{display:flex;}
+  .body{flex:1;display:flex;flex-direction:column;justify-content:center;}
+
+  /* ---- 共用文字元件 ---- */
+  .kicker{display:inline-flex;align-items:center;gap:10px;font-size:17px;font-weight:700;
+          letter-spacing:3px;color:var(--brand);text-transform:uppercase;}
+  .kicker::before{content:"";width:28px;height:3px;border-radius:2px;background:var(--brand);}
+  .page-title{font-size:44px;font-weight:900;line-height:1.22;color:var(--ink);margin:12px 0 4px;letter-spacing:-.5px;}
+  .page-title .em{color:var(--brand);}
+  .page-title .red{color:var(--accent);}
+  .page-sub{font-size:20px;line-height:1.6;color:var(--muted);max-width:1040px;}
+
+  .tag{display:inline-block;font-size:15px;font-weight:700;padding:6px 14px;border-radius:999px;
+       background:var(--brand-tint);color:var(--brand);}
+
+  .logo-tr{position:absolute;top:42px;right:64px;height:28px;opacity:.92;}
+  .brandmark{position:absolute;left:70px;bottom:20px;font-size:13px;font-weight:500;letter-spacing:.5px;color:var(--soft);}
+
+  /* ---- 卡片 ---- */
+  .grid{display:grid;gap:20px;}
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:22px 24px;
+        box-shadow:0 6px 18px rgba(80,20,25,.05);display:flex;flex-direction:column;}
+  .card h3{font-size:23px;font-weight:800;color:var(--ink);margin-bottom:8px;display:flex;align-items:center;gap:11px;}
+  .card p{font-size:18px;line-height:1.6;color:var(--muted);}
+  .card.fill{background:var(--brand);border:none;color:#fff;}
+  .card.fill h3{color:#fff;} .card.fill p{color:rgba(255,255,255,.92);}
+  .card.fillred{background:var(--accent);border:none;color:#fff;}
+  .card.fillred h3{color:#fff;} .card.fillred p{color:rgba(255,255,255,.94);}
+  .card.soft{background:var(--paper);border-color:var(--line2);}
+  .card.ink{background:var(--ink);border:none;} .card.ink h3{color:#fff;} .card.ink p{color:rgba(255,255,255,.85);}
+  .num-chip{flex:none;width:40px;height:40px;border-radius:11px;display:flex;align-items:center;
+            justify-content:center;font-size:21px;font-weight:900;color:#fff;background:var(--brand);}
+  .dot{width:10px;height:10px;border-radius:50%;flex:none;background:var(--brand);}
+  .card-foot{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);
+             font-size:14px;font-weight:700;color:var(--brand);}
+  .card-foot::before{content:"▸ ";}
+  .risk{color:var(--warn);} .now{color:var(--ink);} .good{color:var(--ok);}
+
+  ul.flow{list-style:none;margin-top:6px;}
+  ul.flow li{font-size:19px;line-height:1.5;color:var(--ink);padding:8px 0 8px 26px;position:relative;}
+  ul.flow li::before{content:"";position:absolute;left:2px;top:16px;width:9px;height:9px;border-radius:50%;background:var(--brand-soft);}
+  ul.flow li.key{font-weight:800;color:var(--brand-deep);}
+  ul.flow li.key::before{background:var(--brand);}
+
+  /* ---- 封面 ---- */
+  .cover-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;gap:18px;}
+  .cover-case{font-size:17px;letter-spacing:3px;color:var(--brand);font-weight:700;}
+  .cover-title{font-size:76px;font-weight:900;line-height:1.1;color:var(--ink);letter-spacing:-1px;}
+  .cover-title .hl{color:var(--accent);}
+  .cover-appeals{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;}
+  .cover-appeals .a{font-size:19px;font-weight:700;color:var(--ink);background:var(--paper);
+                    border:1px solid var(--line);padding:12px 20px;border-radius:12px;}
+  .cover-appeals .a b{color:var(--brand);}
+  .info-bar{border-top:1px solid var(--line);padding-top:18px;margin-top:10px;
+            display:flex;justify-content:space-between;align-items:flex-end;font-size:18px;color:var(--muted);}
+  .info-bar .r{text-align:right;line-height:1.7;}
+  .info-bar b{color:var(--ink);}
+
+  /* ---- 天平（動手 vs 判斷） ---- */
+  .scale{display:flex;gap:13px;align-items:stretch;}
+  .sbox{border-radius:16px;padding:22px 24px;display:flex;flex-direction:column;flex:1;border:1px solid var(--line);}
+  .sbox.shrink{background:#FFF7E8;border-color:#F0E4C2;}
+  .sbox.grow{background:var(--brand-tint);border-color:#EBD3D4;}
+  .sbox .lbl{font-size:14px;font-weight:800;letter-spacing:2px;}
+  .shrink .lbl{color:var(--warn);} .grow .lbl{color:var(--brand);}
+  .sbox .head{font-size:26px;font-weight:900;color:var(--ink);margin:6px 0 12px;}
+  .sbox .bars{display:flex;flex-direction:column;gap:9px;margin-top:auto;}
+  .sbar{height:26px;border-radius:7px;display:flex;align-items:center;padding:0 12px;font-size:14px;font-weight:800;color:#fff;white-space:nowrap;}
+
+  /* ---- before/after 對比 ---- */
+  .compare2{display:flex;gap:13px;align-items:stretch;}
+  .cbox{border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;flex:1;border:1px solid var(--line);}
+  .cbox.before{background:#FFF7E8;border-color:#F0E4C2;}
+  .cbox.after{background:var(--brand-tint);border-color:#EBD3D4;}
+  .cbox .lbl{font-size:14px;font-weight:800;letter-spacing:2px;}
+  .before .lbl{color:var(--warn);} .after .lbl{color:var(--brand);}
+  .cbox .head{font-size:22px;font-weight:900;color:var(--ink);margin:5px 0 12px;}
+  .chips-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;}
+  .mini{font-size:14px;font-weight:700;padding:6px 11px;border-radius:8px;background:#fff;border:1px solid var(--line);color:var(--muted);}
+  .keybox{margin-top:auto;border-radius:11px;padding:12px 14px;font-size:16px;font-weight:800;line-height:1.5;}
+  .before .keybox{background:#fff;color:var(--warn);border:1px dashed #E6D08A;}
+  .after .keybox{background:var(--brand);color:#fff;}
+  .arrowmid{display:flex;align-items:center;color:var(--brand-soft);font-size:34px;font-weight:900;}
+  .axis-msg{display:flex;flex-direction:column;justify-content:center;gap:14px;padding-left:6px;}
+  .axis-msg .big{font-size:34px;font-weight:900;color:var(--ink);line-height:1.22;}
+  .axis-msg .big em{color:var(--brand);font-style:normal;}
+  .axis-msg .big .red{color:var(--accent);}
+  .axis-msg p{font-size:19px;line-height:1.6;color:var(--muted);}
+
+  /* ---- 四層階梯 ---- */
+  .ladder{display:flex;flex-direction:column;gap:11px;}
+  .rung{display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:center;
+        border:1px solid var(--line);border-radius:14px;padding:15px 20px;background:var(--bg);position:relative;}
+  .rung .lv{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+            font-size:20px;font-weight:900;color:#fff;}
+  .rung .rt{display:flex;flex-direction:column;gap:2px;}
+  .rung .rt .en{font-size:22px;font-weight:900;color:var(--ink);}
+  .rung .rt .en small{font-size:15px;font-weight:700;color:var(--muted);margin-left:8px;}
+  .rung .rt .q{font-size:16px;color:var(--muted);font-weight:600;}
+  .rung.here{border:2px solid var(--brand);background:var(--brand-tint);box-shadow:0 6px 18px rgba(176,30,36,.10);}
+  .rung.here::after{content:"我們在這裡";position:absolute;right:20px;top:50%;transform:translateY(-50%);
+                    font-size:14px;font-weight:900;color:#fff;background:var(--accent);padding:5px 13px;border-radius:999px;}
+  .rung.future{opacity:.62;border-style:dashed;}
+
+  /* ---- 三資本 ---- */
+  .cap3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .capcard{border:1px solid var(--line);border-radius:15px;padding:20px 22px;background:var(--bg);border-top:5px solid var(--brand-soft);display:flex;flex-direction:column;}
+  .capcard .cn{font-size:15px;font-weight:800;color:var(--brand);letter-spacing:1px;}
+  .capcard h4{font-size:24px;font-weight:900;color:var(--ink);margin:3px 0 8px;}
+  .capcard p{font-size:16px;line-height:1.55;color:var(--muted);}
+  .capcard .foot{margin-top:auto;padding-top:12px;font-size:14px;font-weight:800;color:var(--brand-deep);}
+
+  /* ---- 護城河（雙欄高潮） ---- */
+  .moat{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .moatbox{border-radius:16px;padding:26px 28px;color:#fff;display:flex;flex-direction:column;gap:8px;}
+  .moatbox.p1{background:var(--ink);}
+  .moatbox.p2{background:var(--brand);}
+  .moatbox .ml{font-size:15px;font-weight:800;letter-spacing:2px;opacity:.85;}
+  .moatbox .mh{font-size:30px;font-weight:900;line-height:1.2;}
+  .moatbox .mp{font-size:17px;line-height:1.55;opacity:.9;}
+
+  /* ---- 方向：地基＋三柱 ---- */
+  .dirs{display:flex;flex-direction:column;gap:14px;}
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .pillar{border:1px solid var(--line);border-radius:15px;padding:18px 20px;background:var(--bg);border-top:5px solid var(--brand);display:flex;flex-direction:column;}
+  .pillar .pn{font-size:14px;font-weight:800;color:var(--brand);letter-spacing:1px;}
+  .pillar h4{font-size:21px;font-weight:900;color:var(--ink);margin:2px 0 7px;}
+  .pillar p{font-size:15px;line-height:1.5;color:var(--muted);}
+  .pillar .sell{margin-top:auto;padding-top:10px;font-size:14px;font-weight:800;color:var(--brand-deep);}
+  .foundation{background:var(--ink);color:#fff;border-radius:15px;padding:20px 24px;display:flex;align-items:center;gap:20px;}
+  .foundation .fl{font-size:15px;font-weight:800;letter-spacing:2px;color:var(--accent);flex:none;}
+  .foundation .fh{font-size:22px;font-weight:900;line-height:1.25;}
+  .foundation .fp{font-size:16px;line-height:1.5;color:rgba(255,255,255,.82);}
+
+  /* ---- 步驟遞進 ---- */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;}
+  .steps .st{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:16px 18px;border-top:5px solid var(--brand-soft);}
+  .steps .st .n{font-size:14px;font-weight:800;color:var(--brand);}
+  .steps .st h4{font-size:19px;font-weight:800;color:var(--ink);margin:3px 0 6px;}
+  .steps .st p{font-size:15px;line-height:1.5;color:var(--muted);}
+
+  /* ---- 引言（年會佐證 / 金句） ---- */
+  .quote{background:var(--paper);border-left:5px solid var(--accent);border-radius:12px;padding:18px 24px;}
+  .quote .qt{font-size:22px;font-weight:800;color:var(--ink);line-height:1.5;}
+  .quote .qs{font-size:15px;color:var(--muted);margin-top:8px;font-weight:700;}
+  .quote .qs b{color:var(--brand);}
+
+  /* ---- 行動線 ---- */
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .actline{border:1px solid var(--line);border-radius:16px;padding:22px 24px;display:flex;flex-direction:column;gap:10px;}
+  .actline.a1{background:var(--brand-tint);border-color:#EBD3D4;}
+  .actline.a2{background:var(--paper);}
+  .actline .al{font-size:15px;font-weight:800;letter-spacing:1px;color:var(--brand);}
+  .actline h4{font-size:23px;font-weight:900;color:var(--ink);}
+  .actline ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
+  .actline ul li{font-size:16px;line-height:1.45;color:var(--ink);padding-left:22px;position:relative;}
+  .actline ul li::before{content:"→";position:absolute;left:0;color:var(--brand);font-weight:900;}
+  .actline .micro{margin-top:auto;font-size:14px;font-weight:800;color:var(--accent);background:#fff;border:1px dashed #E6BCBD;border-radius:10px;padding:9px 12px;}
+
+  /* ---- 大字宣言頁 ---- */
+  .declare{flex:1;display:flex;flex-direction:column;justify-content:center;gap:20px;}
+  .declare .big{font-size:60px;font-weight:900;line-height:1.18;color:var(--ink);letter-spacing:-1px;}
+  .declare .big .red{color:var(--accent);} .declare .big .em{color:var(--brand);}
+  .declare .subd{font-size:22px;line-height:1.6;color:var(--muted);max-width:1000px;}
+
+  /* ---- 收尾頁 ---- */
+  .thanks-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px;}
+  .thanks{font-weight:900;font-size:58px;line-height:1.3;letter-spacing:.02em;color:var(--ink);}
+  .thanks .em{color:var(--brand);} .thanks .red{color:var(--accent);}
+  .thanks-tag{font-weight:800;font-size:26px;color:var(--muted);margin-top:6px;}
+  .thanks-meta{font-size:18px;color:var(--muted);margin-top:20px;border-top:1px solid var(--line);padding-top:18px;}
+  .thanks-meta b{color:var(--ink);}
+
+  /* ---- 導覽 + 進度 ---- */
+  .navbar{position:fixed;right:24px;bottom:16px;display:flex;align-items:center;gap:10px;z-index:40;color:var(--muted);user-select:none;}
+  .navbar .nav-arrow{border:none;background:none;cursor:pointer;line-height:1;font-size:26px;color:var(--soft);
+                     padding:2px 9px;border-radius:8px;transition:color .2s,background .2s;}
+  .navbar .nav-arrow:hover{color:var(--brand);background:var(--brand-tint);}
+  .navbar .nav-count{font-size:15px;font-weight:700;letter-spacing:.12em;min-width:64px;text-align:center;color:var(--muted);}
+  .navbar .nav-count b{color:var(--ink);}
+  .progress{position:fixed;left:0;bottom:0;height:3px;background:var(--accent);width:0;transition:width .35s ease;z-index:40;}
+  #help{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;background:rgba(34,16,18,.94);
+        color:#fff;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .6s;}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- P1 封面 -->
+  <section class="slide" data-page="1">
+    <img class="logo-tr" src="../images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+    <div class="cover-wrap">
+      <div class="cover-case">CTK Pro 2026 Q3 ｜ 全員發表</div>
+      <div class="cover-title">動手更少，<span class="hl">動腦更多</span></div>
+      <div class="page-sub" style="font-size:24px;color:var(--muted);">AI 海嘯下，我們這行的變化，與 CTK 接下來要一起打的方向</div>
+      <div class="cover-appeals">
+        <div class="a">趨勢：執行被接走，<b>判斷</b>被放大</div>
+        <div class="a">身分：未來只有一種人 —— <b>Builder</b></div>
+        <div class="a">護城河：個人判斷力 × <b>組織資本</b></div>
+      </div>
+      <div class="info-bar">
+        <div>報告：<b>Alfred</b></div>
+        <div class="r"><b>竑盛科技股份有限公司 ｜ CTK Pro</b><br>一季一次 · 全員見面會</div>
+      </div>
+    </div>
+    <div class="brandmark">CTK Pro 2026 Q3 全員發表</div>
+  </section>
+
+  <!-- P2 開場鉤子：海嘯 -->
+  <section class="slide" data-page="2">
+    <div class="kicker">開場</div>
+    <h2 class="page-title">過去一季，你有幾次覺得<br>「這件事我好像<span class="red">可以叫 AI 做</span>？」</h2>
+    <div class="body">
+      <div class="grid" style="grid-template-columns:1.15fr 1fr;align-items:stretch;">
+        <div class="card ink" style="justify-content:center;">
+          <h3 style="font-size:30px;">我們這行碰到的<br>不是浪，是海嘯</h3>
+          <p style="font-size:19px;margin-top:8px;">說實話，我最近睡不太好。但站上這裡，是因為我知道——站對位置的人，會被浪推上去，不是被浪打翻。</p>
+        </div>
+        <div class="compare2">
+          <div class="cbox before" style="flex:1;">
+            <div class="lbl">以前</div>
+            <div class="head">一個功能</div>
+            <div class="keybox">要 Developer<br>兩天</div>
+          </div>
+          <div class="arrowmid">➜</div>
+          <div class="cbox after" style="flex:1;">
+            <div class="lbl">現在</div>
+            <div class="head">同一個功能</div>
+            <div class="keybox">一個下午<br>就出來</div>
+          </div>
+        </div>
+      </div>
+      <p class="page-sub" style="margin-top:20px;text-align:center;">今天 30 分鐘，我講兩件事：<b class="now">① 這行正在發生什麼</b>　→　<b class="now">② 所以 CTK 決定怎麼打</b>。</p>
+    </div>
+    <div class="brandmark">開場 ｜ 海嘯來了</div>
+  </section>
+
+  <!-- P3 趨勢診斷：天平 -->
+  <section class="slide" data-page="3">
+    <div class="kicker">趨勢診斷</div>
+    <h2 class="page-title">AI 接走了「動手」，<span class="em">把「判斷」放大了</span></h2>
+    <div class="body">
+      <div class="scale">
+        <div class="sbox shrink">
+          <div class="lbl">持續縮小</div>
+          <div class="head">執行 · 動手</div>
+          <div class="bars">
+            <div class="sbar" style="width:90%;background:#C9A24B;">寫程式 · 切版 · 產內容</div>
+            <div class="sbar" style="width:60%;background:#D3B060;">重複性任務</div>
+            <div class="sbar" style="width:35%;background:#E0C888;">套流程</div>
+          </div>
+        </div>
+        <div class="arrowmid">⚖</div>
+        <div class="sbox grow">
+          <div class="lbl">持續放大</div>
+          <div class="head">決策 · 判斷</div>
+          <div class="bars">
+            <div class="sbar" style="width:55%;background:var(--brand-soft);">要不要這樣做</div>
+            <div class="sbar" style="width:78%;background:var(--brand);">好壞怎麼判斷</div>
+            <div class="sbar" style="width:100%;background:var(--brand-deep);">下一步往哪修</div>
+          </div>
+        </div>
+      </div>
+      <p class="page-sub" style="margin-top:18px;text-align:center;">human in the loop —— <b class="now">人還在迴圈裡，但人做的事，從「動手」換成了「判斷」。</b></p>
+    </div>
+    <div class="brandmark">趨勢診斷 ｜ 動手 vs 判斷</div>
+  </section>
+
+  <!-- P4 context 傳遞成本：掉棒 -->
+  <section class="slide" data-page="4">
+    <div class="kicker">我們過去最大的成本</div>
+    <h2 class="page-title">Context 傳遞成本 —— <span class="em">每一次交棒，都在掉棒</span></h2>
+    <div class="body">
+      <div class="grid" style="grid-template-columns:1fr 1fr;align-items:stretch;">
+        <div class="card" style="border:2px solid var(--warn);">
+          <h3><span class="dot" style="background:var(--warn);"></span>過去：人接力，一直掉棒</h3>
+          <ul class="flow">
+            <li>老闆有整套<b>系統 context</b>、PM 有所有<b>客戶 context</b></li>
+            <li>把 context 翻成任務 → 交辦 Designer / Developer</li>
+            <li class="key" style="color:var(--warn);">每一次交棒 = 一次 context switch = 一次損耗</li>
+          </ul>
+        </div>
+        <div class="card fill" style="background:var(--brand);">
+          <h3>現在：context 直接塞給 AI Agent</h3>
+          <ul class="flow" style="margin-top:4px;">
+            <li style="color:#fff;">context 直接餵、feedback 即時</li>
+            <li style="color:#fff;">修正即時、來回幾秒鐘</li>
+            <li class="key" style="color:#fff;">斷點被接起來 —— 掉棒問題被化解</li>
+          </ul>
+          <div class="card-foot" style="color:rgba(255,255,255,.9);border-color:rgba(255,255,255,.3);">「翻譯 context 成任務」這個動作，正在變成最大的浪費</div>
+        </div>
+      </div>
+      <div class="quote" style="margin-top:18px;">
+        <div class="qt">「如果全公司的 Context 都能被所有 AI 調用……」＋「把整個公司變成 Context」</div>
+        <div class="qs">年會直球佐證：<b>Dcard CEO 林裕欽</b>、<b>卡柏蒂 CIO Jackle</b> —— 業界頂尖在講的，就是這件事</div>
+      </div>
+    </div>
+    <div class="brandmark">過去最大的成本 ｜ Context 傳遞</div>
+  </section>
+
+  <!-- P5 抽盲盒 -->
+  <section class="slide" data-page="5">
+    <div class="declare">
+      <div class="kicker">對執行者的意義</div>
+      <div class="big">動手的機會越來越少，<br>「怎麼<span class="red">給出一個指令</span>」<br>成了把事情做好做壞的關鍵。</div>
+      <div class="subd">你下的 prompt，就像在<b class="now" style="color:var(--brand);">抽盲盒</b> —— 但你能決定盒子裡裝什麼。prompt 下得好不好，定義了你的可能性。</div>
+    </div>
+    <div class="brandmark">對執行者 ｜ 抽盲盒</div>
+  </section>
+
+  <!-- P6 四層 Engineering 階梯 -->
+  <section class="slide" data-page="6">
+    <div class="kicker">四層 Engineering</div>
+    <h2 class="page-title">從「會下指令」到「給目標自己跑」 —— <span class="em">我們已經爬到第三階</span></h2>
+    <div class="body">
+      <div class="ladder">
+        <div class="rung">
+          <div class="lv" style="background:var(--brand-soft);">1</div>
+          <div class="rt"><div class="en">Prompt Engineering<small>怎麼「說」一件事？</small></div><div class="q">好好下一個 prompt、好好交辦一個任務。</div></div>
+        </div>
+        <div class="rung">
+          <div class="lv" style="background:var(--brand);">2</div>
+          <div class="rt"><div class="en">Context Engineering<small>怎麼說清楚「前因後果」？</small></div><div class="q">任務來源是誰、誰收結果、怎麼算達成、怎麼驗證、驗證完怎麼加回 context。</div></div>
+        </div>
+        <div class="rung here">
+          <div class="lv" style="background:var(--brand-deep);">3</div>
+          <div class="rt"><div class="en">Harness Engineering<small>怎麼「給它工具」？</small></div><div class="q">能調用哪些工具、連哪些 MCP。CTK 已有：Blog Post 系統、BugHerd 除 Bug 流程、Notion MCP 任務交辦。</div></div>
+        </div>
+        <div class="rung future">
+          <div class="lv" style="background:var(--soft);">4</div>
+          <div class="rt"><div class="en">Loop Engineering<small>怎麼只給「目標」讓它自己跑？</small></div><div class="q">給 AI 一個目標，它自己想辦法達成。（下一個進展）</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="brandmark">四層 Engineering ｜ 我們在第三階</div>
+  </section>
+
+  <!-- P7 橋接 + Builder -->
+  <section class="slide" data-page="7">
+    <div class="kicker">職務會怎麼變</div>
+    <h2 class="page-title">邊界會融化 —— 未來只剩一種人：<span class="red">Builder</span></h2>
+    <div class="body">
+      <div class="grid" style="grid-template-columns:1fr 1.25fr;align-items:stretch;">
+        <div class="card soft" style="justify-content:center;">
+          <h3 style="font-size:22px;">「那我不就變成<br>AI 的搬運工？」</h3>
+          <p style="font-size:17px;margin-top:6px;">這個焦慮我懂，也該講開。答案是 —— 不，你的價值換了個地方放。工具你都有了，剩下的是 <b class="now" style="color:var(--brand);">AI 搬不走的東西</b>。</p>
+        </div>
+        <div class="card" style="border:2px solid var(--brand);">
+          <h3>Builder ＝ 打造者，靠這五件事</h3>
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:9px;margin-top:6px;">
+            <span class="mini" style="font-size:16px;padding:9px 12px;">判斷力</span>
+            <span class="mini" style="font-size:16px;padding:9px 12px;">品味</span>
+            <span class="mini" style="font-size:16px;padding:9px 12px;">對客戶的理解</span>
+            <span class="mini" style="font-size:16px;padding:9px 12px;">對業務的理解</span>
+            <span class="mini" style="font-size:16px;padding:9px 12px;">對結果的預判</span>
+            <span class="mini" style="font-size:16px;padding:9px 12px;">循環改善的組織能力</span>
+          </div>
+          <div class="card-foot">年會佐證：Dcard 林裕欽「所有職位都被混在一起了」</div>
+        </div>
+      </div>
+      <p class="page-sub" style="margin-top:16px;text-align:center;">但 Builder 不會憑空長出來 —— 他需要三樣東西：<b class="now">共同語言 · 一套系統 · 一種有回報的規則</b>。而這三樣的底層，是同一件事……</p>
+    </div>
+    <div class="brandmark">職務混合化 ｜ Builder 誕生</div>
+  </section>
+
+  <!-- P8 動手變少動腦變多（Act 3.2） -->
+  <section class="slide" data-page="8">
+    <div class="kicker">個人護城河 · 怎麼守</div>
+    <h2 class="page-title">大家以為 AI 來了會更輕鬆 —— <span class="red">其實動腦更多</span></h2>
+    <div class="body">
+      <div class="grid" style="grid-template-columns:1.05fr 1fr;align-items:stretch;">
+        <div class="card ink" style="justify-content:center;">
+          <h3 style="font-size:28px;">你動手更少，<br>但動腦更多。</h3>
+          <p style="font-size:18px;margin-top:8px;">AI 把「執行」接走，剩給人的幾乎全是「決策點」。你會覺得比以前更累 —— 那不是錯覺，是你終於在做那件 AI 做不了、也最值錢的事。</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:13px;">
+          <div class="card soft" style="border-left:5px solid var(--warn);">
+            <h3 style="font-size:20px;">⚠ 判斷力會悄悄流失</h3>
+            <p style="font-size:16px;">老實講一件連我自己都會犯的事：決策點一多就想偷懶 —— <b class="risk">AI 推薦哪個就無腦按哪個，事後說不出自己決定了什麼。</b></p>
+          </div>
+          <div class="card" style="border:1px solid var(--line);">
+            <h3 style="font-size:20px;">✓ 兩層解法</h3>
+            <p style="font-size:16px;"><b class="good">當下</b>：在決策點停下來追問，你才知道自己在決定什麼。<br><b class="good">平常</b>：主動拓展知識邊界 —— 判斷力靠平常的認知存量，臨時長不出來。</p>
+          </div>
+        </div>
+      </div>
+      <p class="page-sub" style="margin-top:14px;text-align:center;">你懂得越多、能通往的判斷越多，能耐就越大 —— 每次追問、每次拓界，都在撐大你的<b class="now">信道容量</b>。</p>
+    </div>
+    <div class="brandmark">個人護城河 ｜ 動手少、動腦多</div>
+  </section>
+
+  <!-- P9 統一 context = 組織資本 -->
+  <section class="slide" data-page="9">
+    <div class="kicker">貫穿軸 · 組織護城河</div>
+    <h2 class="page-title">AI 越強，<span class="em">共同語言反而越值錢</span></h2>
+    <div class="body">
+      <div class="grid" style="grid-template-columns:1fr 1fr;align-items:stretch;">
+        <div class="card fillred" style="justify-content:center;">
+          <h3 style="font-size:26px;">打造之前，<br>要先「命名」</h3>
+          <p style="font-size:18px;margin-top:6px;">統一全公司的<b>名詞、流程、context</b>，是一切的地基。名詞不統一，人跟人雞同鴨講，人跟 AI 更是 —— 因為 AI 調用的，就是我們的 context。</p>
+        </div>
+        <div class="quote" style="align-self:center;">
+          <div class="qt">「打造之前要先命名 —— 統一命名才能管理，也降低溝通成本。」</div>
+          <div class="qs" style="margin-top:6px;">「統一語言是第一件事。」</div>
+          <div class="qs">年會佐證：<b>薩泰爾</b>記帳系統場 ＋ <b>Sunny（薩泰爾共同創辦人）</b></div>
+        </div>
+      </div>
+      <p class="page-sub" style="margin-top:16px;text-align:center;">統一 context 不只是「講清楚」—— 它是在打造一種帶不走的東西：<b class="now" style="color:var(--accent);">組織資本</b>。</p>
+    </div>
+    <div class="brandmark">貫穿軸 ｜ 統一 context</div>
+  </section>
+
+  <!-- P10 組織資本三層 -->
+  <section class="slide" data-page="10">
+    <div class="kicker">組織資本 · 三層</div>
+    <h2 class="page-title">組織資本 —— <span class="em">長在人與人「之間」的一加一大於二</span></h2>
+    <div class="body">
+      <div class="cap3">
+        <div class="capcard">
+          <div class="cn">第一層</div>
+          <h4>認知資本</h4>
+          <p>共同語言，才不雞同鴨講。三個共識問題：<br>① 我們在解決什麼問題？<br>② 什麼才算一個好<b class="now" style="color:var(--brand);">服務</b>？<br>③ 品質/速度/成本/風險衝突時，誰優先？</p>
+          <div class="foot">拍板 ≠ 對齊：我把答案講清楚、當眾廣播成共同標準</div>
+        </div>
+        <div class="capcard" style="border-top-color:var(--brand);">
+          <div class="cn">第二層</div>
+          <h4>結構資本</h4>
+          <p>碰到問題，知道<b class="now" style="color:var(--brand);">該找誰</b>。一起做過事，才長得出不用開口的默契 —— 組織圖畫不出來，只能靠真的協作過。</p>
+          <div class="foot">Slack 溝通 ＋ Notion 看板 ＝ 把默契顯性化</div>
+        </div>
+        <div class="capcard" style="border-top-color:var(--brand-deep);">
+          <div class="cn">第三層</div>
+          <h4>關係資本</h4>
+          <p>有沒有<b class="now" style="color:var(--brand);">安全感說真話</b>。反直覺鐵律 —— 管理良善的團隊，記錄到的差錯反而更多；帳面「零失誤」往往是把錯藏起來了。</p>
+          <div class="foot">我要的不是看起來沒錯，是敢把錯攤出來</div>
+        </div>
+      </div>
+      <div class="quote" style="margin-top:16px;padding:14px 22px;">
+        <div class="qt" style="font-size:19px;">「蒸餾我的 skill 給 AI，我是不是就被丟掉了？」→ 激勵相容：<span style="color:var(--accent);">交出 know-how 的人不該貶值，反而該被獎勵。</span></div>
+      </div>
+    </div>
+    <div class="brandmark">組織資本 ｜ 認知 · 結構 · 關係</div>
+  </section>
+
+  <!-- P11 復盤引擎 -->
+  <section class="slide" data-page="11">
+    <div class="kicker">組織資本的引擎</div>
+    <h2 class="page-title">組織資本靠<span class="red">復盤</span>累積 —— 把一次經歷，變成整個組織的記憶</h2>
+    <div class="body">
+      <div class="steps">
+        <div class="st"><div class="n">問題一</div><h4>原本預期</h4><p>這件事本來準備發生什麼？</p></div>
+        <div class="st" style="border-top-color:var(--brand);"><div class="n">問題二</div><h4>實際發生</h4><p>結果實際上發生了什麼？</p></div>
+        <div class="st" style="border-top-color:var(--brand-deep);"><div class="n">問題三</div><h4>為何有差異</h4><p>歸因到<b class="now" style="color:var(--brand);">系統</b>，不是歸咎個人。</p></div>
+        <div class="st" style="border-top-color:var(--accent);"><div class="n">問題四</div><h4>下輪改什麼</h4><p>把改進放回流程與 context。</p></div>
+      </div>
+      <div class="grid" style="grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;">
+        <div class="card" style="border:2px solid var(--accent);">
+          <h3 style="font-size:21px;">鐵律：不是找戰犯</h3>
+          <p style="font-size:17px;">是把經歷變組織記憶。修系統、不獵巫 —— 團隊才敢講真話。每個專案 / 里程碑結束就跑。</p>
+        </div>
+        <div class="card soft">
+          <h3 style="font-size:21px;">和個人層是同一件事</h3>
+          <p style="font-size:17px;"><b class="now">復盤</b>＝團隊層，事後不讓經歷白流；<br><b class="now">決策點追問</b>＝個人層，當下不讓判斷白流。</p>
+        </div>
+      </div>
+    </div>
+    <div class="brandmark">組織資本的引擎 ｜ 復盤四問</div>
+  </section>
+
+  <!-- P12 雙護城河高潮 -->
+  <section class="slide" data-page="12">
+    <div class="kicker">全場高潮</div>
+    <h2 class="page-title">工具會貶值 —— <span class="red">只有兩條護城河留得下</span></h2>
+    <div class="body">
+      <div class="moat">
+        <div class="moatbox p1">
+          <div class="ml">個 人 護 城 河</div>
+          <div class="mh">你在 human in the loop<br>裡的判斷力</div>
+          <div class="mp">看得懂結果好壞、知道下一步往哪修 —— 這是 AI 還搬不走的東西。</div>
+        </div>
+        <div class="moatbox p2">
+          <div class="ml">組 織 護 城 河</div>
+          <div class="mh">靠復盤持續累積的<br>組織資本</div>
+          <div class="mp">對手抄走的只是一張過期快照；會自己長的演化引擎，帶不走。</div>
+        </div>
+      </div>
+      <p class="page-sub" style="margin-top:20px;text-align:center;font-size:22px;">所以我們要做的，不是抗拒 AI，是<b class="now" style="color:var(--accent);">好好擁抱它、善用它</b> —— 然後把省下的力氣，全押在這兩條護城河上。</p>
+    </div>
+    <div class="brandmark">全場高潮 ｜ 雙護城河</div>
+  </section>
+
+  <!-- P13 四個方向 -->
+  <section class="slide" data-page="13">
+    <div class="kicker">公司四個方向</div>
+    <h2 class="page-title">這四個方向，就是給 Builder <span class="em">蓋的舞台</span></h2>
+    <div class="body">
+      <div class="dirs">
+        <div class="pillars">
+          <div class="pillar">
+            <div class="pn">① 最優先投入</div>
+            <h4>靜態網站代管</h4>
+            <p>客戶 push GitHub → 自動部署 ＋ Cloudflare 快取。客戶拿走建置，我們守落地與維運。</p>
+            <div class="sell">賣的不是技術，是託付與責任轉移 · 純 MRR</div>
+          </div>
+          <div class="pillar" style="border-top-color:var(--brand-deep);">
+            <div class="pn">②</div>
+            <h4>設計公司轉介</h4>
+            <p>當案源，賣「比你更好的漂亮網站」：100% 還原設計稿、無障礙設計、協助申請標章。</p>
+            <div class="sell">建 5-8 家轉介組合，消除單點故障</div>
+          </div>
+          <div class="pillar" style="border-top-color:var(--accent);">
+            <div class="pn">③</div>
+            <h4>中小企業 DMZ</h4>
+            <p>對外系統守住不出事、出事有人扛，外站被打不傷本體。對準上市櫃 / 合規需求。</p>
+            <div class="sell">賣 DMZ / 責任轉移</div>
+          </div>
+        </div>
+        <div class="foundation">
+          <div class="fl">④ 地基</div>
+          <div>
+            <div class="fh">系統化營運 —— 把「統一 context ＋ 復盤」落成每天的工作方式</div>
+            <div class="fp">任何人加入都能快速上手、不依賴特定人。激勵相容：交出 know-how 要被獎勵、用 AI 變強的好處要分得到。<b style="color:#fff;">年會佐證：91APP「把 Skill 蒸餾成 Agent 就能 Scale」。</b></div>
+          </div>
+        </div>
+      </div>
+      <p class="page-sub" style="margin-top:14px;text-align:center;">①②③ 賣的都是同一件事 —— <b class="now" style="color:var(--accent);">責任轉移與託付</b>；④ 讓我們有能力規模化承接它。<b class="now">技術會貶值，責任不會。</b></p>
+    </div>
+    <div class="brandmark">公司四個方向 ｜ 一個地基 · 三條前線</div>
+  </section>
+
+  <!-- P14 收尾：安全感 + 兩條行動線 -->
+  <section class="slide" data-page="14">
+    <div class="kicker">收尾 · 這週能做什麼</div>
+    <h2 class="page-title">我給你的不是避風港，<span class="red">是讓你衝向更高的基地</span></h2>
+    <div class="body">
+      <div class="card ink" style="margin-bottom:16px;">
+        <p style="font-size:20px;color:#fff;line-height:1.55;">海嘯不會替任何人停。公司給你的是基地——系統、工具、一起復盤的空間；<b style="color:#fff;">但浪，要你自己去面對。</b>我要的不是不會犯錯的團隊，是敢接挑戰、敢把錯攤開、一次比一次強的團隊。</p>
+      </div>
+      <div class="actions">
+        <div class="actline a1">
+          <div class="al">行動線一 · 精進自己 ＝ 個人護城河</div>
+          <h4>四層裡，往上爬一階</h4>
+          <ul>
+            <li>Prompt：挑一個手動任務，寫成好 prompt 交給 AI 跑一次</li>
+            <li>Context：把一個交辦，補齊完整來龍去脈走一遍</li>
+            <li>Harness：試接一個工具 / MCP，讓任務更快達成</li>
+          </ul>
+          <div class="micro">微習慣：按下 AI 的建議前，停三秒問一句「為什麼是這個？」</div>
+        </div>
+        <div class="actline a2">
+          <div class="al">行動線二 · 一起建 Context ＝ 組織護城河</div>
+          <h4>認知資本的第一塊磚</h4>
+          <ul>
+            <li>挑一個你天天用、但公司還沒統一的<b>流程</b>，連同當中所有的<b>名詞</b></li>
+            <li>提出來，我們一起認定、對齊</li>
+          </ul>
+          <div class="micro" style="color:var(--brand);border-color:#D4B8DA;">順便帶一個你用 AI 做出來、以前做不到的東西來 show</div>
+        </div>
+      </div>
+      <div class="quote" style="margin-top:14px;padding:13px 22px;">
+        <div class="qt" style="font-size:19px;">下次見面會，來對進度：<b>Prompt</b> 這層你做到了什麼？<b>Context</b> 這層做到了什麼？<b>Harness</b> 這層做了什麼樣的管理？</div>
+      </div>
+    </div>
+    <div class="brandmark">收尾 ｜ 兩條護城河，下次見面對進度</div>
+  </section>
+
+  <!-- P15 謝謝頁 -->
+  <section class="slide" data-page="15">
+    <img class="logo-tr" src="../images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+    <div class="thanks-wrap">
+      <h2 class="thanks">海嘯不等人。<br>好消息是 —— <span class="em">我們船小，轉得快</span>。</h2>
+      <p class="thanks-tag">下週一就開始：四層爬一階 · 統一一個流程 · <b style="color:var(--accent);">下次見面，對進度</b></p>
+      <div class="thanks-meta"><b>竑盛科技股份有限公司 ｜ CTK Pro</b> ｜ 2026 Q3 全員發表　·　報告：Alfred</div>
+    </div>
+    <div class="brandmark">收尾 ｜ 下週一就開始</div>
+  </section>
+
+</div>
+
+<div class="navbar" id="navbar">
+  <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">15</span></span>
+  <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
+</div>
+<div class="progress" id="progress"></div>
+<div id="help">← → / 點兩側 / 右下箭頭 翻頁　·　F 全螢幕　·　Home／End 首尾</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let cur=0;
+  const stage=document.getElementById('stage');
+  const progress=document.getElementById('progress');
+  const curNo=document.getElementById('curNo');
+  const totNo=document.getElementById('totNo');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  totNo.textContent=total;
+
+  function clampHash(){const h=parseInt(location.hash.replace('#',''),10);return (h>=1&&h<=total)?h-1:0;}
+  function show(i){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    curNo.textContent=cur+1;
+    progress.style.width=(cur/(total-1))*100+'%';
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  const next=()=>show(cur+1), prev=()=>show(cur-1);
+
+  function fit(){const s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+  window.addEventListener('resize',fit);
+
+  document.addEventListener('keydown',e=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': next();e.preventDefault();break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': prev();e.preventDefault();break;
+      case 'Home': show(0);e.preventDefault();break;
+      case 'End': show(total-1);e.preventDefault();break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.(); e.preventDefault();break;
+    }
+  });
+
+  prevBtn.addEventListener('click',e=>{e.stopPropagation();prev();});
+  nextBtn.addEventListener('click',e=>{e.stopPropagation();next();});
+
+  // 點畫面左右各 1/6 才翻頁；中間 2/3 留給選字／點按
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#navbar')||e.target.closest('a')||e.target.closest('button'))return;
+    const w=window.innerWidth;
+    if(e.clientX < w/6) prev();
+    else if(e.clientX > w*5/6) next();
+  });
+
+  // 觸控滑動
+  let tx=0,ty=0;
+  document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev();}
+  },{passive:true});
+
+  fit(); show(clampHash());
+  setTimeout(()=>{document.getElementById('help').style.opacity='0';},5000);
+</script>
+</body>
+</html>
