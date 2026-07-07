@@ -141,7 +141,7 @@
   .capcard p{font-size:16px;line-height:1.55;color:var(--muted);}
   .capcard .foot{margin-top:auto;padding-top:12px;font-size:14px;font-weight:800;color:var(--brand-deep);}
 
-  /* ---- 護城河（雙欄高潮） ---- */
+  /* ---- 護城河（雙欄結論） ---- */
   .moat{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   .moatbox{border-radius:16px;padding:26px 28px;color:#fff;display:flex;flex-direction:column;gap:8px;}
   .moatbox.p1{background:var(--ink);}
@@ -188,6 +188,17 @@
   .actline ul li::before{content:"→";position:absolute;left:0;color:var(--brand);font-weight:900;}
   .actline .micro{margin-top:auto;font-size:14px;font-weight:800;color:var(--accent);background:#fff;border:1px dashed #E6BCBD;border-radius:10px;padding:9px 12px;}
 
+  /* ---- 統一執行三件事 ---- */
+  .mandate{background:var(--ink);border-radius:16px;padding:16px 24px 14px;color:#fff;}
+  .mandate .ml{font-size:14px;font-weight:800;letter-spacing:2px;color:var(--brand-soft);}
+  .mandate .items{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px;}
+  .mandate .it{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:800;line-height:1.3;}
+  .mandate .it .n{flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;
+                  justify-content:center;font-size:15px;font-weight:900;background:var(--accent);color:#fff;}
+  .mandate .foot{margin-top:12px;padding-top:10px;border-top:1px dashed rgba(255,255,255,.28);
+                 font-size:15px;font-weight:700;color:rgba(255,255,255,.88);}
+  .mandate .foot b{color:#fff;}
+
   /* ---- 大字宣言頁 ---- */
   .declare{flex:1;display:flex;flex-direction:column;justify-content:center;gap:20px;}
   .declare .big{font-size:60px;font-weight:900;line-height:1.18;color:var(--ink);letter-spacing:-1px;}
@@ -217,28 +228,9 @@
 <body>
 <div id="stage">
 
-  <!-- P1 封面 -->
+  <!-- P1 開場鉤子：海嘯 -->
   <section class="slide" data-page="1">
     <img class="logo-tr" src="../images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
-    <div class="cover-wrap">
-      <div class="cover-case">CTK Pro 2026 Q3 ｜ 全員發表</div>
-      <div class="cover-title">動手更少，<span class="hl">動腦更多</span></div>
-      <div class="page-sub" style="font-size:24px;color:var(--muted);">AI 海嘯下，我們這行的變化，與 CTK 接下來要一起打的方向</div>
-      <div class="cover-appeals">
-        <div class="a">趨勢：執行被接走，<b>判斷</b>被放大</div>
-        <div class="a">身分：未來只有一種人 —— <b>Builder</b></div>
-        <div class="a">護城河：個人判斷力 × <b>組織資本</b></div>
-      </div>
-      <div class="info-bar">
-        <div>報告：<b>Alfred</b></div>
-        <div class="r"><b>竑盛科技股份有限公司 ｜ CTK Pro</b><br>一季一次 · 全員見面會</div>
-      </div>
-    </div>
-    <div class="brandmark">CTK Pro 2026 Q3 全員發表</div>
-  </section>
-
-  <!-- P2 開場鉤子：海嘯 -->
-  <section class="slide" data-page="2">
     <div class="kicker">開場</div>
     <h2 class="page-title">過去一季，你有幾次覺得<br>「這件事我好像<span class="red">可以叫 AI 做</span>？」</h2>
     <div class="body">
@@ -267,7 +259,7 @@
   </section>
 
   <!-- P3 趨勢診斷：天平 -->
-  <section class="slide" data-page="3">
+  <section class="slide" data-page="2">
     <div class="kicker">趨勢診斷</div>
     <h2 class="page-title">AI 接走了「動手」，<span class="em">把「判斷」放大了</span></h2>
     <div class="body">
@@ -298,7 +290,7 @@
   </section>
 
   <!-- P4 context 傳遞成本：掉棒 -->
-  <section class="slide" data-page="4">
+  <section class="slide" data-page="3">
     <div class="kicker">我們過去最大的成本</div>
     <h2 class="page-title">Context 傳遞成本 —— <span class="em">每一次交棒，都在掉棒</span></h2>
     <div class="body">
@@ -330,7 +322,7 @@
   </section>
 
   <!-- P5 抽盲盒 -->
-  <section class="slide" data-page="5">
+  <section class="slide" data-page="4">
     <div class="declare">
       <div class="kicker">對執行者的意義</div>
       <div class="big">動手的機會越來越少，<br>「怎麼<span class="red">給出一個指令</span>」<br>成了把事情做好做壞的關鍵。</div>
@@ -340,7 +332,7 @@
   </section>
 
   <!-- P6 四層 Engineering 階梯 -->
-  <section class="slide" data-page="6">
+  <section class="slide" data-page="5">
     <div class="kicker">四層 Engineering</div>
     <h2 class="page-title">從「會下指令」到「給目標自己跑」 —— <span class="em">我們已經爬到第三階</span></h2>
     <div class="body">
@@ -367,7 +359,7 @@
   </section>
 
   <!-- P7 橋接 + Builder -->
-  <section class="slide" data-page="7">
+  <section class="slide" data-page="6">
     <div class="kicker">職務會怎麼變</div>
     <h2 class="page-title">邊界會融化 —— 未來只剩一種人：<span class="red">Builder</span></h2>
     <div class="body">
@@ -395,7 +387,7 @@
   </section>
 
   <!-- P8 動手變少動腦變多（Act 3.2） -->
-  <section class="slide" data-page="8">
+  <section class="slide" data-page="7">
     <div class="kicker">個人護城河 · 怎麼守</div>
     <h2 class="page-title">大家以為 AI 來了會更輕鬆 —— <span class="red">其實動腦更多</span></h2>
     <div class="body">
@@ -421,7 +413,7 @@
   </section>
 
   <!-- P9 統一 context = 組織資本 -->
-  <section class="slide" data-page="9">
+  <section class="slide" data-page="8">
     <div class="kicker">貫穿軸 · 組織護城河</div>
     <h2 class="page-title">AI 越強，<span class="em">共同語言反而越值錢</span></h2>
     <div class="body">
@@ -442,7 +434,7 @@
   </section>
 
   <!-- P10 組織資本三層 -->
-  <section class="slide" data-page="10">
+  <section class="slide" data-page="9">
     <div class="kicker">組織資本 · 三層</div>
     <h2 class="page-title">組織資本 —— <span class="em">長在人與人「之間」的一加一大於二</span></h2>
     <div class="body">
@@ -474,7 +466,7 @@
   </section>
 
   <!-- P11 復盤引擎 -->
-  <section class="slide" data-page="11">
+  <section class="slide" data-page="10">
     <div class="kicker">組織資本的引擎</div>
     <h2 class="page-title">組織資本靠<span class="red">復盤</span>累積 —— 把一次經歷，變成整個組織的記憶</h2>
     <div class="body">
@@ -499,8 +491,8 @@
   </section>
 
   <!-- P12 雙護城河高潮 -->
-  <section class="slide" data-page="12">
-    <div class="kicker">全場高潮</div>
+  <section class="slide" data-page="11">
+    <div class="kicker">核心結論</div>
     <h2 class="page-title">工具會貶值 —— <span class="red">只有兩條護城河留得下</span></h2>
     <div class="body">
       <div class="moat">
@@ -517,11 +509,11 @@
       </div>
       <p class="page-sub" style="margin-top:20px;text-align:center;font-size:22px;">所以我們要做的，不是抗拒 AI，是<b class="now" style="color:var(--accent);">好好擁抱它、善用它</b> —— 然後把省下的力氣，全押在這兩條護城河上。</p>
     </div>
-    <div class="brandmark">全場高潮 ｜ 雙護城河</div>
+    <div class="brandmark">核心結論 ｜ 雙護城河</div>
   </section>
 
   <!-- P13 四個方向 -->
-  <section class="slide" data-page="13">
+  <section class="slide" data-page="12">
     <div class="kicker">公司四個方向</div>
     <h2 class="page-title">這四個方向，就是給 Builder <span class="em">蓋的舞台</span></h2>
     <div class="body">
@@ -560,12 +552,12 @@
   </section>
 
   <!-- P14 收尾：安全感 + 兩條行動線 -->
-  <section class="slide" data-page="14">
+  <section class="slide" data-page="13">
     <div class="kicker">收尾 · 這週能做什麼</div>
     <h2 class="page-title">我給你的不是避風港，<span class="red">是讓你衝向更高的基地</span></h2>
     <div class="body">
-      <div class="card ink" style="margin-bottom:16px;">
-        <p style="font-size:20px;color:#fff;line-height:1.55;">海嘯不會替任何人停。公司給你的是基地——系統、工具、一起復盤的空間；<b style="color:#fff;">但浪，要你自己去面對。</b>我要的不是不會犯錯的團隊，是敢接挑戰、敢把錯攤開、一次比一次強的團隊。</p>
+      <div class="card ink" style="margin-bottom:14px;padding:16px 24px;">
+        <p style="font-size:18px;color:#fff;line-height:1.5;">海嘯不會替任何人停。公司給你的是基地——系統、工具、一起復盤的空間；<b style="color:#fff;">但浪，要你自己去面對。</b>我要的不是不會犯錯的團隊，是敢接挑戰、敢把錯攤開、一次比一次強的團隊。</p>
       </div>
       <div class="actions">
         <div class="actline a1">
@@ -588,29 +580,24 @@
           <div class="micro" style="color:var(--brand);border-color:#D4B8DA;">順便帶一個你用 AI 做出來、以前做不到的東西來 show</div>
         </div>
       </div>
-      <div class="quote" style="margin-top:14px;padding:13px 22px;">
-        <div class="qt" style="font-size:19px;">下次見面會，來對進度：<b>Prompt</b> 這層你做到了什麼？<b>Context</b> 這層做到了什麼？<b>Harness</b> 這層做了什麼樣的管理？</div>
+      <div class="mandate" style="margin-top:14px;">
+        <div class="ml">三件事 · 全公司統一執行</div>
+        <div class="items">
+          <div class="it"><span class="n">1</span>開發工具統一：VS Code</div>
+          <div class="it"><span class="n">2</span>所有專案都進 Git ＋ GitHub</div>
+          <div class="it"><span class="n">3</span>每週 Retrospective 重新啟動</div>
+        </div>
+        <div class="foot">每週的第一件事：<b>複習上週</b> —— 直接從 Git／GitHub 的紀錄來看。四層的進度，下次見面會一起對。</div>
       </div>
     </div>
-    <div class="brandmark">收尾 ｜ 兩條護城河，下次見面對進度</div>
-  </section>
-
-  <!-- P15 謝謝頁 -->
-  <section class="slide" data-page="15">
-    <img class="logo-tr" src="../images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
-    <div class="thanks-wrap">
-      <h2 class="thanks">海嘯不等人。<br>好消息是 —— <span class="em">我們船小，轉得快</span>。</h2>
-      <p class="thanks-tag">下週一就開始：四層爬一階 · 統一一個流程 · <b style="color:var(--accent);">下次見面，對進度</b></p>
-      <div class="thanks-meta"><b>竑盛科技股份有限公司 ｜ CTK Pro</b> ｜ 2026 Q3 全員發表　·　報告：Alfred</div>
-    </div>
-    <div class="brandmark">收尾 ｜ 下週一就開始</div>
+    <div class="brandmark">收尾 ｜ 兩條行動線 × 三件統一執行</div>
   </section>
 
 </div>
 
 <div class="navbar" id="navbar">
   <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
-  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">15</span></span>
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">13</span></span>
   <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
 </div>
 <div class="progress" id="progress"></div>
