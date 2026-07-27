@@ -1,0 +1,744 @@
+<!doctype html>
+<!-- 桃原基會 品牌網站案 簡報 deck。Masa'opo 保密中 → 勿公開部署（僅本機/現場放映）。
+     投影片＝只放給評審看的訊息；主講口白/操作提示在 speaker-notes.md，勿混入畫面。
+     格式＝可操作網站殼；底層沿用 bid_slider 縮放/鍵盤/影片管線。大綱見 ../analysis/phase7-outline.md -->
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>桃原基會 品牌網站案｜竑盛科技 CTK Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d1b; --muted:#6b6b6b; --soft:#9a9a9a; --line:#e6e0d8; --line2:#efe9e0;
+    --blue:#BC4B2B; --blue-700:#8F3418; --blue-300:#D98B6E; --blue-50:#F7EDE7;
+    --teal:#2D6A4F; --teal-700:#1B4332;
+    --ocean:#2C5F8A; --ocean-700:#1E4460;
+    --sand:#C99A80;
+    --bg:#FBFAF7; --paper:#F5EFE7; --warn:#9A6700;
+    --sp1:6px; --sp2:10px; --sp3:16px; --sp4:24px; --sp5:36px; --sp6:52px;
+    --radius:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;background:#000;overflow:hidden;}
+  body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+       color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+  #stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;
+         background:var(--bg);box-shadow:0 0 60px rgba(0,0,0,.5);overflow:hidden;}
+
+  /* 網站殼：頂部站式導覽（logo 小、僅此一處） */
+  #sitenav{position:absolute;top:0;left:0;right:0;height:54px;z-index:40;display:flex;align-items:center;
+           padding:0 var(--sp5);background:rgba(251,250,247,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);}
+  #sitenav .brand{display:flex;align-items:center;gap:8px;margin-right:var(--sp4);white-space:nowrap;}
+  #sitenav .brand img{height:22px;width:auto;display:block;}
+  #sitenav .brand span{font-weight:900;font-size:14.5px;color:var(--ink);}
+  #sitenav .brand span b{color:var(--blue);}
+  #sitenav .navitems{display:flex;gap:2px;flex:1;overflow:hidden;}
+  #sitenav .ni{font-size:13px;font-weight:700;color:var(--muted);padding:7px 10px;border-radius:8px;cursor:pointer;
+               white-space:nowrap;transition:.15s;}
+  #sitenav .ni:hover{background:var(--blue-50);color:var(--blue-700);}
+  #sitenav .ni.on{background:var(--blue);color:#fff;}
+  #sitenav .ni .n{opacity:.5;font-weight:900;margin-right:4px;}
+
+  /* slide 基礎 */
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg);
+         padding:calc(54px + var(--sp5)) 182px var(--sp5) var(--sp6);overflow-y:auto;}
+  .slide.full{padding-right:var(--sp6);}   /* 甘特頁用滿寬 */
+  .slide.active{display:flex;}
+  .slide::-webkit-scrollbar{width:8px;} .slide::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px;}
+
+  /* 換頁：輕視差（容器與內容層速度不同） */
+  .slide.active{animation:slidein .5s ease both;}
+  @keyframes slidein{from{opacity:0;transform:translateX(46px);}to{opacity:1;transform:none;}}
+  .slide.active .head,.slide.active .fillv,.slide.active .ia-nav,.slide.active .ia-foot,
+  .slide.active .gantt,.slide.active .g-wrap,.slide.active .thanks{animation:slideinDeep .66s cubic-bezier(.2,.8,.2,1) both;}
+  @keyframes slideinDeep{from{opacity:0;transform:translateX(84px);}to{opacity:1;transform:none;}}
+
+  .head{margin-bottom:var(--sp4);flex:none;}
+  .kicker{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:700;letter-spacing:2px;
+          color:var(--blue);text-transform:uppercase;}
+  .kicker::before{content:"";width:26px;height:3px;border-radius:2px;background:var(--blue);}
+  .page-title{font-size:40px;font-weight:900;line-height:1.2;color:var(--ink);margin:var(--sp2) 0 0;letter-spacing:-.5px;}
+  .page-title .em{color:var(--blue);}
+  .lead{font-size:18px;color:var(--muted);margin-top:var(--sp2);line-height:1.5;}
+
+  /* 版面工具：fillv 撐滿並垂直置中；row 橫排等寬 */
+  .fillv{flex:1;display:flex;flex-direction:column;justify-content:center;gap:var(--sp3);}
+  .row{display:flex;gap:var(--sp4);align-items:stretch;}
+  .row>.card,.row>.col{flex:1 1 0;min-width:0;}
+  .col{display:flex;flex-direction:column;}
+
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:var(--sp4);}
+  .card.soft{background:var(--paper);border-color:var(--line2);}
+  .card.tint{background:var(--blue-50);border-color:var(--blue-300);}
+  .card.tint h3{color:var(--blue-700);}
+  .card.fill{background:var(--blue);border:none;color:#fff;}
+  .card h3{font-size:21px;font-weight:800;margin-bottom:var(--sp3);display:flex;align-items:center;gap:10px;}
+  .card p{font-size:16px;line-height:1.6;color:var(--muted);}
+  .card p + p{margin-top:var(--sp3);}
+  .card p.lede{margin-top:var(--sp4);}   /* 「我們的做法」與問題句多分一階，做出轉折感 */
+  .card.fill p{color:rgba(255,255,255,.92);}
+  .num{width:32px;height:32px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;
+       font-size:17px;font-weight:900;color:#fff;background:var(--blue);flex:none;}
+
+  /* 兩件事：問題｜做法 橫向並排填滿寬度 */
+  .split{display:flex;gap:var(--sp4);margin-top:var(--sp1);}
+  .split>p{flex:1;font-size:16px;line-height:1.6;color:var(--muted);}
+  .split .lede,.card p.lede{color:var(--ink);font-weight:700;border-left:3px solid var(--blue-300);padding-left:var(--sp3);}
+
+  ul.flow{list-style:none;}
+  ul.flow li{font-size:16.5px;line-height:1.55;color:var(--ink);padding:var(--sp2) 0 var(--sp2) 24px;position:relative;}
+  ul.flow li::before{content:"";position:absolute;left:2px;top:16px;width:8px;height:8px;border-radius:50%;background:var(--blue-300);}
+  ul.flow li.key{font-weight:800;color:var(--blue-700);}
+  ul.flow li.key::before{background:var(--blue);}
+  .tag{display:inline-block;font-size:12.5px;font-weight:700;padding:4px 11px;border-radius:20px;background:var(--blue-50);color:var(--blue-700);}
+
+  /* 封面 */
+  .cover{justify-content:center;position:relative;overflow:hidden;padding-bottom:190px;}  /* 內容上收，下方留給線條頁腳帶 */
+  .cover-case,.cover-title,.kw3,.cover-co{position:relative;z-index:1;}
+  .cover-bg{position:absolute;left:0;right:0;bottom:0;height:230px;z-index:0;pointer-events:none;overflow:visible;}
+  .cover-bg svg{width:100%;height:100%;display:block;overflow:visible;}
+  .cover-bg path{stroke-linejoin:round;stroke-linecap:round;}
+  /* 泰雅風織帶：祖靈之眼菱形主帶＋小十字繡副帶，緩緩織動 */
+  .cb-weave{opacity:.6;}
+  .wv-out{fill:none;stroke:var(--blue);stroke-width:2.4;}     /* 外菱形：土紅 */
+  .wv-in{fill:none;stroke:var(--warn);stroke-width:1.8;}      /* 內菱形：金 */
+  .wv-ctr{fill:var(--teal);}                                  /* 眼心：綠 */
+  .wv-side{fill:var(--blue);opacity:.55;}
+  .wv-x1{fill:none;stroke:var(--blue);stroke-width:1.6;opacity:.5;}
+  .wv-x2{fill:none;stroke:var(--teal);stroke-width:1.6;opacity:.5;}
+  .wv-rule{stroke:var(--blue);stroke-width:1.4;opacity:.4;}
+  .cover-case{font-size:16px;letter-spacing:1.5px;color:var(--blue);font-weight:700;margin-bottom:var(--sp4);}
+  .cover-title{font-size:74px;font-weight:900;line-height:1.08;letter-spacing:-1px;}
+  .cover-title .hl{color:var(--blue);}
+  .kw3{display:flex;gap:var(--sp3);margin-top:var(--sp5);}
+  .kw3 span{font-size:25px;font-weight:900;padding:9px 24px;border-radius:40px;color:#fff;animation:kwin .6s ease both;}
+  .kw3 span:nth-child(1){animation-delay:.35s;} .kw3 span:nth-child(2){animation-delay:.55s;} .kw3 span:nth-child(3){animation-delay:.75s;}
+  @keyframes kwin{from{opacity:0;transform:translateY(16px) scale(.9);}to{opacity:1;transform:none;}}
+  .kw-land{background:var(--blue);} .kw-inter{background:var(--teal);} .kw-long{background:var(--ocean);}
+  .cover-co{margin-top:var(--sp5);font-size:18px;font-weight:700;color:var(--ink);}
+  .cover-co .cttag{color:var(--muted);font-weight:500;}
+
+  /* CTK 介紹 */
+  .whoami{flex:1;display:flex;gap:var(--sp5);align-items:center;}
+  .whoami .lead-col{flex:1.1;}
+  .whoami .big{font-size:33px;font-weight:900;line-height:1.3;letter-spacing:-.5px;}
+  .whoami .big .em{color:var(--blue);}
+  .whoami .sub{font-size:17px;color:var(--muted);margin-top:var(--sp4);line-height:1.6;}
+  .whoami .points{flex:1;display:flex;flex-direction:column;gap:var(--sp3);}
+  .pt{background:var(--paper);border:1px solid var(--line2);border-radius:14px;padding:var(--sp3) var(--sp4);}
+  .pt b{font-size:17px;} .pt small{display:block;color:var(--muted);font-size:14.5px;margin-top:4px;line-height:1.5;}
+
+  /* IA hover 下拉（面板可覆蓋下方卡片，無妨） */
+  .ia-nav{display:flex;gap:var(--sp2);position:relative;z-index:5;}
+  .ia-item{flex:1;position:relative;}
+  .ia-head{background:var(--paper);border:1px solid var(--line2);border-radius:12px;padding:var(--sp3) var(--sp2);
+           text-align:center;transition:.18s;}
+  .ia-head .in{font-size:12px;font-weight:900;color:var(--blue);letter-spacing:1px;}
+  .ia-head .it{font-size:19px;font-weight:900;margin-top:4px;}
+  .ia-head .id{font-size:12.5px;color:var(--muted);margin-top:3px;}
+  .ia-item:hover .ia-head{background:var(--blue);border-color:var(--blue);transform:translateY(-3px);box-shadow:0 12px 26px rgba(0,0,0,.12);}
+  .ia-item:hover .ia-head .in,.ia-item:hover .ia-head .it,.ia-item:hover .ia-head .id{color:#fff;}
+  .ia-panel{position:absolute;top:calc(100% + 8px);left:0;right:0;min-width:230px;background:var(--bg);
+            border:1px solid var(--line);border-radius:12px;padding:var(--sp3) var(--sp4);box-shadow:0 18px 40px rgba(0,0,0,.16);
+            opacity:0;visibility:hidden;transform:translateY(6px);transition:.18s;z-index:9;}
+  .ia-item:hover .ia-panel{opacity:1;visibility:visible;transform:none;}
+  .ia-panel li{font-size:14px;line-height:1.7;color:var(--ink);list-style:none;padding-left:15px;position:relative;}
+  .ia-panel li::before{content:"›";position:absolute;left:0;color:var(--blue);font-weight:900;}
+  .ia-foot{margin-top:auto;display:flex;gap:var(--sp5);justify-content:flex-end;padding-top:var(--sp4);}
+  .ia-note{max-width:330px;font-size:13.5px;color:var(--muted);line-height:1.6;}
+  .ia-note b{display:block;color:var(--ink);font-weight:800;margin-bottom:2px;}
+
+  /* 甘特（拉寬、長條由左往右跑進來） */
+  .gantt{margin-top:var(--sp2);}
+  .grow-g{display:flex;align-items:center;gap:var(--sp3);margin:var(--sp3) 0;}
+  .grow-g .gl{width:200px;font-size:15px;font-weight:700;flex:none;}
+  .gtrack{flex:1;height:40px;background:var(--paper);border-radius:8px;position:relative;}
+  .gbar{position:absolute;top:0;height:40px;border-radius:8px;background:var(--blue);opacity:.92;
+        display:flex;align-items:center;padding:0 12px;color:#fff;font-size:13.5px;font-weight:700;
+        transform-origin:left center;}
+  .gbar.t{background:var(--teal);} .gbar.o{background:var(--ocean);}
+  .slide.active .gbar{animation:growbar 1.4s cubic-bezier(.2,.8,.2,1) both;}
+  .slide.active .grow-g:nth-child(1) .gbar{animation-delay:.2s;}
+  .slide.active .grow-g:nth-child(2) .gbar{animation-delay:.7s;}
+  .slide.active .grow-g:nth-child(3) .gbar{animation-delay:1.2s;}
+  .slide.active .grow-g:nth-child(4) .gbar{animation-delay:1.7s;}
+  @keyframes growbar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  .gmark{position:absolute;top:-8px;bottom:-8px;width:2px;background:var(--warn);}
+  .gmark span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:12.5px;font-weight:900;color:var(--warn);}
+  .gscale{display:flex;margin-left:216px;margin-top:var(--sp2);}
+  .gscale div{flex:1;font-size:12.5px;color:var(--soft);text-align:center;}
+
+  .logowall{display:flex;flex-wrap:wrap;gap:var(--sp2);margin-top:var(--sp2);}
+  .lw{background:var(--paper);border:1px solid var(--line2);border-radius:10px;padding:11px 16px;font-size:15px;font-weight:800;}
+  .lw small{display:block;font-weight:500;color:var(--muted);font-size:12.5px;margin-top:3px;}
+
+  /* 圓餅圖（真實七項，含稅） */
+  .pie-wrap{display:flex;align-items:center;gap:var(--sp5);}
+  .pie{width:210px;height:210px;border-radius:50%;flex:none;position:relative;
+       background:conic-gradient(var(--blue) 0 9.8%,var(--teal) 9.8% 30.1%,var(--ocean) 30.1% 43.3%,
+       var(--warn) 43.3% 60.1%,var(--blue-700) 60.1% 73.6%,var(--sand) 73.6% 87.6%,var(--teal-700) 87.6% 100%);}
+  .pie::after{content:"";position:absolute;inset:54px;background:var(--bg);border-radius:50%;}
+  .pie .center{position:absolute;inset:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:3;}
+  .pie .center b{font-size:24px;font-weight:900;color:var(--ink);}
+  .pie .center small{font-size:12px;color:var(--muted);}
+  .legend{flex:1;display:flex;flex-direction:column;gap:var(--sp2);}
+  .lg{display:flex;align-items:center;gap:10px;font-size:14.5px;}
+  .lg i{width:13px;height:13px;border-radius:4px;flex:none;}
+  .lg b{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:800;}
+  /* 圓餅：預設「未展開」（外圈被蓋住），點按鈕才一節一節繞出來 */
+  @property --sweep{syntax:'<angle>';inherits:false;initial-value:360deg;}
+  .pie{cursor:pointer;}
+  .pie .cover{position:absolute;inset:0;border-radius:50%;z-index:1;
+              background:conic-gradient(var(--bg) var(--sweep), transparent 0);
+              transition:--sweep 2.4s cubic-bezier(.35,.6,.3,1);}
+  .pie-wrap.on .cover{--sweep:0deg;}
+  .legend{opacity:0;transform:translateX(12px);transition:.5s ease .2s;}
+  .pie-wrap.on .legend{opacity:1;transform:none;}
+  .pie-hint{margin-top:var(--sp3);font-size:12.5px;color:var(--muted);font-weight:700;}
+
+  /* ================= 桃園旅人 ================= */
+  #game{padding:calc(54px + var(--sp5)) var(--sp5) var(--sp4) var(--sp6);}  /* 左緣對齊其他頁(sp6)、頂端對齊(88) */
+  .g-wrap{flex:1;display:flex;gap:var(--sp5);align-items:stretch;}
+  .g-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:120px;}
+  .g-side{width:262px;flex:none;display:flex;flex-direction:column;gap:var(--sp3);justify-content:center;
+          opacity:0;transform:translateX(18px);transition:.45s cubic-bezier(.2,.8,.3,1);pointer-events:none;}
+  .g-side.reveal{opacity:1;transform:none;pointer-events:auto;}
+  .g-step{display:none;} .g-step.on{display:block;animation:slidein .35s ease both;}
+  .g-q{font-size:29px;font-weight:900;margin-bottom:var(--sp5);letter-spacing:-.5px;}
+  .g-cards{display:flex;gap:var(--sp4);}
+  .g-opt{flex:1;background:var(--paper);border:2px solid var(--line2);border-radius:var(--radius);padding:var(--sp5) var(--sp3);
+         cursor:pointer;text-align:center;transition:.16s;font-family:inherit;}
+  .g-opt:hover{border-color:var(--blue-300);transform:translateY(-5px);box-shadow:0 14px 30px rgba(0,0,0,.1);}
+  .g-opt .emoji{font-size:48px;display:inline-block;margin-bottom:var(--sp3);animation:floaty 3.4s ease-in-out infinite;}
+  .g-opt:nth-child(2) .emoji{animation-delay:.5s;} .g-opt:nth-child(3) .emoji{animation-delay:1s;}
+  .g-opt:hover .emoji{animation:spinny 1.15s ease;}
+  .g-opt .lab{font-size:21px;font-weight:900;color:var(--ink);}
+  .g-opt .sub{font-size:14px;color:var(--muted);margin-top:5px;}
+  .g-entry .g-opt .lab{font-size:23px;}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-8px) rotate(3deg);}}
+  @keyframes spinny{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}
+
+  .g-result{display:none;} .g-result.on{display:flex;gap:var(--sp5);align-items:center;animation:pop .45s cubic-bezier(.2,.9,.3,1.2);}
+  @keyframes pop{from{opacity:0;transform:scale(.92);}to{opacity:1;transform:none;}}
+  .rcard{width:296px;height:288px;flex:none;border-radius:20px;padding:var(--sp5) var(--sp4);color:#fff;position:relative;
+         overflow:hidden;box-shadow:0 16px 40px rgba(0,0,0,.16);display:flex;flex-direction:column;}
+  .rcard .remoji{font-size:64px;line-height:1;animation:floaty 3.4s ease-in-out infinite;}
+  .rcard .rtype{font-size:13px;font-weight:800;letter-spacing:2px;opacity:.9;margin-top:var(--sp4);}
+  .rcard .rname{font-size:29px;font-weight:900;line-height:1.18;margin-top:5px;}
+  .rcard .rquip{font-size:15.5px;opacity:.94;margin-top:auto;line-height:1.5;}
+  .rcard.land{background:linear-gradient(150deg,#C6603E,var(--blue-700));}
+  .rcard.inter{background:linear-gradient(150deg,#3C7C60,var(--teal-700));}
+  .rcard.long{background:linear-gradient(150deg,#3B6E97,var(--ocean-700));}
+  .r-right{flex:1;}
+  .r-map{font-size:23px;font-weight:900;line-height:1.4;}
+  .r-map b{color:var(--blue);}
+  .r-fact{font-size:14px;color:var(--muted);font-weight:600;margin-top:var(--sp3);line-height:1.5;}
+  .r-cycle{margin-top:var(--sp4);display:flex;gap:var(--sp2);align-items:center;}
+  .r-cycle button{font-family:inherit;font-size:15px;font-weight:800;width:38px;height:38px;border-radius:50%;
+                  border:2px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;transition:.15s;}
+  .r-cycle button:hover{border-color:var(--blue);color:var(--blue);}
+  .r-cycle .rc-lab{font-size:13.5px;color:var(--muted);font-weight:700;}
+  .r-dots{display:flex;gap:6px;margin-left:6px;}
+  .r-dots i{width:9px;height:9px;border-radius:50%;background:var(--line);transition:.2s;}
+  .r-dots i.on{background:var(--blue);transform:scale(1.25);}
+  .g-replay{margin-top:var(--sp4);font-size:13.5px;font-weight:700;color:var(--muted);background:none;border:none;
+            cursor:pointer;font-family:inherit;text-decoration:underline;align-self:flex-start;}
+
+  .panel{background:#211d1b;color:#fff;border-radius:var(--radius);padding:var(--sp4);}
+  .panel h4{font-size:13px;font-weight:800;letter-spacing:1px;color:#e9c9b8;margin-bottom:var(--sp3);display:flex;align-items:center;gap:8px;}
+  .panel h4::before{content:"";width:8px;height:8px;border-radius:50%;background:#5fd08a;box-shadow:0 0 8px #5fd08a;}
+  .stat{display:flex;justify-content:space-between;align-items:baseline;padding:var(--sp2) 0;border-top:1px solid rgba(255,255,255,.1);}
+  .stat:first-of-type{border-top:none;}
+  .stat .sl{font-size:14px;color:rgba(255,255,255,.72);}
+  .stat .sv{font-size:26px;font-weight:900;font-variant-numeric:tabular-nums;}
+  .stat .sv.bump{animation:bump .5s ease;color:#8fe3ab;}
+  @keyframes bump{0%{transform:scale(1);}40%{transform:scale(1.35);}100%{transform:scale(1);}}
+  .exportbar{margin-top:var(--sp3);font-size:13px;font-weight:700;color:#8fe3ab;}
+  .g-side .note{font-size:13px;color:var(--muted);line-height:1.55;}
+
+  /* thanks */
+  .thanks{flex:1;display:flex;flex-direction:column;justify-content:center;}
+  .thanks .big{font-size:50px;font-weight:900;line-height:1.16;letter-spacing:-1px;}
+  .thanks .big .hl{color:var(--blue);}
+  .thanks .promise{font-size:19px;color:var(--muted);margin-top:var(--sp5);line-height:1.6;max-width:800px;}
+  .endrow{display:flex;justify-content:space-between;align-items:flex-end;margin-top:var(--sp6);gap:var(--sp5);}
+  .endrow .contact{font-size:16px;color:var(--ink);font-weight:700;line-height:1.7;}
+  .endrow .contact .muted{color:var(--muted);font-weight:500;}
+  .qr{text-align:center;flex:none;}
+  .qr img{width:118px;height:118px;display:block;border:1px solid var(--line);border-radius:10px;background:#fff;padding:5px;}
+  .qr small{display:block;font-size:12.5px;color:var(--muted);margin-top:6px;font-weight:700;}
+
+  #progress{position:absolute;bottom:0;left:0;height:3px;background:var(--blue);z-index:45;transition:width .3s;}
+  #pager{position:absolute;bottom:13px;right:22px;z-index:45;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--muted);}
+  #pager button{font-family:inherit;font-size:17px;border:none;background:none;cursor:pointer;color:var(--blue);padding:2px 6px;}
+  #help{position:absolute;bottom:13px;left:22px;z-index:45;font-size:12.5px;color:var(--soft);transition:opacity .6s;}
+  #help b{color:var(--muted);}
+
+  #qa{position:absolute;inset:0;z-index:70;background:rgba(28,24,22,.97);color:#fff;display:none;padding:var(--sp6) 70px;overflow:auto;}
+  #qa.show{display:block;}
+  #qa h2{font-size:30px;font-weight:900;margin-bottom:var(--sp4);color:#e9c9b8;}
+  #qa .qitem{margin-bottom:var(--sp3);border-left:3px solid var(--blue);padding-left:16px;}
+  #qa .qq{font-size:18px;font-weight:800;}
+  #qa .qa{font-size:15.5px;color:rgba(255,255,255,.82);margin-top:5px;line-height:1.5;}
+  #qa .hint{position:absolute;top:22px;right:30px;font-size:13px;color:var(--soft);}
+
+  #vplayer{position:fixed;inset:0;z-index:90;background:#000;display:none;align-items:center;justify-content:center;}
+  #vplayer.on{display:flex;}
+  #vplayer video{width:100%;height:100%;object-fit:contain;background:#000;}
+  #vplayer .vclose{position:absolute;top:18px;right:22px;font-size:22px;color:#fff;cursor:pointer;background:rgba(255,255,255,.14);border:none;border-radius:8px;padding:6px 12px;}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <nav id="sitenav">
+    <div class="brand"><img src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'"><span>竑盛 <b>CTK Pro</b></span></div>
+    <div class="navitems" id="navitems"></div>
+  </nav>
+
+  <!-- S1 封面 -->
+  <section class="slide cover" data-nav="首頁">
+    <div class="cover-bg" aria-hidden="true">
+      <svg viewBox="0 0 1280 230" preserveAspectRatio="none">
+        <defs>
+          <pattern id="weaveA" width="72" height="48" patternUnits="userSpaceOnUse">
+            <animateTransform attributeName="patternTransform" type="translate" from="0 0" to="72 0" dur="18s" repeatCount="indefinite"/>
+            <path class="wv-out" d="M36,4 L71,24 L36,44 L1,24 Z"/>
+            <path class="wv-in" d="M36,13 L54,24 L36,35 L18,24 Z"/>
+            <path class="wv-ctr" d="M36,20 L43,24 L36,28 L29,24 Z"/>
+            <path class="wv-side" d="M0,24 L7,19 L7,29 Z M72,24 L65,19 L65,29 Z"/>
+          </pattern>
+          <pattern id="weaveB" width="34" height="20" patternUnits="userSpaceOnUse">
+            <animateTransform attributeName="patternTransform" type="translate" from="0 0" to="-34 0" dur="24s" repeatCount="indefinite"/>
+            <path class="wv-x1" d="M8,10 L14,4 M8,10 L14,16 M8,10 L2,4 M8,10 L2,16"/>
+            <path class="wv-x2" d="M25,10 L31,5 M25,10 L31,15 M25,10 L19,5 M25,10 L19,15"/>
+          </pattern>
+        </defs>
+        <g class="cb-weave">
+          <rect x="-40" y="98" width="1360" height="20" fill="url(#weaveB)"/>
+          <line class="wv-rule" x1="-40" y1="122" x2="1360" y2="122"/>
+          <line class="wv-rule" x1="-40" y1="140" x2="1360" y2="140"/>
+          <rect x="-40" y="144" width="1360" height="48" fill="url(#weaveA)"/>
+          <line class="wv-rule" x1="-40" y1="196" x2="1360" y2="196"/>
+        </g>
+      </svg>
+    </div>
+    <div class="cover-case">財團法人桃園市原住民族發展基金會 ｜ 品牌網站架設資訊服務委託案（案號 1150430-1）</div>
+    <div class="cover-title">把品牌網站<br><span class="hl">做出來、陪您走很久</span></div>
+    <div class="kw3"><span class="kw-land">設計落地</span><span class="kw-inter">互動元素</span><span class="kw-long">維運長跑</span></div>
+    <div class="cover-co">竑盛科技股份有限公司 <span class="cttag">（CTK Pro）</span></div>
+  </section>
+
+  <!-- S2 CTK 介紹 -->
+  <section class="slide" data-nav="我們是誰">
+    <div class="head">
+      <div class="kicker">先自我介紹一下</div>
+      <div class="page-title">我們是<span class="em">專做網站開發</span>的公司</div>
+    </div>
+    <div class="fillv"><div class="row">
+      <div class="card">
+        <h3>🖥️ 專做網站，以程式解決問題</h3>
+        <p>竑盛 2011 年成立、近十年專注網站開發；核心是 <b style="color:var(--blue)">WordPress 客製化</b>與把設計稿完整切版、落實成好維護的網站。</p>
+        <p><b style="color:var(--ink)">代表實績：</b>行政院珍貴史料展示網、海外聯合招生委員會網站、資策會資安合規中心、ASUS 品牌網站等政府與品牌案。</p>
+      </div>
+      <div class="card soft">
+        <h3>🤝 本案的分工</h3>
+        <p>設計端出視覺、CTK 負責做成能上線又好維護的網站——這種「依設計稿切版落實」，正是我們的強項與經驗。</p>
+        <p><b style="color:var(--ink)">資安能力：</b>具 ISO 27001 驗證，政府網站資安檢測與弱點修補實務經驗。</p>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- S3 兩件事 -->
+  <section class="slide" data-nav="兩件事">
+    <div class="head">
+      <div class="kicker">所以，我們架這個網站會遇到</div>
+      <div class="page-title">兩件<span class="em">容易出事的事</span>——我們這樣把它顧好</div>
+      <div class="lead">首屆 · 設計和工程分開發包</div>
+    </div>
+    <div class="fillv"><div class="row">
+      <div class="card">
+        <h3><span class="num">1</span> 設計和工程，<span style="color:var(--blue)">中間會斷</span></h3>
+        <p>設計稿會晚一點才定案。「哪些是設計的事、哪些是我們的事」，如何溝通？</p>
+        <p class="lede">我們的做法：主動回饋設計端、提出實務可行的做法，把分工定義清楚。<br/>「依設計稿切版落實」，我們經驗豐富。</p>
+      </div>
+      <div class="card">
+        <h3><span class="num">2</span> 第一屆沒有現成內容，<span style="color:var(--blue)">時程又緊</span></h3>
+        <p>第一屆沒有現成內容、沒有上稿規範，；9 月要上線、10 月開記者會。</p>
+        <p class="lede">我們的做法：先把骨架做好上線，內容備好一塊就開一塊；第一批資料我們上稿完成，附上「怎麼填」的規範，後續好維運。</p>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- S4 IA -->
+  <section class="slide" data-nav="IA 理解">
+    <div class="head">
+      <div class="kicker">企劃內容 · IA 理解</div>
+      <div class="page-title">這套網站架構，我們<span class="em">讀懂了</span></div>
+    </div>
+    <div class="ia-nav">
+      <div class="ia-item"><div class="ia-head"><div class="in">HOME</div><div class="it">首頁</div><div class="id">品牌入口</div></div>
+        <div class="ia-panel"><ul><li>Loading → Hero 開場</li><li>Gathering 年度精選</li><li>Game Module 互動</li><li>Why Taoyuan</li><li>Latest Stories</li></ul></div></div>
+      <div class="ia-item"><div class="ia-head"><div class="in">GATHERING</div><div class="it">節目</div><div class="id">主骨幹</div></div>
+        <div class="ia-panel"><ul><li>卡片式節目列表</li><li>13 個資料欄位</li><li>狀態：開放報名／已截止</li><li>報名與參與導引</li></ul></div></div>
+      <div class="ia-item"><div class="ia-head"><div class="in">STORIES</div><div class="it">故事</div><div class="id">深度內容</div></div>
+        <div class="ia-panel"><ul><li>同一套卡片、換個樣子</li><li>封面／分類／摘要</li><li>延長停留、養品牌厚度</li></ul></div></div>
+      <div class="ia-item"><div class="ia-head"><div class="in">ABOUT</div><div class="it">關於</div><div class="id">品牌故事</div></div>
+        <div class="ia-panel"><ul><li>Masa'opo 品牌精神</li><li>Sakalemet ita</li><li>年度主題說明</li></ul></div></div>
+      <div class="ia-item"><div class="ia-head"><div class="in">SPONSOR</div><div class="it">贊助</div><div class="id">支持參與</div></div>
+        <div class="ia-panel"><ul><li>贊助方案介紹</li><li>贊助芳名錄</li><li>後台可維護</li></ul></div></div>
+    </div>
+    <div class="ia-foot">
+      <div class="ia-note"><b>🧩 卡片元件全站共用</b>節目和故事共用同一組卡片；改一次、全站同步。</div>
+      <div class="ia-note"><b>🌿 文化分享界線，貴會決定</b>神諭卡這類儀式性內容，哪些可被轉發由貴會設定。</div>
+    </div>
+  </section>
+
+  <!-- S5 桃園旅人 -->
+  <section class="slide" id="game" data-nav="桃園旅人 ●">
+    <div class="head">
+      <div class="kicker">首頁 Game Module · 選擇 → 結果</div>
+      <div class="page-title" style="font-size:32px;">桃園旅人 <span style="font-size:16px;color:var(--muted);font-weight:600;">· 你是哪一種旅人？</span></div>
+    </div>
+    <div class="g-wrap">
+      <div class="g-main">
+        <div class="g-step on" data-step="entry">
+          <div class="g-q">選一個入口，開始</div>
+          <div class="g-cards g-entry">
+            <button class="g-opt" onclick="G.enter()"><span class="emoji">✨</span><span class="lab">憑直覺 ▸</span><span class="sub">跟著感覺走</span></button>
+            <button class="g-opt" onclick="G.enter()"><span class="emoji">🗺️</span><span class="lab">照計畫 ▸</span><span class="sub">先想好路線</span></button>
+          </div>
+        </div>
+        <div class="g-step" data-step="q1">
+          <div class="g-q">Q1 · 這個週末，你想往哪走？</div>
+          <div class="g-cards">
+            <button class="g-opt" onclick="G.pick(1,'inter')"><span class="emoji">⛰️</span><span class="lab">山</span><span class="sub">和大自然互動</span></button>
+            <button class="g-opt" onclick="G.pick(1,'land')"><span class="emoji">🏙️</span><span class="lab">城</span><span class="sub">看人怎麼把它蓋出來</span></button>
+            <button class="g-opt" onclick="G.pick(1,'long')"><span class="emoji">🌊</span><span class="lab">海</span><span class="sub">想著生態與長遠</span></button>
+          </div>
+        </div>
+        <div class="g-step" data-step="q2">
+          <div class="g-q">Q2 · 路上，你會帶什麼？</div>
+          <div class="g-cards">
+            <button class="g-opt" onclick="G.pick(2,'land')"><span class="emoji">📷</span><span class="lab">相機</span><span class="sub">把眼前拍下來</span></button>
+            <button class="g-opt" onclick="G.pick(2,'inter')"><span class="emoji">🤝</span><span class="lab">找人同行</span><span class="sub">邊走邊聊</span></button>
+            <button class="g-opt" onclick="G.pick(2,'long')"><span class="emoji">🎒</span><span class="lab">走遠的裝備</span><span class="sub">準備走很久</span></button>
+          </div>
+        </div>
+        <div class="g-result" data-step="result">
+          <div class="rcard" id="rcard">
+            <div class="remoji" id="remoji">🏙️</div>
+            <div class="rtype" id="rtype">你的旅人型</div>
+            <div class="rname" id="rname">腳踏實地的旅人</div>
+            <div class="rquip" id="rquip">你把地圖走成真的路。</div>
+          </div>
+          <div class="r-right">
+            <div class="r-map" id="rmap">＝ 我們把設計稿完美<b>落地</b></div>
+            <div class="r-cycle"><button onclick="G.cycle(-1)">‹</button><span class="rc-lab">看看其他旅人</span><button onclick="G.cycle(1)">›</button>
+              <div class="r-dots"><i data-d="land"></i><i data-d="inter"></i><i data-d="long"></i></div></div>
+            <button class="g-replay" onclick="G.reset()">↺ 再玩一次</button>
+          </div>
+        </div>
+      </div>
+      <div class="g-side" id="gside">
+        <div class="panel">
+          <h4>後台 · 剛剛那筆進來了</h4>
+          <div class="stat"><span class="sl">互動次數</span><span class="sv" id="s-count">128</span></div>
+          <div class="stat"><span class="sl">參與人數</span><span class="sv" id="s-people">96</span></div>
+          <div class="stat"><span class="sl">完成率</span><span class="sv" id="s-rate">87%</span></div>
+          <div class="exportbar">✓ 已進後台，可匯出 CSV</div>
+        </div>
+        <div class="note">互動次數／參與人數／完成率，玩完當場就進後台、可查詢匯出。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S6 設計協作 -->
+  <section class="slide" data-nav="設計協作">
+    <div class="head">
+      <div class="kicker">設計 × 工程的銜接</div>
+      <div class="page-title">設計交給我們，<span class="em">這幾週這樣接</span></div>
+    </div>
+    <div class="fillv" style="padding-bottom:60px;"><div class="row">
+      <div class="col">
+        <h3 style="font-size:19px;margin-bottom:var(--sp3);">設計出圖、我們落地——這種合作，做過不只一次</h3>
+        <div class="logowall">
+          <div class="lw">良艮設計 <small>海外聯招 · 萬金石測驗網</small></div>
+          <div class="lw">happ 設計 <small>北師美術館 · happ 官網</small></div>
+        </div>
+        <p style="font-size:15.5px;color:var(--muted);margin-top:var(--sp4);line-height:1.6;">
+          不論設計稿是 <b style="color:var(--ink)">Figma、Adobe XD、AI（Illustrator）</b>，我們都有成熟的切版方法，忠實轉成可維護的 RWD。</p>
+      </div>
+      <div class="card soft col">
+        <h3>與設計師怎麼協作，才交得好</h3>
+        <ul class="flow">
+          <li>一起訂節點：何時給稿、何時切版、何時上線</li>
+          <li>主動給 feedback：平面稿要變 RWD、要過無障礙，初期一定有調整，我們先提、一起討論</li>
+          <li>交付以設計師和貴會都認可的版本為準</li>
+        </ul>
+        <p style="font-size:14px;color:var(--muted);margin-top:var(--sp2);">分工是為了準時交出好結果，不是切割責任。</p>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- S7 上線時程 -->
+  <section class="slide full" data-nav="上線時程">
+    <div class="head">
+      <div class="kicker">交付時程</div>
+      <div class="page-title">怎麼<span class="em">準時上線</span>，我們排給您看</div>
+    </div>
+    <div class="gantt">
+      <div class="grow-g"><div class="gl">需求確認與規劃</div><div class="gtrack"><div class="gbar" style="left:0;width:24%;">規劃</div></div></div>
+      <div class="grow-g"><div class="gl">切版與系統建置</div><div class="gtrack"><div class="gbar t" style="left:20%;width:38%;">建置開發</div></div></div>
+      <div class="grow-g"><div class="gl">測試與上線</div><div class="gtrack"><div class="gbar o" style="left:52%;width:20%;">測試上線</div>
+        <div class="gmark" style="left:72%;"><span>9/1 前上線</span></div></div></div>
+      <div class="grow-g"><div class="gl">教育訓練與交付</div><div class="gtrack"><div class="gbar" style="left:74%;width:26%;">訓練 · 交付</div></div></div>
+      <div class="gscale"><div>決標</div><div>7月</div><div>8月</div><div>9月</div><div>10月</div><div>11/30</div></div>
+    </div>
+    <div class="row" style="margin-top:var(--sp5);">
+      <div class="card soft" style="flex:1.3;border-left:4px solid var(--teal);">
+        <h3>🔌 內容還沒齊？骨架設定好，一塊一塊填上</h3>
+        <p>網站每個區塊在後台都能單獨開關。內容還在陸續進來時，先把整站骨架做好上線，資料一旦備齊，快速上稿、開啟——不用等全部到齊，也不會拖到 9 月上線。</p>
+      </div>
+      <div class="card soft">
+        <h3>🌱 後續網站維運（第二屆、第三屆）</h3>
+        <p>大部分項目，都可以擴充、微調，每一屆用「填設定」就能加，無須重寫程式。<span style="font-size:13px;">（詳見企劃書肆章）</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- S8 資安保固 -->
+  <section class="slide" data-nav="資安保固">
+    <div class="head">
+      <div class="kicker">資訊安全 · 營運持續</div>
+      <div class="page-title">資安，我們<span class="em">照制度做、也接得住意外</span></div>
+    </div>
+    <div class="fillv"><div class="row">
+      <div class="card"><h3>🛡️ 依制度管理</h3>
+        <ul class="flow">
+          <li>依 ISO/IEC 27001 建立制度</li>
+          <li>權限控管、資產與變更管理</li>
+          <li>事件處理有 SOP、附證書</li>
+        </ul></div>
+      <div class="card"><h3>🔍 上線前檢測</h3>
+        <ul class="flow">
+          <li>依 OWASP 常見弱點掃描</li>
+          <li>修補高、中風險才上線</li>
+          <li>紀錄納入驗收交付</li>
+        </ul></div>
+      <div class="card"><h3>🔄 營運持續計畫</h3>
+        <ul class="flow">
+          <li class="key">回報：單一窗口、分級處理</li>
+          <li class="key">修復：異常 12 小時內完成</li>
+          <li class="key">備份：每日一次、留 7 日</li>
+        </ul></div>
+    </div></div>
+  </section>
+
+  <!-- S9 團隊經費 -->
+  <section class="slide" data-nav="團隊經費">
+    <div class="head">
+      <div class="kicker">實績 · 經費配置</div>
+      <div class="page-title">一支<span class="em">完整團隊</span>，經費用在成果上</div>
+    </div>
+    <div class="fillv"><div class="row">
+      <div class="col">
+        <h3 style="font-size:19px;margin-bottom:var(--sp2);">工程團隊</h3>
+        <ul class="flow">
+          <li class="key">專案經理｜對接設計師與貴會、進度管理、變更記錄</li>
+          <li>後端工程師｜報名、互動模組、後台客製開發</li>
+          <li class="key">視覺設計 · 前端切版｜把設計稿完美對應出來</li>
+          <li>資安工程師｜遵循 ISO 27001、資安掃描</li>
+        </ul>
+        <p style="font-size:14px;color:var(--muted);margin-top:var(--sp2);">公司團隊/資源可即時支援。</p>
+      </div>
+      <div class="col">
+        <div class="pie-wrap" id="budget">
+          <div style="display:flex;flex-direction:column;align-items:center;flex:none;">
+            <div class="pie" onclick="event.stopPropagation();this.closest('.pie-wrap').classList.toggle('on')"><div class="cover"></div><div class="center"><b>386,000</b><small>含稅 · 元</small></div></div>
+            <div class="pie-hint">▸ 點金額展開／收合</div>
+          </div>
+          <div class="legend">
+            <div class="lg"><i style="background:var(--blue)"></i>規劃 · 設計師協作<b>38,000</b></div>
+            <div class="lg"><i style="background:var(--teal)"></i>前後端系統建置<b>78,000</b></div>
+            <div class="lg"><i style="background:var(--ocean)"></i>互動功能模組<b>51,000</b></div>
+            <div class="lg"><i style="background:var(--warn)"></i>RWD · 無障礙落版<b>65,000</b></div>
+            <div class="lg"><i style="background:var(--blue-700)"></i>資訊安全<b>52,000</b></div>
+            <div class="lg"><i style="background:var(--sand)"></i>教育訓練 · 首批上稿<b>54,000</b></div>
+            <div class="lg"><i style="background:var(--teal-700)"></i>專案管理 · 保固維運<b>48,000</b></div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--soft);margin-top:var(--sp3);">各項金額依團隊實際投入人日估算分配；明細見企劃書陸章。</p>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- S10 總結 -->
+  <section class="slide" data-nav="總結">
+    <div class="thanks">
+      <div class="big">把設計稿<span class="hl">落地</span>，把體驗做成<span class="hl">互動</span>網站，<br>維運陪您<span class="hl">長跑</span>。</div>
+      <div class="promise">這就是竑盛想為 Masa'opo 第一屆做的事——<br>做得出來、準時上線，還在第二屆、第三屆陪您把它養大。</div>
+      <div class="endrow">
+        <div class="contact">竑盛科技股份有限公司（CTK Pro）<br><span class="muted">聯絡人</span> Aron　<span class="muted">|</span>　aron@ctkpro.com</div>
+        <div class="qr"><img src="images/qr-ctkpro.svg" alt="官網 QR" onerror="this.style.display='none'"><small>官網 ctkpro.com</small></div>
+      </div>
+    </div>
+  </section>
+
+  <div id="progress"></div>
+  <div id="help"><b>← →</b> 翻頁　<b>點導覽列</b>跳段　<b>↓</b> 段內可捲動　<b>Q</b> 備詢　<b>F</b> 全螢幕</div>
+  <div id="pager"><button id="prevBtn">‹</button><span><span id="curNo">1</span> / <span id="totNo">10</span></span><button id="nextBtn">›</button></div>
+
+  <div id="qa">
+    <div class="hint">Q 或 Esc 關閉</div>
+    <h2>備詢預想（30 秒口徑）</h2>
+    <div class="qitem"><div class="qq">Q · 萬金石那個測驗現在還打得開嗎？</div><div class="qa">賽後微網站已下架（年度活動）；作品記錄在協作設計公司良艮（Mounts Studio）作品集，截圖見企劃書貳章。這套「選擇→結果」玩法正是本案 Game Module 的同型技術。</div></div>
+    <div class="qitem"><div class="qq">Q · 神諭卡／原民指數的題目誰來出？</div><div class="qa">文化內容由貴會提供，我們負責把互動、後台和資料統計做出來；哪些結果可以被分享，界線由貴會設定。</div></div>
+    <div class="qitem"><div class="qq">Q · 第一屆沒內容，怎麼準時上線？</div><div class="qa">網站每一塊在後台都能單獨開關，先上骨架、內容備好一塊開一塊；第一批我們幫忙上、附填寫規範帶著同仁走。</div></div>
+    <div class="qitem"><div class="qq">Q · 為什麼用 WordPress？</div><div class="qa">不用付授權費、錢可以花在切版和互動上；之後每屆用設定就能擴充、不必重寫。海外聯招逐屆執行就是例子。</div></div>
+  </div>
+
+  <div id="vplayer"><video muted playsinline></video><button class="vclose" onclick="closeVideo()">✕ 關閉</button></div>
+
+</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let cur=0;
+  const stage=document.getElementById('stage');
+  const progress=document.getElementById('progress');
+  const curNo=document.getElementById('curNo');
+  const totNo=document.getElementById('totNo');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  const qa=document.getElementById('qa');
+  totNo.textContent=total;
+
+  const navitems=document.getElementById('navitems');
+  slides.forEach((s,i)=>{
+    const b=document.createElement('div');
+    b.className='ni'; b.innerHTML='<span class="n">'+(i+1)+'</span>'+s.dataset.nav;
+    b.addEventListener('click',e=>{e.stopPropagation();show(i);});
+    navitems.appendChild(b);
+  });
+  const navEls=[...navitems.children];
+
+  function clampHash(){const h=parseInt(location.hash.replace('#',''),10);return (h>=1&&h<=total)?h-1:0;}
+  function show(i){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach((s,k)=>{s.classList.toggle('active',k===cur);if(k===cur)s.scrollTop=0;});
+    navEls.forEach((n,k)=>n.classList.toggle('on',k===cur));
+    curNo.textContent=cur+1;
+    progress.style.width=(cur/(total-1))*100+'%';
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  const next=()=>show(cur+1), prev=()=>show(cur-1);
+
+  function fit(){const s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+  window.addEventListener('resize',fit);
+
+  /* ============ 桃園旅人 ============ */
+  const G=(function(){
+    const RES={
+      land:{emoji:'🏙️',type:'落地型旅人',name:'腳踏實地的旅人',quip:'你把地圖走成真的路。',map:'＝ 我們把設計稿完美<b>落地</b>',cls:'land'},
+      inter:{emoji:'⛰️',type:'互動型旅人',name:'走到哪聊到哪的旅人',quip:'你讓沿路都變成朋友。',map:'＝ 我們把<b>互動</b>體驗做出來',cls:'inter'},
+      long:{emoji:'🌊',type:'長跑型旅人',name:'走得最遠的旅人',quip:'你不趕，但你走得很久。',map:'＝ 我們把網站<b>長期經營</b>下去',cls:'long'}
+    };
+    const ORDER=['land','inter','long'];
+    let picks={}, shown='land';
+    const $=id=>document.getElementById(id);
+    function stepTo(name){document.querySelectorAll('#game .g-step').forEach(s=>s.classList.toggle('on',s.dataset.step===name));}
+    function decide(){ return picks[1]===picks[2] ? picks[1] : picks[2]; } // 同標＝該型；不同＝Q2 揭露；9 組合皆落三型
+    function render(key){
+      shown=key; const r=RES[key];
+      $('remoji').textContent=r.emoji; $('rtype').textContent=r.type;
+      $('rname').textContent=r.name; $('rquip').textContent=r.quip;
+      $('rmap').innerHTML=r.map;
+      $('rcard').className='rcard '+r.cls;
+      document.querySelectorAll('.r-dots i').forEach(i=>i.classList.toggle('on',i.dataset.d===key));
+    }
+    function bump(){
+      const c=$('s-count'),p=$('s-people');
+      c.textContent=(+c.textContent+1); p.textContent=(+p.textContent+1);
+      [c,p].forEach(el=>{el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');});
+      $('gside').classList.add('reveal');
+    }
+    return {
+      enter(){stepTo('q1');},
+      pick(q,tag){ picks[q]=tag;
+        if(q===1){stepTo('q2');}
+        else{ const key=decide();
+          document.querySelector('#game .g-result').classList.add('on');
+          document.querySelectorAll('#game .g-step').forEach(s=>s.classList.remove('on'));
+          render(key); bump();
+        }
+      },
+      cycle(dir){ let i=ORDER.indexOf(shown); i=(i+dir+3)%3; render(ORDER[i]); },
+      reset(){ picks={};
+        document.querySelector('#game .g-result').classList.remove('on');
+        $('gside').classList.remove('reveal');
+        stepTo('entry');
+      }
+    };
+  })();
+  window.G=G;
+  (function(){const T=['land','inter','long'],d=(a,b)=>a===b?a:b;let ok=true;
+    T.forEach(a=>T.forEach(b=>{if(!T.includes(d(a,b)))ok=false;}));
+    console.assert(ok,'桃園旅人 decide() 有組合落三型之外');})();
+
+  /* ---- DEMO 影片 fallback ---- */
+  const vp=document.getElementById('vplayer'), vEl=vp.querySelector('video');
+  let vQ=[], vI=0;
+  window.playDemos=function(list){vQ=list;vI=0;vp.classList.add('on');vEl.muted=true;vLoad();};
+  function vLoad(){vEl.src=vQ[vI];vEl.currentTime=0;vEl.play().catch(()=>{});}
+  window.closeVideo=function(){vp.classList.remove('on');vEl.pause();vEl.removeAttribute('src');vEl.load();};
+  vEl.addEventListener('ended',()=>{ (vI<vQ.length-1) ? (vI++,vLoad()) : closeVideo(); });
+  vp.addEventListener('click',e=>{ if(e.target===vp) closeVideo(); });
+
+  document.addEventListener('keydown',e=>{
+    if(vp.classList.contains('on')){
+      if(e.key==='Escape'){closeVideo();}
+      else if(e.key===' '){vEl.paused?vEl.play():vEl.pause();}
+      e.preventDefault();return;
+    }
+    if(qa.classList.contains('show')){
+      if(['q','Q','Escape'].includes(e.key)){qa.classList.remove('show');e.preventDefault();}
+      return;
+    }
+    const s=slides[cur];
+    if((e.key==='ArrowDown')&&s.scrollHeight-s.clientHeight-s.scrollTop>4){return;}
+    if((e.key==='ArrowUp')&&s.scrollTop>4){return;}
+    switch(e.key){
+      case 'ArrowRight': case 'PageDown': case 'ArrowDown': case ' ': next();e.preventDefault();break;
+      case 'ArrowLeft': case 'PageUp': case 'ArrowUp': prev();e.preventDefault();break;
+      case 'Home': show(0);e.preventDefault();break;
+      case 'End': show(total-1);e.preventDefault();break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.(); e.preventDefault();break;
+      case 'q': case 'Q': qa.classList.add('show');e.preventDefault();break;
+    }
+  });
+
+  prevBtn.addEventListener('click',e=>{e.stopPropagation();prev();});
+  nextBtn.addEventListener('click',e=>{e.stopPropagation();next();});
+
+  document.addEventListener('click',e=>{
+    if(vp.classList.contains('on'))return;
+    if(qa.classList.contains('show'))return;
+    if(e.target.closest('#sitenav')||e.target.closest('a')||e.target.closest('button')||e.target.closest('.ia-nav'))return;
+    const w=window.innerWidth;
+    if(e.clientX < w/6) prev();
+    else if(e.clientX > w*5/6) next();
+  });
+
+  fit(); show(clampHash());
+  setTimeout(()=>{document.getElementById('help').style.opacity='0';},6500);
+</script>
+</body>
+</html>
