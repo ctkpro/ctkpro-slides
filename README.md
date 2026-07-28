@@ -7,8 +7,13 @@ CTK Pro（竑盛科技）參加標案評選用的簡報集合。暖白底極簡�
 用瀏覽器開對應的 `index.html` 即可：
 
 - 著陸頁（目錄）：`index.html`
-- 宜蘭縣育兒資源網 2.0 服務建議書：`yilan-bids/index.html`
-- CTK Pro 公司介紹：`ctkpro-intro/index.html`
+- 宜蘭縣育兒資源網 2.0 服務建議書：`bids/yilan-bids/index.html`
+- 桃園市原住民族發展基金會品牌網站：`bids/桃原基會-bids/index.html`
+- CTK Pro 公司介紹：`sales-pitch/ctkpro-intro/index.html`
+- 2026 Q3 全員發表：`internal-talks/2026q3-all-hands/index.html`
+- Prompt · Context · Harness 深化版：`internal-talks/prompt-context-harness-engineering/index.html`
+
+投影片依用途分三類：`bids/`（標案）、`sales-pitch/`（對外）、`internal-talks/`（對內）。
 
 ### 操作方式
 
@@ -27,7 +32,7 @@ CTK Pro（竑盛科技）參加標案評選用的簡報集合。暖白底極簡�
 
 1. 把整個專案推上 `ctkpro/bid-slides`（各 `index.html` 已是相對路徑）。
 2. repo → **Settings** → **Pages** → Source 選 **Deploy from a branch**，分支 `main`、資料夾 `/ (root)`，Save。
-3. 用顯示的網址播放（例：`https://ctkpro.github.io/bid-slides/yilan-bids/`）。
+3. 用顯示的網址播放（例：`https://ctkpro.github.io/bid-slides/bids/yilan-bids/`）。
 
 ## 作圖工具（選用）
 
@@ -36,7 +41,7 @@ CTK Pro（竑盛科技）參加標案評選用的簡報集合。暖白底極簡�
 ```bash
 npm install                                   # 安裝 @google/generative-ai、sharp、dotenv、playwright
 node scripts/gen-images.mjs                    # 產 images/ 內尚未存在的圖
-node scripts/gen-images.mjs --out yilan-bids/images   # 指定輸出資料夾
+node scripts/gen-images.mjs --out bids/yilan-bids/images   # 指定輸出資料夾
 node scripts/gen-images.mjs --force sys-arch          # 強制重產指定圖
 node scripts/shoot.mjs yilan-bids              # Playwright 逐頁截圖到 /tmp 驗證外觀
 ```
@@ -46,4 +51,4 @@ node scripts/shoot.mjs yilan-bids              # Playwright 逐頁截圖到 /tmp
 
 ## 檔案結構
 
-見 [CLAUDE.md](CLAUDE.md)。新標案：複製 `yilan-bids/index.html` 當骨架，改內容並在 root `index.html` 加卡片。
+見 [CLAUDE.md](CLAUDE.md)。新標案：在 `bids/` 下複製 `bids/yilan-bids/index.html` 當骨架，改內容並在 root `index.html` 加卡片。

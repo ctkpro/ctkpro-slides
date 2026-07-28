@@ -4,7 +4,7 @@
 // 用法：
 //   node scripts/gen-images.mjs                         # 產生 IMAGES 中尚未存在的圖到預設 images/
 //   node scripts/gen-images.mjs --force                 # 強制重產全部
-//   node scripts/gen-images.mjs --out yilan-bids/images # 指定輸出資料夾（各標案用）
+//   node scripts/gen-images.mjs --out bids/yilan-bids/images # 指定輸出資料夾（各標案用）
 //   node scripts/gen-images.mjs sys-arch                # 只產指定的圖
 //
 // API Key 來源：本庫 .env 的 GEMINI_API_KEY（由 ~/hermes-slides/.env 複製而來）。
