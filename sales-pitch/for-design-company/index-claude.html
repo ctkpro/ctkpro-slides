@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>好設計值得被好好接住｜CTK Pro 竑盛科技</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#e11f27;
+    --brand-700:#ad0204;
+    --brand-50:#FBEFEC;
+    --teal:#0E7490;
+    --teal-700:#155E75;
+    --teal-50:#EAF4F6;
+    --ink:#211d1b;
+    --muted:#5b5350;
+    --soft:#8e8681;
+    --line:#E4DED6;
+    --bg:#FBFAF7;
+    --paper:#FFFDF9;
+    --quiet:#F4F1EA;
+    --shadow:0 10px 26px rgba(33,29,27,.06);
+  }
+  [data-theme="dark"]{
+    --brand:#ff5b62;
+    --brand-700:#ff9296;
+    --brand-50:#3a2020;
+    --teal:#4FB6CF;
+    --teal-700:#8ad3e4;
+    --teal-50:#1d2c30;
+    --ink:#F7F4F1;
+    --muted:#C6BFB9;
+    --soft:#948C86;
+    --line:#3A3532;
+    --bg:#1C1A19;
+    --paper:#232120;
+    --quiet:#282523;
+    --shadow:0 10px 26px rgba(0,0,0,.22);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:100%;height:100%;overflow:hidden;background:#e9e6e0;}
+  [data-theme="dark"] body{background:#111;}
+  body{
+    font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+    color:var(--ink);-webkit-font-smoothing:antialiased;
+  }
+  #stage{
+    position:absolute;left:50%;top:50%;width:1280px;height:720px;
+    transform-origin:center center;background:var(--bg);overflow:hidden;
+  }
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;padding:44px 70px 54px;background:var(--bg);}
+  .slide.active{display:flex;}
+  .body{flex:1;display:flex;flex-direction:column;justify-content:center;}
+  .safe{width:1140px;margin:0 auto;}
+
+  .logo-tr{position:absolute;top:38px;right:64px;height:28px;width:auto;}
+  .logo-dark{display:none;}
+  [data-theme="dark"] .logo-light{display:none;}
+  [data-theme="dark"] .logo-dark{display:block;}
+  .brandmark{position:absolute;left:70px;bottom:18px;font-size:12.5px;font-weight:500;letter-spacing:.5px;color:var(--soft);}
+
+  .kicker{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:800;letter-spacing:2.5px;color:var(--brand);}
+  .kicker::before{content:"";width:26px;height:3px;border-radius:2px;background:var(--brand);}
+  .page-title{font-size:40px;font-weight:900;line-height:1.22;color:var(--ink);margin:10px 0 4px;}
+  .page-title .em,.em{color:var(--brand);}
+  .page-sub{font-size:18px;line-height:1.6;color:var(--muted);max-width:1040px;}
+  .lead{font-size:19px;line-height:1.6;color:var(--muted);}
+
+  .grid{display:grid;gap:16px;}
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:20px 22px;
+    box-shadow:var(--shadow);display:flex;flex-direction:column;min-width:0;
+  }
+  .card.soft{background:var(--quiet);box-shadow:none;}
+  .card.fill{background:var(--brand);border-color:var(--brand);color:#fff;}
+  .card.fill h3,.card.fill p,.card.fill .eyebrow,.card.fill li{color:#fff;}
+  .card h3{font-size:21px;font-weight:900;line-height:1.3;color:var(--ink);margin-bottom:8px;}
+  .card p{font-size:16px;line-height:1.55;color:var(--muted);}
+  .eyebrow{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--brand);margin-bottom:8px;}
+  .eyebrow.t{color:var(--teal);}
+  .tag{display:inline-flex;align-items:center;font-size:15px;font-weight:800;padding:7px 13px;border-radius:999px;
+    background:var(--brand-50);color:var(--brand);border:1px solid var(--line);}
+  .list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-top:2px;}
+  .list li{font-size:16.5px;line-height:1.5;color:var(--ink);display:flex;gap:9px;align-items:flex-start;}
+  .list li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--brand);flex:none;margin-top:9px;}
+  .list.t li::before{background:var(--teal);}
+  .small{font-size:13.5px;color:var(--soft);line-height:1.5;}
+  .note{
+    margin-top:14px;border-left:4px solid var(--line);background:var(--quiet);border-radius:0 8px 8px 0;
+    padding:12px 16px;font-size:15px;line-height:1.6;color:var(--muted);
+  }
+  .note b{color:var(--ink);}
+
+  /* 封面 */
+  .cover-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;}
+  .cover-case{font-size:16px;letter-spacing:3px;color:var(--brand);font-weight:800;}
+  .cover-title{font-size:80px;font-weight:900;line-height:1.06;color:var(--ink);}
+  .cover-title .hl{color:var(--brand);}
+  .cover-sub{font-size:25px;line-height:1.45;color:var(--muted);font-weight:700;max-width:900px;}
+  .cover-tags{display:flex;gap:11px;margin-top:6px;flex-wrap:wrap;}
+  .cover-tags .tag{font-size:17px;padding:9px 17px;}
+  .info-bar{border-top:1px solid var(--line);padding-top:16px;margin-top:8px;display:flex;justify-content:space-between;
+    align-items:flex-end;font-size:16px;color:var(--muted);}
+  .info-bar b{color:var(--ink);}
+
+  /* P2 四個詞 */
+  .word-grid{grid-template-columns:repeat(4,1fr);}
+  .word-card{min-height:216px;justify-content:flex-start;border-top:5px solid var(--brand);}
+  .word-card .w{font-size:34px;font-weight:900;color:var(--ink);line-height:1;margin-bottom:12px;}
+  .word-card p{font-size:16px;}
+
+  /* 兩欄對照 */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper);}
+  .two-col .col-head{padding:12px 20px;font-size:16px;font-weight:900;letter-spacing:.5px;}
+  .two-col .col-head.a{background:var(--quiet);color:var(--ink);}
+  .two-col .col-head.b{background:var(--brand);color:#fff;}
+  .two-col .cell{padding:11px 20px;font-size:17px;line-height:1.45;border-top:1px solid var(--line);color:var(--ink);}
+  .two-col .cell.b{color:var(--muted);}
+
+  /* 案例列 */
+  .case-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px;}
+  .case-item{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper);display:flex;flex-direction:column;}
+  .case-item .shot{height:104px;background:var(--quiet);position:relative;}
+  .case-item .shot img{width:100%;height:100%;object-fit:cover;display:block;}
+  .case-item .txt{padding:11px 14px 13px;}
+  .case-item .txt b{display:block;font-size:16.5px;color:var(--ink);}
+  .case-item .txt span{display:block;font-size:14px;color:var(--muted);line-height:1.45;margin-top:4px;}
+
+  /* P4 來源→問題 */
+  .src-flow{display:grid;grid-template-columns:1.15fr 56px 1.15fr;gap:16px;align-items:center;}
+  .chip-wrap{display:flex;flex-wrap:wrap;gap:10px;}
+  .chip{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:11px 18px;font-size:17px;font-weight:800;color:var(--ink);}
+  .flow-arrow{font-size:40px;color:var(--brand);text-align:center;font-weight:900;}
+  .q-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+  .q-box{border:1px solid var(--line);border-left:4px solid var(--brand);background:var(--paper);border-radius:0 9px 9px 0;
+    padding:14px 16px;font-size:19px;font-weight:900;color:var(--ink);}
+
+  /* P5 時間軸 */
+  .timeline{position:relative;margin:10px 0 4px;padding-top:26px;}
+  .timeline .rail{position:absolute;top:36px;left:0;right:0;height:4px;background:var(--line);border-radius:2px;}
+  .tl-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;position:relative;}
+  .tl-step{text-align:center;}
+  .tl-step .dot{width:16px;height:16px;border-radius:50%;background:var(--line);margin:0 auto 14px;border:3px solid var(--bg);}
+  .tl-step.on .dot{background:var(--teal);}
+  .tl-step.late .dot{background:var(--brand);}
+  .tl-step b{display:block;font-size:16px;color:var(--ink);}
+  .tl-step span{display:block;font-size:13.5px;color:var(--soft);margin-top:3px;}
+  .review-grid{grid-template-columns:repeat(3,1fr);gap:12px;}
+  .review-card{padding:15px 17px;min-height:104px;}
+  .review-card b{font-size:18px;color:var(--ink);display:block;margin-bottom:5px;}
+  .review-card span{font-size:14.5px;color:var(--muted);line-height:1.45;}
+
+  /* 通用 demo 控制列 */
+  .demo-bar{display:inline-flex;gap:6px;background:var(--quiet);border:1px solid var(--line);border-radius:999px;padding:5px;}
+  .demo-bar button{
+    font-family:inherit;font-size:15px;font-weight:800;border:none;background:none;color:var(--muted);
+    padding:8px 16px;border-radius:999px;cursor:pointer;transition:.18s;
+  }
+  .demo-bar button:hover{color:var(--ink);}
+  .demo-bar button.on{background:var(--brand);color:#fff;}
+  .demo-bar button.on.t{background:var(--teal);}
+  .demo-hint{font-size:13.5px;color:var(--soft);margin-left:12px;}
+
+  /* P6 內容狀態 demo */
+  .p6-wrap{display:grid;grid-template-columns:400px 1fr;gap:26px;align-items:start;}
+  .preview{
+    background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:var(--shadow);
+    height:308px;overflow:hidden;
+  }
+  .pv-card{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg);}
+  .pv-shot{height:132px;background:var(--quiet);position:relative;overflow:hidden;}
+  .pv-shot img{width:100%;height:100%;object-fit:cover;display:block;}
+  .pv-body{padding:12px 14px 14px;}
+  .pv-title{font-size:20px;font-weight:900;line-height:1.25;color:var(--ink);}
+  .pv-desc{font-size:14px;line-height:1.5;color:var(--muted);margin-top:7px;}
+  .pv-meta{display:flex;gap:8px;margin-top:10px;font-size:12.5px;color:var(--soft);}
+  .pv-flag{position:absolute;left:10px;top:10px;background:var(--brand);color:#fff;font-size:12px;font-weight:900;
+    padding:4px 8px;border-radius:5px;display:none;}
+  /* 狀態 B：真實內容 */
+  .preview.s2 .pv-shot img{object-fit:fill;filter:saturate(.6);}
+  .preview.s2 .pv-shot .pv-flag{display:block;}
+  .preview.s2 .pv-title{white-space:nowrap;}
+  .preview.s2 .pv-desc{color:var(--brand);font-weight:700;}
+  /* 狀態 C：接住後 */
+  .preview.s3 .pv-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .preview.s3 .pv-shot .pv-flag{display:block;background:var(--teal);}
+  .preview.s3 .pv-desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .state-table{width:100%;border-collapse:collapse;}
+  .state-table th{text-align:left;font-size:14px;font-weight:900;color:var(--soft);padding:0 12px 8px 0;letter-spacing:1px;}
+  .state-table td{font-size:16px;line-height:1.45;color:var(--ink);padding:9px 12px 9px 0;border-top:1px solid var(--line);vertical-align:top;}
+  .state-table td.k{font-weight:900;width:74px;color:var(--brand);}
+  .state-table td.v{color:var(--muted);}
+
+  /* P7 客戶提問（details） */
+  .qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+  .qa{border:1px solid var(--line);border-radius:9px;background:var(--paper);overflow:hidden;}
+  .qa summary{list-style:none;cursor:pointer;padding:13px 16px;font-size:17px;font-weight:800;color:var(--ink);
+    display:flex;align-items:center;gap:10px;}
+  .qa summary::-webkit-details-marker{display:none;}
+  .qa summary::before{content:"Q";font-size:13px;font-weight:900;color:#fff;background:var(--brand);
+    width:22px;height:22px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;flex:none;}
+  .qa[open] summary{background:var(--quiet);}
+  .qa .ans{padding:0 16px 14px 48px;font-size:15px;line-height:1.55;color:var(--muted);}
+  .qa .ans b{color:var(--teal);}
+
+  /* P8 無障礙 demo */
+  .a11y-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:16px;}
+  .a11y-card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 17px;min-height:196px;
+    display:flex;flex-direction:column;box-shadow:var(--shadow);}
+  .a11y-card .cap{font-size:13px;font-weight:900;letter-spacing:1.5px;color:var(--soft);margin-bottom:12px;}
+  .a11y-card .verdict{margin-top:auto;font-size:14px;font-weight:900;color:var(--brand);}
+  .a11y-on .a11y-card .verdict{color:var(--teal);}
+  .dm-text{font-size:17px;line-height:1.35;color:#B9B2AC;transition:.25s;}
+  [data-theme="dark"] .dm-text{color:#4A4441;}
+  .a11y-on .dm-text{color:var(--muted);line-height:1.75;}
+  .dm-ratio{font-size:26px;font-weight:900;color:var(--brand);margin-top:10px;}
+  .a11y-on .dm-ratio{color:var(--teal);}
+  .dm-btn{font-family:inherit;font-size:16px;font-weight:800;border:1px solid var(--line);background:var(--quiet);
+    color:var(--ink);border-radius:8px;padding:10px 16px;cursor:pointer;outline:none;align-self:flex-start;}
+  .a11y-on .dm-btn{box-shadow:0 0 0 4px rgba(14,116,144,.30);border-color:var(--teal);}
+  .dm-input{width:100%;border:2px solid var(--brand);border-radius:7px;padding:9px 11px;background:var(--bg);
+    color:var(--ink);font-family:inherit;font-size:15px;font-weight:700;}
+  .dm-label{display:none;font-size:13px;font-weight:900;color:var(--ink);margin-bottom:6px;}
+  .a11y-on .dm-label{display:block;}
+  .dm-err{display:none;font-size:13.5px;font-weight:800;color:var(--brand);margin-top:7px;}
+  .a11y-on .dm-err{display:block;}
+  .dm-h{font-size:20px;font-weight:900;color:var(--ink);}
+  .dm-h2{font-size:15px;font-weight:900;color:var(--muted);margin-top:8px;}
+  .dm-tagline{display:none;font-size:12px;font-weight:900;color:var(--teal);background:var(--teal-50);
+    border-radius:4px;padding:2px 6px;margin-left:6px;}
+  .a11y-on .dm-tagline{display:inline-block;}
+
+  /* P9 維運 */
+  .ops-grid{grid-template-columns:1.25fr 1fr;gap:20px;}
+  .ops-list li{font-size:17px;}
+  .longterm{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:14px;}
+  .lt{border:1px solid var(--line);border-radius:9px;background:var(--paper);padding:13px 14px;}
+  .lt b{display:block;font-size:16px;color:var(--ink);}
+  .lt span{display:block;font-size:13.5px;color:var(--muted);margin-top:4px;line-height:1.4;}
+
+  /* P10 共同提案 */
+  .phase-rail{display:flex;gap:7px;margin-top:14px;}
+  .phase{flex:1;border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:11px 8px;text-align:center;}
+  .phase b{display:block;font-size:12.5px;font-weight:900;color:var(--brand);letter-spacing:.5px;}
+  .phase span{display:block;font-size:13.5px;color:var(--ink);margin-top:4px;font-weight:700;line-height:1.3;}
+
+  /* P11 小處開始 + prototype demo */
+  .start-grid{grid-template-columns:repeat(3,1fr);gap:13px;}
+  .start-card{padding:16px 18px;min-height:112px;}
+  .start-card .n{font-size:13px;font-weight:900;color:var(--brand);letter-spacing:1.5px;}
+  .start-card b{display:block;font-size:18px;color:var(--ink);margin:6px 0 5px;}
+  .start-card span{font-size:14.5px;color:var(--muted);line-height:1.45;}
+  .proto{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;}
+  .proto-opts{display:flex;flex-direction:column;gap:8px;}
+  .proto-opts button{font-family:inherit;text-align:left;font-size:16px;font-weight:800;color:var(--ink);
+    background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:11px 14px;cursor:pointer;transition:.16s;}
+  .proto-opts button:hover{border-color:var(--brand);}
+  .proto-opts button.on{background:var(--brand);border-color:var(--brand);color:#fff;}
+  .proto-out{background:var(--teal-50);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-height:118px;}
+  .proto-out b{display:block;font-size:19px;color:var(--teal-700);margin-bottom:6px;}
+  .proto-out span{font-size:15px;line-height:1.55;color:var(--muted);}
+
+  /* 收尾 */
+  .thanks-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;}
+  .thanks-title{font-size:66px;font-weight:900;line-height:1.12;color:var(--ink);}
+  .thanks-row{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;}
+  .thanks-row .tag{font-size:18px;padding:11px 20px;}
+  .thanks-cta{margin-top:26px;font-size:20px;line-height:1.6;color:var(--muted);max-width:900px;}
+  .thanks-foot{display:flex;align-items:center;gap:22px;margin-top:28px;}
+  .qr{display:flex;align-items:center;gap:14px;}
+  .qr img{width:96px;height:96px;border:1px solid var(--line);border-radius:8px;padding:6px;background:#fff;}
+  .qr .qt b{font-size:17px;color:var(--ink);}
+  .qr .qt span{display:block;font-size:13.5px;color:var(--muted);margin-top:3px;}
+  .contact{font-size:16px;line-height:1.7;color:var(--muted);}
+  .contact b{color:var(--ink);}
+
+  /* 導覽 */
+  .navbar{position:fixed;right:24px;bottom:16px;display:flex;align-items:center;gap:10px;z-index:40;color:var(--muted);user-select:none;}
+  .navbar .nav-arrow{border:none;background:none;cursor:pointer;line-height:1;font-size:26px;color:var(--soft);
+    padding:2px 9px;border-radius:8px;transition:.2s;}
+  .navbar .nav-arrow:hover{color:var(--brand);background:var(--brand-50);}
+  .navbar .nav-count{font-size:15px;font-weight:700;letter-spacing:.12em;min-width:64px;text-align:center;}
+  .navbar .nav-count b{color:var(--ink);}
+  .progress{position:fixed;left:0;bottom:0;height:3px;background:var(--brand);width:0;transition:width .35s ease;z-index:40;}
+  #help{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;background:rgba(33,29,27,.88);
+    color:#fff;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .6s;pointer-events:none;}
+  [data-theme="dark"] #help{background:rgba(255,255,255,.14);}
+  .theme-toggle{position:fixed;right:24px;top:20px;z-index:45;border:1px solid var(--line);background:var(--paper);
+    color:var(--ink);font-family:inherit;font-size:13px;font-weight:800;border-radius:999px;padding:8px 13px;
+    cursor:pointer;box-shadow:var(--shadow);}
+  .theme-toggle:hover{border-color:var(--brand);color:var(--brand);}
+</style>
+</head>
+<body>
+<button class="theme-toggle" id="themeToggle" type="button" aria-label="切換深淺色">深色</button>
+
+<div id="stage">
+
+  <!-- 1 封面 -->
+  <section class="slide" data-page="1">
+    <img class="logo-tr logo-light" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <img class="logo-tr logo-dark" src="images/ctkpro-logo-white.png" alt="CTK Pro">
+    <div class="cover-wrap safe">
+      <div class="cover-case">CTK Pro 竑盛科技</div>
+      <h1 class="cover-title">好設計<br><span class="hl">值得被好好接住</span></h1>
+      <p class="cover-sub">設計方向由你們主導；網站落地、資安、無障礙與長期維運，我們在後面接住。</p>
+      <div class="cover-tags">
+        <span class="tag">網站落地</span>
+        <span class="tag">資安與無障礙</span>
+        <span class="tag">長期維運</span>
+        <span class="tag">共同提案</span>
+      </div>
+      <div class="info-bar">
+        <div><b>CTK Pro 竑盛科技</b> ｜ 設計團隊的技術支持層</div>
+        <div>https://ctkpro.com</div>
+      </div>
+    </div>
+    <div class="brandmark">好設計值得被好好接住</div>
+  </section>
+
+  <!-- 2 設計是累積性的 -->
+  <section class="slide" data-page="2">
+    <img class="logo-tr logo-light" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <img class="logo-tr logo-dark" src="images/ctkpro-logo-white.png" alt="CTK Pro">
+    <div class="safe"><div class="kicker">我們怎麼看設計</div>
+    <h2 class="page-title">設計不是一次輸出，是<span class="em">判斷的累積</span></h2>
+    <p class="page-sub">工具會變，生成會變快，但這四件事一直都是靠人累積出來的。</p></div>
+    <div class="body safe">
+      <div class="grid word-grid">
+        <div class="card word-card"><div class="w">品味</div><p>知道哪一版比較對，而且說得出為什麼對。</p></div>
+        <div class="card word-card"><div class="w">脈絡</div><p>這個品牌從哪裡來、要對誰說話、不能踩什麼。</p></div>
+        <div class="card word-card"><div class="w">取捨</div><p>看過夠多案子，才知道什麼該留、什麼該砍。</p></div>
+        <div class="card word-card"><div class="w">客戶理解</div><p>能把客戶說不清楚的期待，翻成可以被執行的方向。</p></div>
+      </div>
+      <div class="note"><b>CTK Pro 想做的事：</b>讓這些判斷在網站上線之後，還是留得住，不會在工程實作、CMS 上稿與後續維護中被一點一點稀釋掉。</div>
+    </div>
+    <div class="brandmark">設計是判斷的累積</div>
+  </section>
+
+  <!-- 3 合作分工＋案例 -->
+  <section class="slide" data-page="3">
+    <div class="safe"><div class="kicker">合作方式</div>
+    <h2 class="page-title">方向由你們定，落地多一層支撐</h2>
+    <p class="page-sub">可以白牌、可以共同掛名，也可以只在幾個風險比較高的段落進場。</p></div>
+    <div class="body safe">
+      <div class="two-col">
+        <div class="col-head a">由設計公司決定</div>
+        <div class="col-head b">CTK Pro 支援</div>
+        <div class="cell">品牌方向與視覺主張</div><div class="cell b">工程可行性與實作方案</div>
+        <div class="cell">互動調性與體驗節奏</div><div class="cell b">RWD、CMS、部署與效能</div>
+        <div class="cell">客戶關係與溝通節奏</div><div class="cell b">資安、無障礙與長期維運</div>
+        <div class="cell">是否引入技術夥伴</div><div class="cell b">服務建議書與客戶 IT 審查</div>
+      </div>
+      <div class="case-strip">
+        <div class="case-item">
+          <div class="shot"><img src="images/case-overseas.png" alt="海外聯招網站" onerror="this.parentNode.style.background='var(--quiet)';this.remove()"></div>
+          <div class="txt"><b>良艮設計 × CTK Pro</b><span>海外聯招、鑫龍騰建設、萬金石心理測驗網站等合作</span></div>
+        </div>
+        <div class="case-item">
+          <div class="shot"><img src="images/case-beishi.png" alt="北師美術館網站" onerror="this.parentNode.style.background='var(--quiet)';this.remove()"></div>
+          <div class="txt"><b>happ 設計 × CTK Pro</b><span>北師美術館自 2020 年起合作並持續維護、happ 官網</span></div>
+        </div>
+        <div class="case-item">
+          <div class="shot"><img src="images/case-wanjinshi.jpg" alt="萬金石馬拉松心理測驗網站" onerror="this.parentNode.style.background='var(--quiet)';this.remove()"></div>
+          <div class="txt"><b>萬金石心理測驗網站</b><span>設計公司操刀視覺，CTK Pro 負責互動前端與程式</span></div>
+        </div>
+      </div>
+      <!-- 寬庭生活美學（配合內部設計師之網站建置）待確認可露出範圍後再加入 -->
+    </div>
+    <div class="brandmark">合作方式與既有分工案例</div>
+  </section>
+
+  <!-- 4 交付前後 -->
+  <section class="slide" data-page="4">
+    <div class="safe"><div class="kicker">起點不重要</div>
+    <h2 class="page-title">不論設計從哪裡開始，問題都在<span class="em">交付前後</span></h2>
+    <p class="page-sub">每家公司使用工具的方式都不一樣，我們不預設；我們處理的是它要怎麼變成一個正式網站。</p></div>
+    <div class="body safe">
+      <div class="src-flow">
+        <div>
+          <div class="eyebrow">設計的來源可以很多</div>
+          <div class="chip-wrap">
+            <span class="chip">Figma</span>
+            <span class="chip">品牌系統</span>
+            <span class="chip">手工 prototype</span>
+            <span class="chip">AI prototype</span>
+            <span class="chip">客戶自己做的半成品</span>
+          </div>
+        </div>
+        <div class="flow-arrow">›</div>
+        <div>
+          <div class="eyebrow">最後都會遇到同樣四題</div>
+          <div class="q-grid">
+            <div class="q-box">可上線嗎？</div>
+            <div class="q-box">可維護嗎？</div>
+            <div class="q-box">可審查嗎？</div>
+            <div class="q-box">出事誰負責？</div>
+          </div>
+        </div>
+      </div>
+      <div class="note">原型能跑，跟能放進客戶的正式環境營運，是兩件事。中間隔著整合、部署、權限、追蹤、備份與責任歸屬——這一段就是 CTK Pro 的守備範圍。</div>
+    </div>
+    <div class="brandmark">交付前後的斷點</div>
+  </section>
+
+  <!-- 5 early feedback -->
+  <section class="slide" data-page="5">
+    <div class="safe"><div class="kicker">Design Feasibility Review</div>
+    <h2 class="page-title">早一點一起看，設計就少走冤枉路</h2>
+    <p class="page-sub">很多回頭修改不是因為設計不好，而是工程、維運、無障礙的條件太晚被看見。</p></div>
+    <div class="body safe">
+      <div class="timeline">
+        <div class="rail"></div>
+        <div class="tl-row">
+          <div class="tl-step on"><div class="dot"></div><b>概念 / 提案</b><span>可行性與成本先有個底</span></div>
+          <div class="tl-step on"><div class="dot"></div><b>版型與元件</b><span>RWD、內容狀態一起看</span></div>
+          <div class="tl-step on"><div class="dot"></div><b>設計稿完成</b><span>CMS 欄位、無障礙先對</span></div>
+          <div class="tl-step late"><div class="dot"></div><b>工程開發</b><span>此時改動成本開始上升</span></div>
+          <div class="tl-step late"><div class="dot"></div><b>上線前審查</b><span>最貴的修改都發生在這</span></div>
+        </div>
+      </div>
+      <div class="grid review-grid" style="margin-top:22px;">
+        <div class="card review-card soft"><b>RWD 與版型</b><span>斷點、極端寬度、模組在不同裝置的行為。</span></div>
+        <div class="card review-card soft"><b>CMS 與內容維護</b><span>欄位怎麼切、誰上稿、之後好不好改。</span></div>
+        <div class="card review-card soft"><b>互動與效能</b><span>這個效果的工程成本與載入代價。</span></div>
+        <div class="card review-card soft"><b>無障礙</b><span>對比、focus、表單、語意結構。</span></div>
+        <div class="card review-card soft"><b>資安與個資</b><span>表單、會員、資料流與存放位置。</span></div>
+        <div class="card review-card soft"><b>維運與 SLA</b><span>上線後誰維護、備份、更新與交接。</span></div>
+      </div>
+      <div class="note">第一次合作可以先當作經驗交換：我們看一輪、給 feedback，不從報價開始談。</div>
+    </div>
+    <div class="brandmark">設計落地可行性健檢</div>
+  </section>
+
+  <!-- 6 內容狀態 demo -->
+  <section class="slide" data-page="6">
+    <div class="safe"><div class="kicker">現場示範</div>
+    <h2 class="page-title">設計稿是理想狀態，網站上線後<span class="em">大部分時間不在理想狀態</span></h2>
+    <p class="page-sub">這些是過往協作、網站落地與客戶上稿時常遇到的狀態，適合提早一起看。</p></div>
+    <div class="body safe">
+      <div style="display:flex;align-items:center;margin-bottom:14px;">
+        <div class="demo-bar" id="p6bar">
+          <button type="button" data-s="1" class="on">設計稿</button>
+          <button type="button" data-s="2">真實內容</button>
+          <button type="button" data-s="3" class="t">接住後</button>
+        </div>
+        <span class="demo-hint">點按切換，看同一個元件在三種內容下的樣子</span>
+      </div>
+      <div class="p6-wrap">
+        <div class="preview s1" id="p6preview">
+          <div class="pv-card">
+            <div class="pv-shot">
+              <span class="pv-flag" id="p6flag">圖片比例不符</span>
+              <img src="images/case-wanjinshi.jpg" alt="活動主視覺範例" onerror="this.remove()">
+            </div>
+            <div class="pv-body">
+              <div class="pv-title" id="p6title">城市光影展</div>
+              <div class="pv-desc" id="p6desc">10/12 – 11/30 ｜ 中山堂前廣場</div>
+              <div class="pv-meta" id="p6meta"><span>展覽</span><span>·</span><span>共 6 筆活動</span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <table class="state-table">
+            <tr><th>常見狀態</th><th></th></tr>
+            <tr><td class="k">文案</td><td class="v">標題從 8 字變 40 字、摘要被截斷、換行位置很難看、欄位空白。</td></tr>
+            <tr><td class="k">圖片</td><td class="v">比例不符、尺寸不足、沒照規格裁切、活動前一天還缺圖。</td></tr>
+            <tr><td class="k">數量</td><td class="v">列表只有 1 筆，或一次 200 筆——版面完全是兩件事。</td></tr>
+            <tr><td class="k">意外</td><td class="v">表單送出失敗、API 掛掉、客戶自己進 CMS 改了內容。</td></tr>
+          </table>
+          <div class="note" style="margin-top:16px;">我們把這些 comment 提早拿出來，不是因為設計沒想到，而是因為網站從設計稿進入真實營運時，這些狀況一定會出現。<b>先講好規則，設計與工程就少來回幾輪。</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="brandmark">從設計稿到正式網站</div>
+  </section>
+
+  <!-- 7 客戶 IT 與資安 -->
+  <section class="slide" data-page="7">
+    <div class="safe"><div class="kicker">客戶 IT 與資安</div>
+    <h2 class="page-title">客戶問資安時，你們不用只能說「我再問工程師」</h2>
+    <p class="page-sub">設計公司不需要變成資安公司，但需要一個回答得出來、也寫得成文件的技術夥伴。（點問題可展開我們的回答口徑）</p></div>
+    <div class="body safe">
+      <div class="qa-grid">
+        <details class="qa"><summary>你們有沒有 ISO 27001？</summary>
+          <div class="ans">CTK Pro 具 <b>ISO 27001:2022</b> 資安管理系統驗證；證號、證書與內部稽核安排可依客戶要求提供。</div></details>
+        <details class="qa"><summary>資料放在哪裡？誰能存取？</summary>
+          <div class="ans">提供<b>資料流與存放位置說明</b>，並列出角色權限、最小權限原則與帳號盤點方式。</div></details>
+        <details class="qa"><summary>有沒有備份？多久一次？</summary>
+          <div class="ans">說明<b>備份頻率、保留週期與還原演練</b>，寫進維運文件與合約附件。</div></details>
+        <details class="qa"><summary>弱點掃描與修補怎麼做？</summary>
+          <div class="ans">提供<b>弱掃節奏、修補時限分級</b>與系統、套件更新的處理流程。</div></details>
+        <details class="qa"><summary>個資外洩要怎麼通報？</summary>
+          <div class="ans">提供<b>事故應變與通報流程</b>：聯絡窗口、時限、對外說法與後續改善報告。</div></details>
+        <details class="qa"><summary>SLA 怎麼寫？出事誰處理？</summary>
+          <div class="ans">依案子規模提供<b>服務等級與回應時間</b>條款，明確寫出對外窗口與責任界線。</div></details>
+      </div>
+      <div class="note">這一頁的目的不是要你們懂資安，是讓你們在客戶面前更有底氣：企業客戶的資安問卷、IT 審查與文件，我們可以直接接手回覆。</div>
+    </div>
+    <div class="brandmark">客戶 IT 與資安支援</div>
+  </section>
+
+  <!-- 8 無障礙 demo -->
+  <section class="slide" data-page="8">
+    <div class="safe"><div class="kicker">現場示範</div>
+    <h2 class="page-title">無障礙早一點看，設計就少一點回頭改</h2>
+    <p class="page-sub">很多條件在設計階段就能一起看；等工程完成才發現，修改成本會高很多。</p></div>
+    <div class="body safe">
+      <div style="display:flex;align-items:center;">
+        <div class="demo-bar" id="p8bar">
+          <button type="button" data-a="0" class="on">調整前</button>
+          <button type="button" data-a="1" class="t">一起看過之後</button>
+        </div>
+        <span class="demo-hint">同一組元件，差別只在設計階段有沒有先對過</span>
+      </div>
+      <div class="a11y-grid" id="p8panel">
+        <div class="a11y-card">
+          <div class="cap">顏色對比</div>
+          <div class="dm-text">展覽資訊與售票說明</div>
+          <div class="dm-ratio" id="p8ratio">2.1 : 1</div>
+          <div class="verdict" id="p8v1">未達 AA 4.5:1</div>
+        </div>
+        <div class="a11y-card">
+          <div class="cap">鍵盤 FOCUS</div>
+          <button class="dm-btn" type="button">立即報名</button>
+          <div class="verdict" id="p8v2">看不出焦點在哪</div>
+        </div>
+        <div class="a11y-card">
+          <div class="cap">表單錯誤提示</div>
+          <label class="dm-label" for="p8mail">電子郵件（必填）</label>
+          <input class="dm-input" id="p8mail" value="name@example" readonly>
+          <div class="dm-err">請輸入完整的電子郵件，例如 name@example.com</div>
+          <div class="verdict" id="p8v3">只有紅框，看不懂錯在哪</div>
+        </div>
+        <div class="a11y-card">
+          <div class="cap">標題層級與替代文字</div>
+          <div class="dm-h">展覽介紹<span class="dm-tagline">h1</span></div>
+          <div class="dm-h2">參觀資訊<span class="dm-tagline">h2</span></div>
+          <div class="dm-text" style="margin-top:8px;font-size:14px;">主視覺圖<span class="dm-tagline">alt</span></div>
+          <div class="verdict" id="p8v4">全部都是圖與大字</div>
+        </div>
+      </div>
+      <div class="note">不是要設計公司自己變成無障礙顧問，而是讓這些條件不要到上線前才變成大幅修改。對比、字級行高、focus、表單提示、標題層級——這些在設計還能調整時最好處理。</div>
+    </div>
+    <div class="brandmark">無障礙 early feedback</div>
+  </section>
+
+  <!-- 9 維運 -->
+  <section class="slide" data-page="9">
+    <div class="safe"><div class="kicker">長期維運</div>
+    <h2 class="page-title">讓作品後續被看見的樣子，不要太快走歪</h2>
+    <p class="page-sub">網站交付後由客戶決定怎麼使用；我們能做的是把比較不容易被改壞的結構先做好。</p></div>
+    <div class="body safe">
+      <div class="grid ops-grid">
+        <div class="card">
+          <div class="eyebrow">可以先做好的結構</div>
+          <ul class="list ops-list">
+            <li>CMS 欄位設計與上稿規範</li>
+            <li>圖片比例、裁切焦點與 fallback</li>
+            <li>模組開關與各種內容狀態</li>
+            <li>備份、更新節奏與 SLA</li>
+            <li>交接文件與後台操作說明</li>
+          </ul>
+        </div>
+        <div class="card soft" style="justify-content:center;">
+          <h3>我們不能保證作品永遠不變</h3>
+          <p>客戶擁有網站與內容的決定權。但如果網站很快被改壞、壞掉沒人修、活動頁越長越不像原本的品牌，受傷的不只是作品集，也會影響品牌端對下一次合作的信心。</p>
+          <p style="margin-top:10px;color:var(--ink);font-weight:800;">把規範與維運機制先整理好，它就比較有機會被好好維護。</p>
+        </div>
+      </div>
+      <div class="longterm">
+        <div class="lt"><b>法雅客電商</b><span>2019 建置，2020–2025 持續維護、金流與會員對帳</span></div>
+        <div class="lt"><b>北師美術館</b><span>2020 年起長期維護，維持設計一致性</span></div>
+        <div class="lt"><b>行政院珍貴史料展示網</b><span>公部門多語系、舊站重構與資料移轉</span></div>
+        <div class="lt"><b>資策會資安所 / twc4</b><span>資安主題網站，支撐 IT 審查口徑</span></div>
+      </div>
+    </div>
+    <div class="brandmark">維運與交付結構</div>
+  </section>
+
+  <!-- 10 共同提案 -->
+  <section class="slide" data-page="10">
+    <div class="safe"><div class="kicker">我們也需要設計公司</div>
+    <h2 class="page-title">有些案子設計是關鍵，有些案子工程與資安是關鍵</h2>
+    <p class="page-sub">最好的方式不是誰吃掉誰，而是一起判斷這個案子適不適合合作投。</p></div>
+    <div class="body safe">
+      <div class="two-col">
+        <div class="col-head a">設計公司強項</div>
+        <div class="col-head b">CTK Pro 強項</div>
+        <div class="cell">品牌策略與內容調性</div><div class="cell b">需求書拆解與疑義釐清</div>
+        <div class="cell">視覺提案與比稿說服力</div><div class="cell b">技術方案與系統整合</div>
+        <div class="cell">UX 與創意概念</div><div class="cell b">資安、無障礙與維運規劃</div>
+        <div class="cell">印刷、活動與延伸應用</div><div class="cell b">服務建議書、評分表拆解與 Q&amp;A</div>
+      </div>
+      <div class="eyebrow" style="margin-top:20px;">CTK Pro 的標案產線，可以直接接上你們的設計提案</div>
+      <div class="phase-rail">
+        <div class="phase"><b>P0</b><span>投不投</span></div>
+        <div class="phase"><b>P1</b><span>讀需求書</span></div>
+        <div class="phase"><b>P2</b><span>評分表拆解</span></div>
+        <div class="phase"><b>P3</b><span>逐章撰寫</span></div>
+        <div class="phase"><b>P4</b><span>圖表視覺化</span></div>
+        <div class="phase"><b>P5</b><span>模擬評審</span></div>
+        <div class="phase"><b>P6</b><span>送件清單</span></div>
+        <div class="phase"><b>P7</b><span>簡報與 Q&amp;A</span></div>
+        <div class="phase"><b>P8</b><span>結案回饋</span></div>
+      </div>
+      <div class="note">分工比例、誰代表投標、文件怎麼寫，這些等真的有適合的案子時再一起討論就好。</div>
+    </div>
+    <div class="brandmark">共同提案與共同投標</div>
+  </section>
+
+  <!-- 11 從小處開始 + prototype demo -->
+  <section class="slide" data-page="11">
+    <div class="safe"><div class="kicker">低門檻入口</div>
+    <h2 class="page-title">合作可以從很小的地方開始</h2>
+    <p class="page-sub">就算你們已經有配合的工程夥伴也沒關係，先合作一次，彼此就知道節奏合不合。</p></div>
+    <div class="body safe">
+      <div class="grid start-grid">
+        <div class="card start-card soft"><div class="n">01</div><b>舊專案網站狀況討論</b><span>已上線但有點卡的案子，一起看看發生什麼事。</span></div>
+        <div class="card start-card soft"><div class="n">02</div><b>客戶臨時要的小功能</b><span>活動頁互動、簡易資料收集、小程式。</span></div>
+        <div class="card start-card soft"><div class="n">03</div><b>內部工具與流程協作</b><span>專案管理輔助、內部小工具。</span></div>
+        <div class="card start-card soft"><div class="n">04</div><b>設計稿可行性健檢</b><span>RWD、CMS、互動成本與維護風險。</span></div>
+        <div class="card start-card soft"><div class="n">05</div><b>RFP / 需求書初步討論</b><span>先判斷值不值得投、怎麼分工。</span></div>
+        <div class="card start-card" style="border-color:var(--teal);">
+          <div class="n" style="color:var(--teal);">06</div><b>可操作 UI prototype</b>
+          <span>把概念做成可以點、可以演示的原型，右側就是一個最小範例 →</span>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;padding:16px 20px;">
+        <div class="eyebrow t">最小範例｜比稿與客戶溝通時，讓對方直接點點看</div>
+        <div class="proto">
+          <div class="proto-opts" id="protoOpts">
+            <button type="button" data-r="0" class="on">我想先看整體品牌感覺</button>
+            <button type="button" data-r="1">我在意手機上好不好用</button>
+            <button type="button" data-r="2">我最想知道之後好不好改</button>
+          </div>
+          <div class="proto-out">
+            <b id="protoTitle">品牌感覺優先</b>
+            <span id="protoBody">從主視覺、字級與留白開始定調，先讓客戶對整體氣質有共識，再往下切頁面與模組。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="brandmark">合作可以從小處開始</div>
+  </section>
+
+  <!-- 12 收尾 -->
+  <section class="slide" data-page="12">
+    <img class="logo-tr logo-light" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <img class="logo-tr logo-dark" src="images/ctkpro-logo-white.png" alt="CTK Pro">
+    <div class="thanks-wrap safe">
+      <h2 class="thanks-title">好設計<br><span class="em">值得被好好接住</span></h2>
+      <div class="thanks-row">
+        <span class="tag">早一點 feedback</span>
+        <span class="tag">深一點資安與無障礙</span>
+        <span class="tag">穩一點維運與交付</span>
+      </div>
+      <p class="thanks-cta">如果過去有已經轉成網站的專案，或上線後碰過一些維護、內容、資安、無障礙的狀況，我們可以找一次時間一起看。先交換經驗，再慢慢長出適合彼此的合作方式。</p>
+      <div class="thanks-foot">
+        <div class="qr">
+          <img src="images/qr-ctkpro.png" alt="ctkpro.com QR Code" onerror="this.style.display='none'">
+          <div class="qt"><b>ctkpro.com</b><span>掃描了解更多</span></div>
+        </div>
+        <div class="contact"><b>CTK Pro 竑盛科技</b><br>設計團隊的網站落地、資安與共同提案夥伴</div>
+      </div>
+    </div>
+    <div class="brandmark">收尾</div>
+  </section>
+
+  <!-- 13 備用頁：被問到長期合作再翻 -->
+  <section class="slide" data-page="13">
+    <div class="safe"><div class="kicker">備用頁</div>
+    <h2 class="page-title">如果合作要長期化，界線可以先講清楚</h2>
+    <p class="page-sub">第一次見面不需要談到這裡；等對方主動問到長期合作、共同投標或掛名方式再翻開。</p></div>
+    <div class="body safe">
+      <div class="grid" style="grid-template-columns:repeat(4,1fr);">
+        <div class="card soft"><h3>客戶窗口</h3><p>誰對客戶說話、誰處理需求變更。</p></div>
+        <div class="card soft"><h3>掛名方式</h3><p>白牌、共同掛名，或技術協力。</p></div>
+        <div class="card soft"><h3>分工與交付</h3><p>設計佔比、工程佔比與交付項目。</p></div>
+        <div class="card soft"><h3>報價與分潤</h3><p>報價方式、分潤與後續維運歸屬。</p></div>
+      </div>
+      <div class="note">出事時誰對外、誰處理，也一起寫清楚。文件不用複雜，一份簡單的工作分工表就夠用。</div>
+    </div>
+    <div class="brandmark">備用頁｜長期合作界線</div>
+  </section>
+</div>
+
+<div class="navbar" id="navbar">
+  <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">13</span></span>
+  <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
+</div>
+<div class="progress" id="progress"></div>
+<div id="help">← → / 點兩側 / 右下箭頭 翻頁　·　F 全螢幕　·　T 深淺色　·　P6／P8／P11 可現場點按示範</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let cur=0;
+  const stage=document.getElementById('stage');
+  const progress=document.getElementById('progress');
+  const curNo=document.getElementById('curNo');
+  document.getElementById('totNo').textContent=total;
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  const themeToggle=document.getElementById('themeToggle');
+
+  function show(i){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    curNo.textContent=cur+1;
+    progress.style.width=(cur/(total-1))*100+'%';
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  const next=()=>show(cur+1);
+  const prev=()=>show(cur-1);
+
+  function fit(){
+    const s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    stage.style.transform=`translate(-50%,-50%) scale(${s})`;
+  }
+  window.addEventListener('resize',fit);
+
+  function setTheme(t){
+    document.documentElement.dataset.theme=t;
+    localStorage.setItem('ctkpro-dc-theme',t);
+    themeToggle.textContent=t==='dark'?'淺色':'深色';
+  }
+  const toggleTheme=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+  themeToggle.addEventListener('click',e=>{e.stopPropagation();toggleTheme();});
+
+  document.addEventListener('keydown',e=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': next();e.preventDefault();break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': prev();e.preventDefault();break;
+      case 'Home': show(0);e.preventDefault();break;
+      case 'End': show(total-1);e.preventDefault();break;
+      case 'f': case 'F':
+        document.fullscreenElement?document.exitFullscreen?.():document.documentElement.requestFullscreen?.();
+        e.preventDefault();break;
+      case 't': case 'T': toggleTheme();e.preventDefault();break;
+    }
+  });
+
+  prevBtn.addEventListener('click',e=>{e.stopPropagation();prev();});
+  nextBtn.addEventListener('click',e=>{e.stopPropagation();next();});
+
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#navbar,button,summary,a,input'))return;
+    const w=window.innerWidth;
+    if(e.clientX<w/6) prev();
+    else if(e.clientX>w*5/6) next();
+  });
+
+  let tx=0,ty=0;
+  document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev();}
+  },{passive:true});
+
+  /* P6：同一個元件在三種內容下的樣子 */
+  const P6=[
+    null,
+    {t:'城市光影展',d:'10/12 – 11/30 ｜ 中山堂前廣場',m:'展覽 · 共 6 筆活動',f:''},
+    {t:'2026 城市光影藝術節暨跨域策展計畫系列活動開幕特別企劃',d:'（客戶尚未提供摘要）',m:'未分類 · 共 1 筆活動',f:'圖片比例不符'},
+    {t:'2026 城市光影藝術節暨跨域策展計畫系列活動開幕特別企劃',d:'集結十組創作者，以光為媒介重新閱讀城市的日夜節奏與街區記憶，展期間另有導覽與工作坊。',m:'展覽 · 共 1 筆活動',f:'已套用裁切焦點'}
+  ];
+  const p6preview=document.getElementById('p6preview');
+  document.getElementById('p6bar').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    const s=+b.dataset.s, v=P6[s];
+    [...e.currentTarget.children].forEach(x=>x.classList.toggle('on',x===b));
+    p6preview.className='preview s'+s;
+    document.getElementById('p6title').textContent=v.t;
+    document.getElementById('p6desc').textContent=v.d;
+    document.getElementById('p6meta').textContent=v.m;
+    document.getElementById('p6flag').textContent=v.f;
+  });
+
+  /* P8：無障礙調整前 / 調整後 */
+  const p8panel=document.getElementById('p8panel');
+  const P8=[
+    {r:'2.1 : 1',v:['未達 AA 4.5:1','看不出焦點在哪','只有紅框，看不懂錯在哪','全部都是圖與大字']},
+    {r:'7.4 : 1',v:['通過 AA 與 AAA','鍵盤操作看得見焦點','錯誤原因寫清楚','語意結構與 alt 都補上']}
+  ];
+  document.getElementById('p8bar').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    const on=+b.dataset.a;
+    [...e.currentTarget.children].forEach(x=>x.classList.toggle('on',x===b));
+    p8panel.classList.toggle('a11y-on',!!on);
+    document.getElementById('p8ratio').textContent=P8[on].r;
+    P8[on].v.forEach((t,i)=>document.getElementById('p8v'+(i+1)).textContent=t);
+  });
+
+  /* P11：可操作 prototype 最小範例 */
+  const P11=[
+    ['品牌感覺優先','從主視覺、字級與留白開始定調，先讓客戶對整體氣質有共識，再往下切頁面與模組。'],
+    ['手機體驗優先','先確認手機上的閱讀順序、按鈕大小與載入速度，桌機版再從這個基礎往外長。'],
+    ['之後好不好改優先','先把 CMS 欄位、內容狀態與模組開關定清楚，客戶自己上稿也不容易把版面弄壞。']
+  ];
+  document.getElementById('protoOpts').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    [...e.currentTarget.children].forEach(x=>x.classList.toggle('on',x===b));
+    const [t,d]=P11[+b.dataset.r];
+    document.getElementById('protoTitle').textContent=t;
+    document.getElementById('protoBody').textContent=d;
+  });
+
+  setTheme(localStorage.getItem('ctkpro-dc-theme')||'light');
+  fit();
+  const h=parseInt(location.hash.replace('#',''),10);
+  show(h>=1&&h<=total?h-1:0);
+  setTimeout(()=>{document.getElementById('help').style.opacity='0';},6000);
+</script>
+</body>
+</html>

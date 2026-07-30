@@ -26,7 +26,10 @@ const file = path.isAbsolute(target) ? target : path.join(PROJECT_ROOT, target);
 const url = 'file://' + file;
 const tag = target.replace(/[\/]/g, '-').replace(/\.html$/, '');
 
-const browser = await chromium.launch();
+// 沒跑過 npx playwright install 時，退回用本機已裝的 Edge / Chrome，不必另外下載瀏覽器
+const browser = await chromium.launch().catch(() =>
+  chromium.launch({ channel: 'msedge' }).catch(() => chromium.launch({ channel: 'chrome' }))
+);
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
 await page.goto(url);
 await page.waitForTimeout(600);

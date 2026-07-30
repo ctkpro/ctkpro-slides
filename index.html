@@ -44,6 +44,16 @@
   .card .card-desc{ color:var(--muted); font-size:clamp(14px,1.6vw,16px); margin-top:.9em; }
   .card .arrow{ color:var(--blue); font-weight:700; font-size:15px; margin-top:1.4em; display:inline-flex; align-items:center; gap:.4em; }
 
+  /* 同一份簡報有多個版本時，卡片內直接選版本 */
+  .card.vcard{ border:1px solid var(--line); border-radius:16px; padding:26px 26px 28px; background:var(--bg); }
+  .vlinks{ display:flex; flex-wrap:wrap; gap:10px; margin-top:1.4em; }
+  .vlinks a{
+    text-decoration:none; color:var(--blue); font-weight:700; font-size:15px;
+    border:1px solid var(--line); border-radius:999px; padding:8px 15px;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .vlinks a:hover{ border-color:var(--blue); background:rgba(47,79,176,.06); }
+
   a.card.soon{ border-style:dashed; opacity:.65; pointer-events:none; }
   a.card.soon .date,.card.soon .arrow{ color:var(--muted); }
 
@@ -97,6 +107,16 @@
       <div class="card-desc">給新客戶看的公司介紹簡報。聚焦網站規劃、建置、上線與維護，含核心服務、案例模板、Why Us 與 QR Code 收尾（13 頁，可切換深淺色）。</div>
       <span class="arrow">開啟投影片 →</span>
     </a>
+
+    <div class="card vcard">
+      <div class="date">CTK Pro · 設計協作提案</div>
+      <div class="card-title">好設計值得被好好接住</div>
+      <div class="card-desc">以 v3 結論為主線：設計價值、early feedback、資安與無障礙、維運、共同提案，並以舊專案作為低壓合作入口。兩個版本擇一放映。</div>
+      <div class="vlinks">
+        <a href="sales-pitch/for-design-company/index-claude-v2.html">A 版 · 現場可點示範 →</a>
+        <a href="sales-pitch/for-design-company/index-v2.html">B 版 · 靜態排版 →</a>
+      </div>
+    </div>
 
   </div>
 
