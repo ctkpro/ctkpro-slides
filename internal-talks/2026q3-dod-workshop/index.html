@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>從「做完」到「真正做完」｜CTK Pro 內訓工作坊</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d1b;
+    --muted:#6b6b6b;
+    --soft:#9a9a9a;
+    --line:#e6e6e6;
+    --bg:#FBFAF7;
+    --paper:#f7f8fb;
+    --blue:#2f4fb0;
+    --blue-700:#233c86;
+    --blue-300:#8fa4dd;
+    --blue-50:#eef2fc;
+    --warn:#9A6700;
+    --warn-50:#FBF3E2;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',-apple-system,'Helvetica Neue',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.35;
+    overflow:hidden;
+  }
+
+  /* ---- 投影片容器 ---- */
+  .deck{ position:fixed; inset:0; }
+  .slide{
+    position:absolute; inset:0;
+    display:none;
+    padding:5vh 6vw;
+    opacity:0;
+    transition:opacity .35s ease;
+  }
+  .slide.active{ display:flex; opacity:1; }
+  .slide.center{ flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+  .nw{ white-space:nowrap; }
+
+  /* ---- Logo ---- */
+  .logos{ display:flex; align-items:center; gap:18px; margin-bottom:6vh; }
+  .logos img.ctk{ height:26px; width:auto; }
+  .corner-logo{ position:absolute; top:4vh; left:6vw; height:18px; width:auto; opacity:.7; }
+
+  /* ---- 文字樣式（高橋流：大字、極簡） ---- */
+  .kicker{ color:var(--muted); font-weight:500; letter-spacing:.04em; font-size:clamp(15px,1.9vw,22px); margin-bottom:2.4vh; }
+  h1.title{ font-weight:900; font-size:clamp(32px,5.6vw,84px); line-height:1.16; letter-spacing:-.01em; }
+  h1.title .em{ color:var(--blue); }
+  .subtitle{ color:var(--muted); font-weight:500; font-size:clamp(17px,2.4vw,32px); margin-top:3.2vh; }
+  .footer-line{ color:var(--muted); font-size:clamp(14px,1.7vw,20px); margin-top:7vh; letter-spacing:.02em; }
+
+  h2.head{ font-weight:900; font-size:clamp(27px,4.5vw,66px); line-height:1.2; letter-spacing:-.01em; }
+  h2.head .em{ color:var(--blue); }
+  h2.head .un{ background:linear-gradient(transparent 62%, var(--blue-50) 62%); }
+  .lead{ color:var(--muted); font-weight:500; font-size:clamp(16px,2.1vw,28px); margin-top:3vh; max-width:1020px; }
+  .note{ color:var(--muted); font-size:clamp(14px,1.7vw,20px); margin-top:3.2vh; max-width:1020px; }
+  .note strong, .lead strong{ color:var(--ink); }
+  .lead .em, .note .em{ color:var(--blue); }
+
+  /* 章節分隔頁 */
+  .actno{ color:var(--blue-300); font-weight:900; font-size:clamp(15px,1.9vw,22px); letter-spacing:.22em; margin-bottom:2.6vh; }
+
+  /* 重點清單 */
+  .points{ list-style:none; margin-top:3.4vh; display:flex; flex-direction:column; gap:2vh; max-width:1040px; width:100%; text-align:left; }
+  .points li{ display:flex; align-items:flex-start; gap:18px; font-weight:700; font-size:clamp(18px,2.5vw,34px); }
+  .points .n{ color:var(--blue); font-weight:900; flex:0 0 auto; }
+  .points small{ display:block; color:var(--muted); font-weight:500; font-size:.62em; margin-top:.3em; line-height:1.4; }
+  .points.compact{ gap:1.5vh; }
+  .points.compact li{ font-size:clamp(16px,2.05vw,28px); }
+
+  /* ---- 大字事實卡 ---- */
+  .facts{ list-style:none; margin-top:3.4vh; display:flex; flex-direction:column; gap:2.2vh; max-width:1120px; width:100%; }
+  .facts li{ display:flex; align-items:baseline; gap:22px; text-align:left; }
+  .facts .fn{ color:var(--blue); font-weight:900; font-size:clamp(18px,2.4vw,34px); flex:0 0 auto; line-height:1.1; min-width:4.2em; }
+  .facts .ft{ font-weight:700; font-size:clamp(17px,2.2vw,31px); line-height:1.3; }
+  .facts .ft b{ color:var(--blue); }
+  .facts .ft small{ display:block; color:var(--muted); font-weight:500; font-size:.6em; margin-top:.3em; }
+
+  /* ---- 三／二欄卡（層級、對比） ---- */
+  .layers{ display:flex; align-items:stretch; gap:1.6vw; margin-top:4vh; width:100%; max-width:1160px; }
+  .layer{ flex:1 1 0; border:1px solid var(--line); border-radius:18px; padding:3vh 1.6vw; text-align:center; background:#fff; }
+  .layer.hi{ border-color:var(--blue-300); background:var(--blue-50); }
+  .layer .lcode{ font-weight:900; font-size:clamp(20px,2.8vw,38px); color:var(--blue); line-height:1.1; letter-spacing:-.01em; }
+  .layer .lname{ font-weight:700; font-size:clamp(13px,1.5vw,19px); margin-top:1vh; }
+  .layer .ldesc{ color:var(--muted); font-size:clamp(13px,1.5vw,19px); margin-top:1.6vh; line-height:1.5; }
+  .layer .ldesc b{ color:var(--blue); font-weight:700; }
+  .layers .arrow{ align-self:center; color:var(--blue); font-weight:900; font-size:clamp(20px,2.6vw,36px); flex:0 0 auto; }
+
+  /* ---- 雙欄對照（同重量：淡底 + 左色邊，不整欄填色） ---- */
+  .compare2{ display:flex; gap:1.8vw; margin-top:4vh; width:100%; max-width:1160px; text-align:left; }
+  .compare2 .c{ flex:1 1 0; background:var(--paper); border-left:5px solid var(--blue-300); border-radius:0 14px 14px 0; padding:3vh 2vw; }
+  .compare2 .c.now{ background:var(--blue-50); border-left-color:var(--blue); }
+  .compare2 .ctag{ font-weight:900; color:var(--blue); font-size:clamp(13px,1.5vw,19px); letter-spacing:.06em; }
+  .compare2 .ctit{ font-weight:900; font-size:clamp(19px,2.6vw,36px); margin-top:1.2vh; line-height:1.25; }
+  .compare2 .cdesc{ color:var(--muted); font-size:clamp(13px,1.6vw,20px); margin-top:1.8vh; line-height:1.55; }
+
+  /* ---- 單一巨大數字 ---- */
+  .bignum{ color:var(--blue); font-weight:900; font-size:clamp(64px,12vw,170px); line-height:.92; letter-spacing:-.03em; margin-top:1vh; }
+
+  /* ---- 大金句頁 ---- */
+  .bigquote{ font-weight:900; font-size:clamp(27px,4.6vw,64px); line-height:1.28; letter-spacing:-.01em; margin-top:1vh; max-width:1200px; }
+  .bigquote .em{ color:var(--blue); }
+  .bigquote.sm{ font-size:clamp(22px,3.4vw,48px); }
+
+  /* ---- 流程鏈（環環相扣） ---- */
+  .chain{ display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:.5em .9em; margin-top:4vh; max-width:1180px; font-weight:900; font-size:clamp(16px,2vw,27px); line-height:1.3; }
+  .chain .link{ display:inline-flex; align-items:center; gap:.9em; white-space:nowrap; }  /* 箭頭跟著後面那格一起換行，不落單在行尾 */
+  .chain .step{ padding:.4em .7em; border:1px solid var(--line); border-radius:12px; background:#fff; }
+  .chain .step.warn{ border-color:#e0cfa4; color:var(--warn); background:var(--warn-50); }
+  .chain .ar{ color:var(--blue); }
+
+  /* ---- DOD 四問（編號方塊） ---- */
+  .quad{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.4vw; margin-top:4.4vh; width:100%; max-width:1180px; }
+  .quad .q{ border:1px solid var(--line); border-radius:16px; background:#fff; padding:3vh 1.2vw; text-align:center; }
+  .quad .qn{ color:var(--blue); font-weight:900; font-size:clamp(22px,3vw,44px); line-height:1; }
+  .quad .qt{ font-weight:900; font-size:clamp(16px,2.1vw,29px); margin-top:1.6vh; }
+  .quad .qd{ color:var(--muted); font-size:clamp(12px,1.4vw,18px); margin-top:1.2vh; line-height:1.5; }
+
+  /* ---- 現場示範：模糊的做完 vs 可驗收的做完 ---- */
+  .demo-bar{ display:flex; gap:12px; margin-top:3.4vh; }
+  .demo-bar button{
+    font-family:inherit; font-size:clamp(13px,1.6vw,19px); font-weight:800; cursor:pointer;
+    border:1px solid var(--line); background:#fff; color:var(--muted);
+    padding:.7em 1.5em; border-radius:999px; transition:all .2s;
+  }
+  .demo-bar button:hover{ border-color:var(--blue-300); color:var(--blue); }
+  .demo-bar button.on{ background:var(--blue); border-color:var(--blue); color:#fff; }
+  .dodbox{
+    margin-top:3vh; width:100%; max-width:1060px; min-height:54vh;   /* 兩態同高，切換時版面不跳 */
+    border:1px solid var(--line); border-left:6px solid var(--warn); border-radius:0 16px 16px 0;
+    background:var(--warn-50); padding:3.2vh 2.4vw; text-align:left;
+    transition:background .25s, border-color .25s;
+  }
+  .dodbox.good{ border-left-color:var(--blue); background:var(--blue-50); }
+  .dodbox .dtag{ font-weight:900; letter-spacing:.06em; color:var(--warn); font-size:clamp(13px,1.5vw,19px); }
+  .dodbox.good .dtag{ color:var(--blue); }
+  .dodbox .dtext{ font-weight:700; font-size:clamp(16px,2.05vw,28px); margin-top:1.6vh; line-height:1.5; }
+  .dodbox .dlist{ list-style:none; margin-top:1.6vh; display:flex; flex-direction:column; gap:1.1vh; }
+  .dodbox .dlist li{ font-size:clamp(14px,1.75vw,23px); font-weight:500; color:var(--ink); line-height:1.45; display:flex; gap:.7em; }
+  .dodbox .dlist li b{ color:var(--blue); font-weight:900; flex:0 0 auto; min-width:5.6em; }
+  .dodbox .dfoot{ color:var(--muted); font-size:clamp(12px,1.45vw,18px); margin-top:2.2vh; }
+
+  /* ---- 現場演練步驟 ---- */
+  .steps{ display:flex; gap:1.6vw; margin-top:4.4vh; width:100%; max-width:1140px; }
+  .steps .s{ flex:1 1 0; text-align:left; }
+  .steps .sn{ color:var(--blue); font-weight:900; font-size:clamp(13px,1.5vw,19px); letter-spacing:.1em; }
+  .steps .st{ font-weight:900; font-size:clamp(17px,2.3vw,32px); margin-top:1.2vh; line-height:1.25; }
+  .steps .sd{ color:var(--muted); font-size:clamp(12px,1.5vw,19px); margin-top:1.2vh; line-height:1.5; }
+  .steps .s + .s{ border-left:1px solid var(--line); padding-left:1.6vw; }
+
+  /* ---- 結尾 / 謝謝頁 ---- */
+  .thanks{ font-weight:900; font-size:clamp(64px,15vw,190px); line-height:1; letter-spacing:.04em; margin-top:4vh; }
+  .end-tag{ font-weight:700; font-size:clamp(20px,2.8vw,38px); margin-top:5vh; line-height:1.35; }
+  .end-tag .em{ color:var(--blue); }
+  .end-logo{ height:34px; width:auto; }
+  .end-contact{ color:var(--muted); font-size:clamp(16px,2vw,26px); margin-top:6vh; }
+
+  /* ---- 底部來源小字 ---- */
+  .source{
+    position:absolute; left:6vw; right:6vw; bottom:5.5vh;
+    color:#a9a9a9; font-size:clamp(11px,1.2vw,14px);
+    letter-spacing:.01em; line-height:1.5; text-align:center;
+  }
+  .slide.center.has-source .note{ margin-top:2.4vh; margin-bottom:3.6vh; }
+
+  /* ---- 導覽（可點頁碼 / 進度條 / 提示） ---- */
+  .navbar{ position:fixed; right:24px; bottom:16px; display:flex; align-items:center; gap:10px; z-index:40; color:var(--muted); user-select:none; }
+  .navbar .nav-arrow{ border:none; background:none; cursor:pointer; line-height:1; font-size:26px; color:var(--soft);
+                      padding:2px 9px; border-radius:8px; transition:color .2s,background .2s; }
+  .navbar .nav-arrow:hover{ color:var(--blue); background:var(--blue-50); }
+  .navbar .nav-count{ font-size:15px; font-weight:700; letter-spacing:.12em; min-width:64px; text-align:center; color:var(--muted); }
+  .navbar .nav-count b{ color:var(--ink); }
+  .progress{ position:fixed; left:0; bottom:0; height:3px; background:var(--blue); width:0; transition:width .35s ease; z-index:40; }
+  #help{ position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:30; background:rgba(35,60,134,.94);
+         color:#fff; font-size:13px; padding:8px 16px; border-radius:999px; transition:opacity .6s; }
+
+  /* ---- 響應式 ---- */
+  @media (max-width:760px), (max-aspect-ratio:1/1){
+    .points li, .facts li{ justify-content:flex-start; }
+    .layers, .compare2, .steps{ flex-direction:column; }
+    .layers .arrow{ transform:rotate(90deg); }
+    .steps .s + .s{ border-left:none; padding-left:0; border-top:1px solid var(--line); padding-top:2vh; }
+    .quad{ grid-template-columns:repeat(2,1fr); }
+    .source{ position:static; margin-top:3vh; }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- ===== 1. 封面 ===== -->
+  <section class="slide center active">
+    <div class="logos">
+      <img class="ctk" src="images/ctkpro-logo.png" alt="CTK Pro">
+    </div>
+    <p class="kicker">CTK Pro · 內訓工作坊</p>
+    <h1 class="title">從「做完」<br>到「<span class="em">真正做完</span>」</h1>
+    <p class="subtitle">我們到底在賣什麼——以及，每個任務怎麼講清楚驗收</p>
+    <p class="footer-line">2026-08　｜　Alfred Kang・CTK Pro</p>
+  </section>
+
+  <!-- ===== Act 0 · 鉤子 ===== -->
+  <!-- 2 -->
+  <section class="slide center">
+    <img class="corner-logo" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <p class="kicker">先講一件我最近一直在想的事</p>
+    <h2 class="head">我們手上的案子<br>客戶其實<span class="em">自己也能弄個八九成</span>了</h2>
+    <p class="lead">甚至有客戶自己 Vibe Coding，把網頁上架了。</p>
+    <!-- 講者：這裡帶入今天貫穿全場的那個真案子（上台前先定案） -->
+  </section>
+
+  <!-- 3 -->
+  <section class="slide center">
+    <h2 class="head">那……<br>他還<span class="em">需要我們嗎</span>？</h2>
+    <p class="lead">老實說——我用 AI 幫客戶的時候，<br>有些次也只是把他的話，<strong>轉手貼給 AI</strong>。</p>
+    <p class="note">所以今天不是要檢討誰。是我自己先想清楚了，<br>想跟大家一起，把它變成一個每天做得到的動作。</p>
+  </section>
+
+  <!-- ===== Act 1 · 我們到底在賣什麼 ===== -->
+  <!-- 4 -->
+  <section class="slide center">
+    <p class="kicker">回到最根本的問題</p>
+    <h2 class="head">我們不是在寫 code。<br>也不是在做設計。</h2>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide center">
+    <h2 class="head">我們是幫客戶<br>把他想要的東西<span class="em">變出來</span></h2>
+    <p class="lead">而「變出來」這件事——<strong>正在被 AI 接走。</strong></p>
+    <p class="note">所以我們的價值，要重新定義。這場就是在講：要定義成什麼。</p>
+  </section>
+
+  <!-- ===== Act 2 · 角色的第二次模糊 ===== -->
+  <!-- 6 · 人物故事：Boris Cherny -->
+  <section class="slide center">
+    <p class="kicker">先講一個人的故事</p>
+    <h2 class="head">做出 Claude Code 的那個人<br>自己已經很少在<span class="em">寫 code</span> 了</h2>
+    <ul class="facts">
+      <li><span class="fn">他是誰</span><span class="ft"><b>Boris Cherny</b>，Anthropic 的工程師——<b>Claude Code 的創造者</b><small>我們每天打開來用的那個工具，就是他帶頭做出來的。</small></span></li>
+      <li><span class="fn">他現在做什麼</span><span class="ft">他自己講：現在大部分時間<b>不是在寫，是在看</b>——AI 交出來的東西行不行<small>哪裡該退回、哪裡要改、這樣能不能出去。</small></span></li>
+    </ul>
+    <p class="note">一個親手把這個工具做出來的人，最後<strong>把自己的位置，挪到了「驗收」那一端。</strong></p>
+    <!-- 講者：數字（幾個月產出多少行）刻意不上頁——講方向就好，上台前若要引用請自己再核對一次。 -->
+  </section>
+
+  <!-- 7 · 收束成大字 -->
+  <section class="slide center">
+    <p class="kicker">而這不只是他一個人的狀況</p>
+    <h2 class="head">連寫 code 的人<br>現在主要的工作<br>都是「<span class="em">驗收</span>」</h2>
+    <p class="note">產出量已經不是瓶頸了——<strong>「判斷這東西行不行」才是。</strong><br>這句話，等一下還會回來兩次。</p>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide center">
+    <p class="kicker">角色的界線，正在第二次模糊</p>
+    <h2 class="head">終點是同一個：<br>把客戶要的<span class="em">變出來</span></h2>
+    <div class="compare2">
+      <div class="c">
+        <div class="ctag">第一次模糊 · 已經發生</div>
+        <div class="ctit">前端 vs 後端</div>
+        <div class="cdesc">早就沒什麼意義了。誰碰得到、誰接得住，誰就做。</div>
+      </div>
+      <div class="c now">
+        <div class="ctag">第二次模糊 · 正在發生</div>
+        <div class="ctit">規劃 vs 執行</div>
+        <div class="cdesc">不管原本站在哪一邊，現在都往同一個地方走——想清楚要什麼，然後把它變出來。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Act 3 · 那我們的價值在哪 ===== -->
+  <!-- 8 -->
+  <section class="slide center">
+    <p class="kicker">那我們的價值，到底在哪</p>
+    <h2 class="head">兩件事，<span class="em">AI 一個人做不到</span></h2>
+    <ul class="points">
+      <li><span class="n">一</span><span>我們懂得比客戶更深<small>卡在哪一層？Cache 是什麼？是哪個細節把它卡住的？——客戶問不出來的問題，我們問得出來。這是我們當專家的舞台。</small></span></li>
+      <li><span class="n">二</span><span>我們提得出他想不到的方案<small>他要一扇門，我們看得出來他其實需要的是一條動線。</small></span></li>
+    </ul>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide center">
+    <h2 class="head">如果只是<br>他說一步、我們動一步——</h2>
+    <p class="lead">那客戶當然會想：<strong>我直接跟 AI 講就好。</strong></p>
+    <p class="note">這不是威脅，是在告訴我們——<strong>力氣該花在哪裡。</strong></p>
+  </section>
+
+  <!-- 10 · 鏡子頁（我視角） -->
+  <section class="slide center">
+    <p class="kicker">留一個問題給我自己</p>
+    <p class="bigquote sm">如果我下的每一個指令，<br>都只是把客戶的話<span class="em">原封不動搬進去</span>——<br>那這一整套流程裡，<span class="em">AI 跟我，差在哪裡？</span></p>
+    <p class="note">這題我常問我自己。<br>接下來這段，就是我找到的那個答案。</p>
+  </section>
+
+  <!-- ===== Act 4 · AI 接不走的位置＝驗收 ===== -->
+  <!-- 11 · 章節頁 -->
+  <section class="slide center">
+    <p class="actno">A C T　4</p>
+    <h2 class="head">那個位置<br>其實我們上一場<span class="em">已經講到門口了</span></h2>
+    <p class="lead">Prompt · Context · Harness——今天只回收第三層。</p>
+  </section>
+
+  <!-- 12 · 三層快速回收 -->
+  <section class="slide center">
+    <p class="kicker">三十秒回顧，不重講</p>
+    <h2 class="head">三層，各自在管什麼</h2>
+    <div class="layers">
+      <div class="layer">
+        <div class="lcode">Prompt</div>
+        <div class="lname">提示詞</div>
+        <div class="ldesc">把<b>意圖</b>講清楚</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="layer">
+        <div class="lcode">Context</div>
+        <div class="lname">上下文</div>
+        <div class="ldesc">把<b>脈絡</b>餵對</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="layer hi">
+        <div class="lcode">Harness</div>
+        <div class="lname">調度／流程容器</div>
+        <div class="ldesc"><b>指揮</b>整組工具跑完一件事</div>
+      </div>
+    </div>
+    <p class="note">上一場我說：Harness＝你是指揮家，不是演奏者。<br>今天要補上那句沒講完的——<strong>指揮家最後，一定要驗收。</strong></p>
+  </section>
+
+  <!-- 13 · Harness 的天花板 -->
+  <section class="slide center">
+    <p class="kicker">這是今天最重要的一句</p>
+    <h2 class="head">Harness 的天花板<br>不是你<span class="em">接了幾個工具</span><br>是它<span class="em">知不知道什麼叫做完</span></h2>
+  </section>
+
+  <!-- 14 · 因果鏈 -->
+  <section class="slide center">
+    <p class="kicker">說不清「做完」，會發生什麼</p>
+    <h2 class="head">它不會停在對的地方</h2>
+    <div class="chain">
+      <span class="step warn">說不清什麼叫做完</span>
+      <span class="link"><span class="ar">→</span><span class="step">它只能猜</span></span>
+      <span class="link"><span class="ar">→</span><span class="step">跑很久、看起來有做</span></span>
+      <span class="link"><span class="ar">→</span><span class="step warn">你還是要整份重看一次</span></span>
+    </div>
+    <p class="note">沒有驗收條件，它跑再久也只是在賭；<strong>有驗收條件，它才收得起來。</strong><br>這就是上一場說的——「<strong>中獎</strong>」跟「<strong>有把握</strong>」的差別。</p>
+  </section>
+
+  <!-- 16 · 那怎麼做？不用工具，就在按 Enter 之前 -->
+  <section class="slide center">
+    <p class="kicker">那實際上要做什麼？</p>
+    <h2 class="head">在你按下 <span class="em">Enter</span> 之前<br>先把「做完」寫在最前面</h2>
+    <p class="lead">不用裝什麼工具、不用學什麼指令。<br><strong>就是幾句話，打在你那句需求的前面。</strong></p>
+    <p class="note">不是多一道手續——是把你原本<strong>事後才會發現的落差，提前到開工前發現。</strong><br>那幾句話長什麼樣？等一下就寫給你看。</p>
+  </section>
+
+  <!-- 16 · 反炒作 -->
+  <section class="slide center has-source">
+    <p class="kicker">但也別走到另一個極端</p>
+    <h2 class="head">把人拿掉的<br>全自動工廠——<span class="em">會失敗</span></h2>
+    <p class="lead">無限堆 token、拿掉 code review，短期看起來很快，<br>但長期的可維護性補不回來。<strong>還是要規格先行、人守決策點。</strong></p>
+    <p class="note">而人要守的那個決策點——<strong>就是驗收。</strong></p>
+    <div class="source">出處：Dex Horthy〈Harness Engineering is not Enough〉（2026-07）</div>
+  </section>
+
+  <!-- ===== Act 5 · 落地：DOD ===== -->
+  <!-- 17 · 章節頁 -->
+  <section class="slide center">
+    <p class="actno">A C T　5</p>
+    <h2 class="head">每個任務<br>先問一句：<br>什麼叫「<span class="em">真正做完</span>」？</h2>
+    <p class="lead">不是把眼前這一塊做完，就交出去。</p>
+  </section>
+
+  <!-- 18 · 三個不 -->
+  <section class="slide center">
+    <p class="kicker">「真正做完」的底線</p>
+    <h2 class="head">三個<span class="em">不</span></h2>
+    <ul class="points">
+      <li><span class="n">不</span><span>把<strong>思考</strong>外包</span></li>
+      <li><span class="n">不</span><span>把<strong>判斷</strong>外包</span></li>
+      <li><span class="n">不</span><span>把<strong>煩惱</strong>丟回給客戶</span></li>
+    </ul>
+    <p class="note">這三件事外包出去，我們就退回成一根管子了。</p>
+  </section>
+
+  <!-- 19 · 前層 Job Story -->
+  <section class="slide center">
+    <p class="kicker">前層 ｜ 先懂他為什麼要</p>
+    <h2 class="head">當〔<span class="em">處境</span>〕，<br>他想要〔<span class="em">動機</span>〕，<br>好讓他能〔<span class="em">結果</span>〕。</h2>
+    <p class="note">這叫 <strong>Job Story</strong>。我們面對的幾乎永遠是同一個客戶，<br>所以真正會變、也最值得問的，是「<strong>處境</strong>」。</p>
+  </section>
+
+  <!-- 20 · 後層 DOD 四問 -->
+  <section class="slide center">
+    <p class="kicker">後層 ｜ 再定義什麼叫做完</p>
+    <h2 class="head">DOD <span class="em">四問</span></h2>
+    <div class="quad">
+      <div class="q"><div class="qn">1</div><div class="qt">要什麼</div><div class="qd">這次真正要達成的目標</div></div>
+      <div class="q"><div class="qn">2</div><div class="qt">怎樣算通過</div><div class="qd">驗收條件——照著做得完的步驟</div></div>
+      <div class="q"><div class="qn">3</div><div class="qt">不准動什麼</div><div class="qd">界線：哪些檔案／資料／流程不碰</div></div>
+      <div class="q"><div class="qn">4</div><div class="qt">做到哪停</div><div class="qd">停止條件：什麼情況要回來問人</div></div>
+    </div>
+    <p class="note">剛剛說「打在最前面的那幾句話」——就是這四句。<br>第 2 題最容易寫壞：<strong>驗收要寫成「照著做得完」的步驟，不是丟一堆連結過去。</strong></p>
+  </section>
+
+  <!-- 21 · 現場示範：模糊 vs 可驗收 -->
+  <section class="slide center">
+    <p class="kicker">同一個任務，兩種寫法</p>
+    <h2 class="head">差別長這樣</h2>
+    <div class="demo-bar">
+      <button id="dodBtnA" class="on" onclick="setDod('vague')">「做完了」</button>
+      <button id="dodBtnB" onclick="setDod('good')">「真正做完」</button>
+    </div>
+    <div class="dodbox" id="dodBox">
+      <div class="dtag" id="dodTag">交辦時只講了這句</div>
+      <div class="dtext" id="dodText">「把聯絡表單修一下，好了跟我說。」</div>
+      <ul class="dlist" id="dodList"></ul>
+      <div class="dfoot" id="dodFoot">→ 做的人只能猜；交出去之後，還是要有人整份重看一次。</div>
+    </div>
+  </section>
+
+  <!-- 22 · 兩個讀者 -->
+  <section class="slide center">
+    <p class="kicker">這份東西，寫一次可以用兩次</p>
+    <h2 class="head">同一份 DOD<br>有<span class="em">兩個讀者</span></h2>
+    <div class="compare2">
+      <div class="c">
+        <div class="ctag">讀者一</div>
+        <div class="ctit">你的同事</div>
+        <div class="cdesc">他不用來回問你三次，就知道要做到哪、什麼時候該停下來找你。</div>
+      </div>
+      <div class="c now">
+        <div class="ctag">讀者二</div>
+        <div class="ctit">你的 agent</div>
+        <div class="cdesc">它知道什麼叫通過，才收得起來——不然它只會一直跑，然後你整份重看。</div>
+      </div>
+    </div>
+    <p class="note">所以——<strong>你能把「做完」講到多清楚，就能把工作交出去多遠。</strong></p>
+  </section>
+
+  <!-- 23 · 現場練 -->
+  <section class="slide center">
+    <p class="kicker">現在，拿今天這個案子來練</p>
+    <h2 class="head">兩個人<br>各寫<span class="em">一版 DOD</span></h2>
+    <div class="steps">
+      <div class="s"><div class="sn">STEP 1 · 2 min</div><div class="st">各自寫</div><div class="sd">同一個任務，不討論，各寫一版：Job Story 一句 ＋ 四問。</div></div>
+      <div class="s"><div class="sn">STEP 2 · 1 min</div><div class="st">攤開比</div><div class="sd">兩版並排，先找不一樣的地方，不評分。</div></div>
+      <div class="s"><div class="sn">STEP 3 · 1 min</div><div class="st">兜攏</div><div class="sd">差異點當場記下來——那就是今天真正的產出。</div></div>
+    </div>
+    <p class="note">比的是<strong>兩版之間的差距</strong>，不是誰寫得比較好。<br>兜不攏的地方，就是我們今天要對齊的地方。</p>
+  </section>
+
+  <!-- 24 · 對得起那筆錢 -->
+  <section class="slide center">
+    <h2 class="head">我們的驗收<br>要對得起<br>那個付錢的人心裡的「<span class="em">值得</span>」</h2>
+    <p class="note">站在窗口、帶案人的位置想一次：<br>怎樣他會覺得，<strong>付我們這筆錢，比自己找 AI 值得。</strong></p>
+  </section>
+
+  <!-- ===== Act 6 · 收尾 ===== -->
+  <!-- 25 -->
+  <section class="slide center">
+    <p class="kicker">從下週起</p>
+    <h2 class="head">每個任務<br>附一句 <span class="em">Job Story</span><br>＋ 一份 <span class="em">DOD</span></h2>
+    <p class="note">不用寫得漂亮，先寫得出來就好。<br>下次見面，我們來對——兩個人的「做完」，有沒有長一樣。</p>
+  </section>
+
+  <!-- 26 · 金句 -->
+  <section class="slide center">
+    <p class="bigquote">你能把「做完」<br>講到多清楚——<br>就能把工作<span class="em">交出去多遠</span>。</p>
+    <p class="note">交給同事，或交給 agent。是同一件事。</p>
+  </section>
+
+  <!-- 27 · 謝謝 -->
+  <section class="slide center">
+    <img class="end-logo" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <h2 class="thanks">謝謝</h2>
+    <p class="end-tag">從「做完」到「真正做完」——<span class="em">先講清楚，再交出去。</span></p>
+    <p class="end-contact">Alfred Kang｜CTK Pro</p>
+  </section>
+
+</div>
+
+<div class="navbar" id="navbar">
+  <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">28</span></span>
+  <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
+</div>
+<div class="progress" id="progress"></div>
+<div id="help">← → / 點兩側 / 右下箭頭 翻頁　·　F 全螢幕　·　Home／End 首尾</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let cur=0;
+  const progress=document.getElementById('progress');
+  const curNo=document.getElementById('curNo');
+  const totNo=document.getElementById('totNo');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  totNo.textContent=total;
+
+  function clampHash(){const h=parseInt(location.hash.replace('#',''),10);return (h>=1&&h<=total)?h-1:0;}
+  function show(i){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    curNo.textContent=cur+1;
+    progress.style.width=(cur/(total-1))*100+'%';
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  const next=()=>show(cur+1), prev=()=>show(cur-1);
+
+  // ---- P21 現場示範：模糊的「做完」 vs 可驗收的「做完」 ----
+  const DOD={
+    vague:{
+      tag:'交辦時只講了這句',
+      text:'「把聯絡表單修一下，好了跟我說。」',
+      list:[],
+      foot:'→ 做的人只能猜；交出去之後，還是要有人整份重看一次。'
+    },
+    good:{
+      tag:'同一件事，寫成 DOD',
+      text:'當窗口每天要從信箱撈詢問，他想要表單直接落進名單，好讓他不用再手動整理。',
+      list:[
+        ['要什麼','聯絡表單送出後，資料進名單並寄出通知信。'],
+        ['怎樣算通過','用真實信箱送一筆測試 → 名單看得到該筆 → 窗口收到通知信 → 必填欄位留空會擋下並顯示錯誤訊息。'],
+        ['不准動什麼','不動現有名單資料、不改佈景主題檔。'],
+        ['做到哪停','若需要改動金流或會員登入，先停下來問。']
+      ],
+      foot:'→ 同一份東西，同事看得懂，agent 也讀得懂。'
+    }
+  };
+  window.setDod=function(k){
+    const d=DOD[k], box=document.getElementById('dodBox');
+    box.classList.toggle('good', k==='good');
+    document.getElementById('dodTag').textContent=d.tag;
+    document.getElementById('dodText').textContent=d.text;
+    document.getElementById('dodFoot').textContent=d.foot;
+    document.getElementById('dodList').innerHTML=
+      d.list.map(([n,t])=>'<li><b>'+n+'</b><span>'+t+'</span></li>').join('');
+    document.getElementById('dodBtnA').classList.toggle('on', k==='vague');
+    document.getElementById('dodBtnB').classList.toggle('on', k==='good');
+  };
+
+  document.addEventListener('keydown',e=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': next();e.preventDefault();break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': prev();e.preventDefault();break;
+      case 'Home': show(0);e.preventDefault();break;
+      case 'End': show(total-1);e.preventDefault();break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.(); e.preventDefault();break;
+    }
+  });
+
+  prevBtn.addEventListener('click',e=>{e.stopPropagation();prev();});
+  nextBtn.addEventListener('click',e=>{e.stopPropagation();next();});
+
+  // 點畫面左右各 1/6 才翻頁；中間 2/3 留給選字／點按（避開導覽、按鈕、連結）
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#navbar')||e.target.closest('a')||e.target.closest('button'))return;
+    const w=window.innerWidth;
+    if(e.clientX < w/6) prev();
+    else if(e.clientX > w*5/6) next();
+  });
+
+  let tx=0,ty=0;
+  document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev();}
+  },{passive:true});
+
+  setDod('vague');
+  show(clampHash());
+  setTimeout(()=>{document.getElementById('help').style.opacity='0';},5000);
+</script>
+</body>
+</html>
