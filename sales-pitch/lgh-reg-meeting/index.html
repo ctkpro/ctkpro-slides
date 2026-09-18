@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>李綜合醫院 網路掛號系統改版｜技術架構討論｜CTK Pro 竑盛科技</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d1b; --muted:#6b6b6b; --soft:#9a9a9a;
+    --line:#e6e6e6; --line2:#efefef;
+    /* 本案（醫療）主色＝深青 Teal；變數名沿用 --blue 以相容元件樣式 */
+    --blue:#0E7490; --blue-700:#0B5A70; --blue-300:#5EAEC4; --blue-50:#EAF6F9;
+    /* 輔助色＝靛藍（與主色做色相區隔，白字達 AA） */
+    --indigo:#3B4E8C; --indigo-700:#2C3B6B;
+    --bg:#FBFAF7; --paper:#F2F7F9; --warn:#9A6700; --danger:#B42318;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;width:100%;overflow:hidden;background:#eceef2;}
+  body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+       color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+  #stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;background:var(--bg);}
+
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg);padding:46px 148px 58px 70px;}
+  .slide.active{display:flex;}
+  .body{flex:1;display:flex;flex-direction:column;justify-content:center;}
+
+  /* ---- 共用文字元件 ---- */
+  .kicker{display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:700;
+          letter-spacing:3px;color:var(--blue);text-transform:uppercase;}
+  .kicker::before{content:"";width:28px;height:3px;border-radius:2px;background:var(--blue);}
+  .page-title{font-size:40px;font-weight:900;line-height:1.2;color:var(--ink);margin:10px 0 4px;letter-spacing:-.5px;}
+  .page-title .em{color:var(--blue);}
+  .page-sub{font-size:18px;line-height:1.55;color:var(--muted);max-width:980px;}
+
+  .tag{display:inline-block;font-size:14px;font-weight:700;padding:5px 13px;border-radius:999px;
+       background:var(--blue-50);color:var(--blue);}
+  .tag.warn{background:#FDF6E7;color:var(--warn);}
+  .tag.danger{background:#FDEEEC;color:var(--danger);}
+  .tag.ok{background:#EAF6EF;color:#1B7A4B;}
+
+  /* ---- 頁首 logo / 頁尾標記 ---- */
+  .logo-tr{position:absolute;top:40px;right:148px;height:28px;opacity:.92;}
+  .brandmark{position:absolute;left:70px;bottom:20px;font-size:12.5px;font-weight:500;letter-spacing:.5px;color:var(--soft);}
+
+  /* ---- 卡片 ---- */
+  .grid{display:grid;gap:18px;}
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:15px;padding:20px 22px;
+        box-shadow:0 6px 18px rgba(30,40,80,.05);display:flex;flex-direction:column;}
+  .card h3{font-size:21px;font-weight:800;color:var(--ink);margin-bottom:7px;display:flex;align-items:center;gap:10px;}
+  .card p{font-size:16.5px;line-height:1.58;color:var(--muted);}
+  .card.soft{background:var(--paper);border-color:var(--line2);}
+  .card.edge{border-left:5px solid var(--blue);}
+  .card.edge-warn{border-left:5px solid var(--warn);}
+  .card.edge-danger{border-left:5px solid var(--danger);}
+  .num-chip{flex:none;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;
+            justify-content:center;font-size:19px;font-weight:900;color:#fff;background:var(--blue);}
+  .card-foot{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);
+             font-size:13.5px;font-weight:700;color:var(--blue);}
+  .card-foot::before{content:"▸ ";}
+
+  /* ---- 封面 ---- */
+  .cover{justify-content:center;}
+  .cover .eyebrow{font-size:17px;font-weight:700;letter-spacing:4px;color:var(--blue);margin-bottom:20px;}
+  .cover h1{font-size:60px;font-weight:900;line-height:1.16;letter-spacing:-1.5px;}
+  .cover h1 .em{color:var(--blue);}
+  .cover .sub{font-size:21px;color:var(--muted);margin-top:18px;line-height:1.6;}
+  .cover .meta{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap;}
+  .cover .bigmark{position:absolute;right:120px;bottom:70px;font-size:150px;font-weight:900;
+                  color:var(--blue);opacity:.05;letter-spacing:-6px;line-height:1;}
+
+  /* ---- 架構圖 ---- */
+  .arch{width:100%;}
+  .arch svg{width:100%;height:auto;display:block;}
+
+  /* ---- 表格 ---- */
+  table.t{width:100%;border-collapse:collapse;font-size:15.5px;}
+  table.t th{background:var(--paper);color:var(--ink);font-weight:800;text-align:left;
+             padding:9px 12px;border-bottom:2px solid var(--blue-300);font-size:15px;}
+  table.t td{padding:9px 12px;border-bottom:1px solid var(--line);color:var(--muted);vertical-align:top;line-height:1.5;}
+  table.t td b{color:var(--ink);font-weight:700;}
+  table.t tr:last-child td{border-bottom:none;}
+  table.t .c{text-align:center;}
+
+  /* ---- 條列 ---- */
+  ul.bul{list-style:none;}
+  ul.bul li{position:relative;padding-left:19px;font-size:16.5px;line-height:1.62;color:var(--muted);margin-bottom:6px;}
+  ul.bul li::before{content:"";position:absolute;left:0;top:10px;width:7px;height:7px;border-radius:50%;background:var(--blue);}
+  ul.bul li b{color:var(--ink);font-weight:700;}
+  ul.bul.tight li{margin-bottom:3px;font-size:15.5px;}
+
+  /* ---- 兩欄對照 ---- */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+
+  /* ---- 狀態標記 ---- */
+  .stat{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;}
+  .stat::before{content:"";width:9px;height:9px;border-radius:50%;}
+  .stat.done::before{background:#1B7A4B;} .stat.done{color:#1B7A4B;}
+  .stat.wait::before{background:var(--warn);} .stat.wait{color:var(--warn);}
+  .stat.block::before{background:var(--danger);} .stat.block{color:var(--danger);}
+
+  /* ---- 右下角導覽 + 進度 ---- */
+  .navbar{position:fixed;right:24px;bottom:16px;display:flex;align-items:center;gap:10px;z-index:40;color:var(--muted);user-select:none;}
+  .navbar .nav-arrow{border:none;background:none;cursor:pointer;line-height:1;font-size:26px;color:var(--soft);
+                     padding:2px 9px;border-radius:8px;transition:color .2s,background .2s;}
+  .navbar .nav-arrow:hover{color:var(--blue);background:var(--blue-50);}
+  .navbar .nav-count{font-size:15px;font-weight:700;letter-spacing:.12em;min-width:64px;text-align:center;color:var(--muted);}
+  .navbar .nav-count b{color:var(--ink);}
+  .progress{position:fixed;left:0;bottom:0;height:3px;background:var(--blue);width:0;transition:width .35s ease;z-index:40;}
+  #help{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;background:rgba(11,90,112,.94);
+        color:#fff;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .6s;}
+
+  /* ---- 議題清單層（按 Q） ---- */
+  #qa{position:fixed;inset:0;z-index:80;background:rgba(251,250,247,.985);display:none;padding:40px 54px;overflow:auto;}
+  #qa.show{display:block;}
+  #qa h2{font-size:29px;font-weight:900;margin-bottom:4px;}
+  #qa .hint{font-size:14px;color:var(--soft);margin-bottom:18px;}
+  #qa .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px 26px;}
+  #qa .qa-item{border-bottom:1px solid var(--line);padding-bottom:9px;}
+  #qa .q{font-size:16px;font-weight:800;color:var(--ink);display:flex;gap:8px;line-height:1.45;}
+  #qa .q span{color:var(--blue);flex:none;}
+  #qa .a{font-size:14.5px;color:var(--muted);margin-top:3px;padding-left:26px;line-height:1.5;display:flex;gap:8px;}
+  #qa .a span{color:var(--blue-300);flex:none;font-weight:800;}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ============ P1 封面 ============ -->
+<div class="slide active cover">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="bigmark">HIS</div>
+  <div class="body">
+    <div class="eyebrow">李綜合醫院 × CTK PRO 竑盛科技</div>
+    <h1>網路掛號系統改版<br><span class="em">技術架構討論</span></h1>
+    <p class="sub">
+      確認三層架構與串接方式 · 釐清雙方權責邊界<br>
+      取得後續開發所需的環境、權限與規格
+    </p>
+    <div class="meta">
+      <span class="tag">架構確認</span>
+      <span class="tag">主機與部署</span>
+      <span class="tag">VPN 與防火牆</span>
+      <span class="tag">Oracle 權限</span>
+      <span class="tag">分工與時程</span>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P2 現況與進度 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">現況同步</div>
+  <div class="page-title">現行系統的研究，<span class="em">與我方完成的部分</span></div>
+  <div class="body">
+    <div class="two" style="align-items:start;">
+
+      <div class="card edge">
+        <h3>現行 ASP 系統：已完成分析</h3>
+        <p style="margin-bottom:10px;">已完整研讀現行 5 支 ASP 程式，掌握掛號流程、資料表關聯與給號邏輯。</p>
+        <ul class="bul tight" style="margin-top:2px;">
+          <li><b>支援複診掛號</b>　依身分證或病歷號查詢病患後掛號</li>
+          <li><b>五步驟流程</b>　科別 → 日期 → 醫師／時段 → 資料輸入 → 掛號</li>
+          <li><b>核心資料表</b>　REGMLIMT（門診限額）、REGMREGS（掛號紀錄）、REGMCHRT（病患主檔）</li>
+          <li><b>給號機制</b>　以 <code style="font-size:14px;">lim_cond</code> 120 字元字串標記診號使用狀態</li>
+        </ul>
+        <div class="card-foot">技術：Classic ASP + Oracle，Big5 編碼，混用 VBScript 與 JScript</div>
+      </div>
+
+      <div class="card soft">
+        <h3>我方進度：前台與 API 皆已可運作</h3>
+        <table class="t" style="margin-top:6px;font-size:15px;">
+          <tr><th style="width:42%;padding:7px 12px;">項目</th><th style="padding:7px 12px;">狀態</th></tr>
+          <tr><td style="padding:6px 12px;"><b>掛號 · 查詢 · 取消 · 進度</b><br><span style="font-size:13.5px;">前台四功能</span></td><td style="padding:6px 12px;"><span class="stat done">完成</span></td></tr>
+          <tr><td style="padding:6px 12px;"><b>API 後端</b><br><span style="font-size:13.5px;">7 個端點全數實作</span></td><td style="padding:6px 12px;"><span class="stat done">可運作</span></td></tr>
+          <tr><td style="padding:6px 12px;"><b>資料來源</b><br><span style="font-size:13.5px;">目前為模擬資料</span></td><td style="padding:6px 12px;"><span class="stat wait">待接 Oracle</span></td></tr>
+        </table>
+        <p style="margin-top:12px;font-size:15.5px;">
+          API 為<b style="color:var(--ink);">獨立程式、不依賴 WordPress</b>，
+          資料存取已集中在單一連線層 ——<br>
+          <b style="color:var(--ink);">改接貴院 Oracle，只需替換這一層。</b>
+        </p>
+        <div class="card-foot">剩下的關鍵，是取得 Oracle 連線與資料表規格</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P3 架構圖 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">目標架構</div>
+  <div class="page-title">三層串接：<span class="em">官網 → API Server → HIS</span></div>
+  <div class="body">
+    <div class="arch">
+      <svg viewBox="0 0 1180 300" role="img" aria-label="三層架構圖：WordPress 官網透過 HTTPS 呼叫 API Server，API Server 再以 Oracle Net 連線 HIS 資料庫">
+        <defs>
+          <marker id="ah" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto">
+            <path d="M0,1 L8,4.5 L0,8 z" fill="#0E7490"/>
+          </marker>
+        </defs>
+
+        <!-- 民眾 -->
+        <rect x="4" y="96" width="118" height="72" rx="12" fill="#fff" stroke="#e6e6e6" stroke-width="1.5"/>
+        <text x="63" y="127" text-anchor="middle" font-size="17" font-weight="800" fill="#211d1b">民眾</text>
+        <text x="63" y="149" text-anchor="middle" font-size="13" fill="#6b6b6b">瀏覽器</text>
+
+        <line x1="126" y1="132" x2="184" y2="132" stroke="#0E7490" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="155" y="122" text-anchor="middle" font-size="12" font-weight="700" fill="#0E7490">HTTPS</text>
+
+        <!-- WordPress -->
+        <rect x="190" y="56" width="256" height="152" rx="14" fill="#FBFAF7" stroke="#0E7490" stroke-width="2"/>
+        <rect x="190" y="56" width="256" height="30" rx="14" fill="#0E7490"/>
+        <rect x="190" y="72" width="256" height="14" fill="#0E7490"/>
+        <text x="318" y="77" text-anchor="middle" font-size="14.5" font-weight="800" fill="#fff">WordPress 官網</text>
+        <text x="318" y="110" text-anchor="middle" font-size="15" font-weight="700" fill="#211d1b">掛號 UI · 查詢 · 進度</text>
+        <text x="318" y="134" text-anchor="middle" font-size="13.5" fill="#6b6b6b">公告 · 門診表 · 衛教內容</text>
+        <line x1="212" y1="150" x2="424" y2="150" stroke="#e6e6e6" stroke-width="1"/>
+        <text x="318" y="171" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0E7490">CTK Pro 維運</text>
+        <text x="318" y="191" text-anchor="middle" font-size="12" fill="#9a9a9a">不儲存任何病患資料</text>
+
+        <line x1="450" y1="132" x2="512" y2="132" stroke="#0E7490" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="481" y="122" text-anchor="middle" font-size="12" font-weight="700" fill="#0E7490">HTTPS</text>
+        <text x="481" y="149" text-anchor="middle" font-size="11.5" fill="#6b6b6b">JSON</text>
+
+        <!-- API Server -->
+        <rect x="518" y="34" width="272" height="196" rx="14" fill="#F2F7F9" stroke="#0E7490" stroke-width="2.5"/>
+        <rect x="518" y="34" width="272" height="30" rx="14" fill="#0E7490"/>
+        <rect x="518" y="50" width="272" height="14" fill="#0E7490"/>
+        <text x="654" y="55" text-anchor="middle" font-size="14.5" font-weight="800" fill="#fff">API Server（貴院提供）</text>
+        <text x="654" y="88" text-anchor="middle" font-size="15.5" font-weight="800" fill="#211d1b">Windows Server + IIS + PHP</text>
+        <text x="654" y="112" text-anchor="middle" font-size="13.5" fill="#6b6b6b">交易與鎖控制 · 參數化查詢</text>
+        <text x="654" y="133" text-anchor="middle" font-size="13.5" fill="#6b6b6b">稽核 log · 速率限制 · 驗證碼</text>
+        <line x1="540" y1="150" x2="768" y2="150" stroke="#cfe0e6" stroke-width="1"/>
+        <text x="654" y="172" text-anchor="middle" font-size="13" font-weight="800" fill="#0E7490">唯一能連 HIS 的節點</text>
+        <text x="654" y="194" text-anchor="middle" font-size="12" fill="#9a9a9a">程式：CTK Pro　主機：貴院</text>
+        <text x="654" y="215" text-anchor="middle" font-size="12" fill="#9a9a9a">Oracle Instant Client + oci8</text>
+
+        <line x1="794" y1="132" x2="856" y2="132" stroke="#0E7490" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="825" y="122" text-anchor="middle" font-size="12" font-weight="700" fill="#0E7490">Oracle Net</text>
+
+        <!-- HIS -->
+        <rect x="862" y="56" width="256" height="152" rx="14" fill="#FBFAF7" stroke="#3B4E8C" stroke-width="2"/>
+        <rect x="862" y="56" width="256" height="30" rx="14" fill="#3B4E8C"/>
+        <rect x="862" y="72" width="256" height="14" fill="#3B4E8C"/>
+        <text x="990" y="77" text-anchor="middle" font-size="14.5" font-weight="800" fill="#fff">HIS Oracle 資料庫</text>
+        <text x="990" y="108" text-anchor="middle" font-size="13.5" fill="#6b6b6b">REGMLIMT · REGMREGS</text>
+        <text x="990" y="129" text-anchor="middle" font-size="13.5" fill="#6b6b6b">REGMCHRT · REGMDEPT</text>
+        <text x="990" y="150" text-anchor="middle" font-size="13.5" fill="#6b6b6b">APSMPASW · CHRMFLAG</text>
+        <line x1="884" y1="164" x2="1096" y2="164" stroke="#e6e6e6" stroke-width="1"/>
+        <text x="990" y="185" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3B4E8C">貴院維運</text>
+
+        <!-- 底部說明 -->
+        <text x="318" y="262" text-anchor="middle" font-size="13" font-weight="700" fill="#9a9a9a">對外網段</text>
+        <text x="654" y="262" text-anchor="middle" font-size="13" font-weight="700" fill="#9a9a9a">院內 / DMZ（待確認）</text>
+        <text x="990" y="262" text-anchor="middle" font-size="13" font-weight="700" fill="#9a9a9a">院內核心網段</text>
+        <line x1="190" y1="274" x2="446" y2="274" stroke="#e6e6e6" stroke-width="2"/>
+        <line x1="518" y1="274" x2="790" y2="274" stroke="#e6e6e6" stroke-width="2"/>
+        <line x1="862" y1="274" x2="1118" y2="274" stroke="#e6e6e6" stroke-width="2"/>
+      </svg>
+    </div>
+
+    <div class="three" style="margin-top:22px;">
+      <div class="card soft"><h3 style="font-size:18px;">為什麼要中間這層</h3>
+        <p style="font-size:15.5px;">官網是對外 CMS，攻擊面大。中間層讓官網在<b style="color:var(--ink);">網路層根本到不了 HIS</b>。</p></div>
+      <div class="card soft"><h3 style="font-size:18px;">防火牆只需一條規則</h3>
+        <p style="font-size:15.5px;">僅開放 <b style="color:var(--ink);">API 主機 → HIS 資料庫</b>，並可綁定來源 IP 白名單。</p></div>
+      <div class="card soft"><h3 style="font-size:18px;">未來可直接擴充</h3>
+        <p style="font-size:15.5px;">同一套 API 之後可餵給 <b style="color:var(--ink);">LINE 官方帳號、App</b>，不需重寫。</p></div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P4 環境、連線與權限 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">需要貴院協助</div>
+  <div class="page-title">聚焦確認<span class="em">三件事</span></div>
+  <div class="body">
+    <div class="three" style="align-items:start;">
+
+      <div class="card edge">
+        <h3><span class="num-chip">1</span>網路連線</h3>
+        <p style="margin-bottom:8px;">貴院上次提到的 VPN 是 <b style="color:var(--ink);">Fortinet</b>，是否正確？</p>
+        <div style="background:#EAF6EF;border-radius:9px;padding:9px 11px;margin-bottom:10px;font-size:13.5px;line-height:1.62;color:var(--muted);">
+          <b style="color:#1B7A4B;">我方已完成</b><br>
+          · 申請書已送出<br>
+          · 申請 <b style="color:var(--ink);">2 組帳號</b><br>
+          · NDA 已簽署
+        </div>
+        <div style="font-size:14px;font-weight:800;color:var(--blue);margin-bottom:5px;">需開通的 Port</div>
+        <table class="t" style="font-size:13.5px;">
+          <tr><th style="width:26%;padding:6px 9px;">Port</th><th style="padding:6px 9px;">用途</th></tr>
+          <tr><td style="padding:6px 9px;"><b>22</b></td><td style="padding:6px 9px;">SSH　遠端部署與維運</td></tr>
+          <tr><td style="padding:6px 9px;"><b>80 / 443</b></td><td style="padding:6px 9px;">HTTP / HTTPS　網站與 API</td></tr>
+          <tr><td style="padding:6px 9px;"><b>3306</b></td><td style="padding:6px 9px;">MySQL　WordPress 主機</td></tr>
+        </table>
+        <p style="font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.55;">
+          另需確認 <b style="color:var(--ink);">API 主機 → HIS Oracle</b> 的連線埠號。
+        </p>
+      </div>
+
+      <div class="card edge">
+        <h3><span class="num-chip">2</span>兩台主機</h3>
+        <p style="margin-bottom:10px;">本案需要兩台主機，用途與作業系統不同。</p>
+
+        <div style="background:var(--paper);border-radius:9px;padding:10px 12px;margin-bottom:10px;">
+          <div style="font-size:14.5px;font-weight:800;color:var(--blue);margin-bottom:4px;">A　Linux VM</div>
+          <div style="font-size:14px;line-height:1.62;color:var(--muted);">
+            供我方安裝 <b style="color:var(--ink);">WordPress · PHP · MySQL</b><br>
+            官網前台與掛號 UI
+          </div>
+        </div>
+
+        <div style="background:var(--paper);border-radius:9px;padding:10px 12px;margin-bottom:10px;">
+          <div style="font-size:14.5px;font-weight:800;color:var(--blue);margin-bottom:4px;">B　Windows Server</div>
+          <div style="font-size:14px;line-height:1.62;color:var(--muted);">
+            貴院提供，放 <b style="color:var(--ink);">API</b><br>
+            IIS + PHP + Oracle Client<br>
+            遠端桌面連線　<b style="color:var(--ink);">Port 3389</b>
+          </div>
+        </div>
+
+        <ul class="bul tight">
+          <li>建議規格　4 vCPU / 8GB / 100GB</li>
+          <li>安裝與維運</li>
+          <li>遠端管理權限</li>
+        </ul>
+      </div>
+
+      <div class="card edge">
+        <h3><span class="num-chip">3</span>Oracle 規格</h3>
+        <p style="margin-bottom:10px;">API 程式已完成，改接 Oracle 需要以下項目。</p>
+
+        <div style="font-size:14px;font-weight:800;color:var(--blue);margin-bottom:5px;">帳號</div>
+        <ul class="bul tight" style="margin-bottom:10px;">
+          <li>專用帳號，最小權限</li>
+          <li>7 張表：REGMLIMT · REGMREGS<br>REGMCHRT · REGMDEPT · APSMPASW<br>CHRMFLAG · REGCCHRT</li>
+          <li><b>測試環境</b>　建議先於測試庫開發</li>
+        </ul>
+
+        <div style="font-size:14px;font-weight:800;color:var(--blue);margin-bottom:5px;">規格文件</div>
+        <ul class="bul tight">
+          <li>7 張表 DDL</li>
+          <li><code style="font-size:13.5px;">lim_cond</code> / <code style="font-size:13.5px;">lim_set</code> 120 字元定義</li>
+          <li>取消掛號如何回寫額度</li>
+          <li>Oracle 版本與字元集</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P5 分工與待辦 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">下一步</div>
+  <div class="body" style="justify-content:flex-start;padding-top:26px;">
+
+    <div class="three" style="margin-bottom:16px;">
+
+      <div class="card edge" style="padding:15px 18px;">
+        <h3 style="font-size:19px;"><span class="num-chip" style="width:32px;height:32px;font-size:17px;">1</span>網路連線</h3>
+        <ul class="bul tight" style="margin-top:2px;">
+          <li>VPN 是否為 <b>Fortinet</b>？</li>
+          <li>帳號開通時程</li>
+          <li>開通 Port <b>22 · 80 · 443 · 3306</b></li>
+          <li>HIS Oracle 連線　<b>(1521?)</b></li>
+          <li>Windows 遠端連線　<b>(3389?)</b></li>
+        </ul>
+      </div>
+
+      <div class="card edge" style="padding:15px 18px;">
+        <h3 style="font-size:19px;"><span class="num-chip" style="width:32px;height:32px;font-size:17px;">2</span>兩台主機</h3>
+        <ul class="bul tight" style="margin-top:2px;">
+          <li>提供 <b>Linux VM</b></li>
+          <li>提供 <b>Windows Server</b></li>
+          <li>環境安裝</li>
+          <li>遠端存取權限層級</li>
+        </ul>
+      </div>
+
+      <div class="card edge" style="padding:15px 18px;">
+        <h3 style="font-size:19px;"><span class="num-chip" style="width:32px;height:32px;font-size:17px;">3</span>Oracle</h3>
+        <ul class="bul tight" style="margin-top:2px;">
+          <li>核發<b>測試帳號</b></li>
+          <li>提供 <b>7 張表 DDL</b></li>
+          <li><code style="font-size:13.5px;">lim_cond</code> 規格說明</li>
+          <li>取消掛號回寫方式</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="two" style="align-items:start;">
+
+      <div class="card soft">
+        <h3 style="font-size:20px;">權責劃分</h3>
+        <table class="t" style="margin-top:4px;font-size:14.5px;">
+          <tr><th style="width:58%;padding:6px 12px;">項目</th><th style="padding:6px 12px;">負責方</th></tr>
+          <tr><td style="padding:5px 12px;">WordPress 官網前台</td><td style="padding:6px 12px;"><b>CTK Pro</b></td></tr>
+          <tr><td style="padding:5px 12px;">API 程式開發與改接 Oracle</td><td style="padding:6px 12px;"><b>CTK Pro</b></td></tr>
+          <tr><td style="padding:5px 12px;">兩台主機提供與維運</td><td style="padding:6px 12px;">貴院</td></tr>
+          <tr><td style="padding:5px 12px;">PHP / Oracle Client 安裝</td><td style="padding:6px 12px;">雙方協作</td></tr>
+          <tr><td style="padding:5px 12px;">VPN · 防火牆 · Oracle 權限</td><td style="padding:6px 12px;">貴院</td></tr>
+          <tr><td style="padding:5px 12px;">資料表規格說明</td><td style="padding:6px 12px;">貴院</td></tr>
+        </table>
+      </div>
+
+      <div class="card edge">
+        <h3 style="font-size:20px;">後續流程</h3>
+        <div style="background:var(--paper);border-radius:10px;padding:12px 14px;margin-top:4px;">
+          <div style="font-size:15px;line-height:1.85;color:var(--muted);">
+            <b style="color:var(--ink);">① 取得主機與 VPN</b>　→　部署環境<br>
+            <span style="color:var(--blue);">↓</span><br>
+            <b style="color:var(--ink);">② 取得 Oracle 帳號與規格</b>　→　API 改接<br>
+            <span style="color:var(--blue);">↓</span><br>
+            <b style="color:var(--ink);">③ 測試環境整合驗證</b><br>
+            <span style="color:var(--blue);">↓</span><br>
+            <b style="color:var(--ink);">④ 正式上線</b>
+          </div>
+        </div>
+        <div class="card-foot" style="margin-top:10px;padding-top:9px;">前台與 API 程式皆已完成　·　請確認雙方窗口與下次會議時間</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+</div><!-- /#stage -->
+
+<!-- 補充議題（按 Q） -->
+<div id="qa">
+  <h2>補充議題與備詢</h2>
+  <div class="hint">此區不在簡報主流程，按 Q 或 Esc 關閉。</div>
+  <div class="qgrid">
+    <div class="qa-item"><div class="q"><span>Q1</span>為什麼不讓官網直接連 HIS？</div><div class="a"><span>A</span>官網是對外 CMS，外掛與佈景漏洞是常態。若直連，任一外掛漏洞都可能升級為 HIS 資料外洩。中間層讓官網在網路層到不了 HIS，防火牆也只需一條規則。</div></div>
+    <div class="qa-item"><div class="q"><span>Q2</span>Windows Server 上跑 PHP 穩定嗎？</div><div class="a"><span>A</span>IIS + PHP FastCGI 是成熟方案。選它而非容器，正是因為貴院現行 ASP 就在 IIS 上，維運習慣一致、交接阻力最小。</div></div>
+    <div class="qa-item"><div class="q"><span>Q3</span>會不會影響現行掛號系統？</div><div class="a"><span>A</span>新系統為獨立主機、獨立 Oracle 帳號，可與現行 ASP 並行，舊系統不需停用。建議先在測試環境驗證，確認無誤後再切換。</div></div>
+    <div class="qa-item"><div class="q"><span>Q4</span>重號問題怎麼修？</div><div class="a"><span>A</span>將「找號→更新→寫入」包成單一交易，並以 SELECT FOR UPDATE 鎖住該筆 regmlimt。我方 API 目前已是這個作法。上線前會與貴院確認對櫃檯掛號的影響，並於測試環境驗證。</div></div>
+    <div class="qa-item"><div class="q"><span>Q5</span>初診可以網路掛號嗎？</div><div class="a"><span>A</span>現行系統不支援，<b>本期亦不納入</b>。先把複診流程完整串通、穩定上線後，再另案評估。屆時需討論如何在 HIS 建立新病歷。</div></div>
+    <div class="qa-item"><div class="q"><span>Q6</span>病患資料會存在你們那裡嗎？</div><div class="a"><span>A</span>不會。一律不落地，僅即時轉發。WordPress 資料庫不儲存任何身分證號、病歷號、姓名或生日。</div></div>
+    <div class="qa-item"><div class="q"><span>Q7</span>如果 VPN 申請要跑很久？</div><div class="a"><span>A</span>可先開測試環境並行：貴院提供 Oracle 測試庫與測試機先行開發；或由我方提供部署腳本與文件，貴院 IT 執行、我方遠端指導。</div></div>
+    <div class="qa-item"><div class="q"><span>Q8</span>API 規格會綁死嗎？</div><div class="a"><span>A</span>不會。採標準 REST + JSON，統一回應格式，文件完整交付。貴院日後可自行接手或轉由其他廠商維護。</div></div>
+    <div class="qa-item"><div class="q"><span>Q9</span>掛號尖峰（早上七點）扛得住嗎？</div><div class="a"><span>A</span>API 獨立於 WordPress，不需 bootstrap CMS，可單獨調校與擴充。另會加上速率限制與驗證碼，防止腳本搶號。</div></div>
+    <div class="qa-item"><div class="q"><span>Q10</span>API 會沿用原本 ASP 的存取方式嗎？</div><div class="a"><span>A</span>是。資料表、欄位、寫入邏輯都比照現行 ASP，不改動 HIS 結構。差別只在改用參數化查詢與單一交易，把重號與額度漏失的風險補起來。</div></div>
+    <div class="qa-item"><div class="q"><span>Q11</span>研讀舊程式時是否有其他發現？</div><div class="a"><span>A</span>有幾項可在後續技術對接時一併討論的細節（連線設定檔的副檔名、掛號截止時間的判斷邊界等）。新版皆已處理，會後可另提書面說明供貴院參考。</div></div>
+  </div>
+</div>
+
+<div class="navbar" id="navbar">
+  <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">5</span></span>
+  <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
+</div>
+<div class="progress" id="progress"></div>
+<div id="help">← → / 點兩側 / 右下箭頭 翻頁　·　F 全螢幕　·　Q 補充議題　·　Home／End 首尾</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let cur=0;
+  const stage=document.getElementById('stage');
+  const progress=document.getElementById('progress');
+  const curNo=document.getElementById('curNo');
+  const totNo=document.getElementById('totNo');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  const qa=document.getElementById('qa');
+  totNo.textContent=total;
+
+  function clampHash(){const h=parseInt(location.hash.replace('#',''),10);return (h>=1&&h<=total)?h-1:0;}
+  function show(i){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    curNo.textContent=cur+1;
+    progress.style.width=(cur/(total-1))*100+'%';
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  const next=()=>show(cur+1), prev=()=>show(cur-1);
+
+  function fit(){const s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+  window.addEventListener('resize',fit);
+
+  document.addEventListener('keydown',e=>{
+    if(qa.classList.contains('show')){
+      if(['q','Q','Escape'].includes(e.key)){qa.classList.remove('show');e.preventDefault();}
+      return;
+    }
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': next();e.preventDefault();break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': prev();e.preventDefault();break;
+      case 'Home': show(0);e.preventDefault();break;
+      case 'End': show(total-1);e.preventDefault();break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.(); e.preventDefault();break;
+      case 'q': case 'Q': qa.classList.add('show');e.preventDefault();break;
+    }
+  });
+
+  prevBtn.addEventListener('click',e=>{e.stopPropagation();prev();});
+  nextBtn.addEventListener('click',e=>{e.stopPropagation();next();});
+
+  // 點畫面左右各 1/6 才翻頁；中間 2/3 留給選字／點按
+  document.addEventListener('click',e=>{
+    if(qa.classList.contains('show'))return;
+    if(e.target.closest('#navbar')||e.target.closest('a')||e.target.closest('button'))return;
+    const w=window.innerWidth;
+    if(e.clientX < w/6) prev();
+    else if(e.clientX > w*5/6) next();
+  });
+
+  let tx=0,ty=0;
+  document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(qa.classList.contains('show'))return;
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev();}
+  },{passive:true});
+
+  fit(); show(clampHash());
+  setTimeout(()=>{document.getElementById('help').style.opacity='0';},5000);
+</script>
+</body>
+</html>
