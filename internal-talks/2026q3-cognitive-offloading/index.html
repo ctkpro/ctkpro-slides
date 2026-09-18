@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>別把判斷也外包出去｜CTK Pro 內部分享</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d1b;
+    --muted:#6b6b6b;
+    --soft:#9a9a9a;
+    --line:#e6e6e6;
+    --bg:#FBFAF7;
+    --paper:#f7f8fb;
+    --blue:#2f4fb0;
+    --blue-700:#233c86;
+    --blue-300:#8fa4dd;
+    --blue-50:#eef2fc;
+    --warn:#9A6700;
+    --warn-300:#e0cfa4;
+    --warn-50:#FBF3E2;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',-apple-system,'Helvetica Neue',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.35;
+    overflow:hidden;
+  }
+
+  /* ---- 投影片容器 ---- */
+  .deck{ position:fixed; inset:0; }
+  .slide{
+    position:absolute; inset:0;
+    display:none;
+    padding:5vh 6vw;
+    opacity:0;
+    transition:opacity .35s ease;
+  }
+  .slide.active{ display:flex; opacity:1; }
+  .slide.center{ flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+  .nw{ white-space:nowrap; }
+
+  /* ---- Logo ---- */
+  .logos{ display:flex; align-items:center; gap:18px; margin-bottom:6vh; }
+  .logos img.ctk{ height:26px; width:auto; }
+  .corner-logo{ position:absolute; top:4vh; left:6vw; height:18px; width:auto; opacity:.7; }
+
+  /* ---- 文字樣式（高橋流：大字、極簡） ---- */
+  .kicker{ color:var(--muted); font-weight:500; letter-spacing:.04em; font-size:clamp(15px,1.9vw,22px); margin-bottom:2.4vh; }
+  h1.title{ font-weight:900; font-size:clamp(32px,5.6vw,84px); line-height:1.16; letter-spacing:-.01em; }
+  h1.title .em{ color:var(--blue); }
+  .subtitle{ color:var(--muted); font-weight:500; font-size:clamp(17px,2.4vw,32px); margin-top:3.2vh; }
+  .footer-line{ color:var(--muted); font-size:clamp(14px,1.7vw,20px); margin-top:7vh; letter-spacing:.02em; }
+
+  h2.head{ font-weight:900; font-size:clamp(27px,4.5vw,66px); line-height:1.2; letter-spacing:-.01em; }
+  h2.head.sm{ font-size:clamp(24px,3.6vw,52px); }
+  h2.head .em{ color:var(--blue); }
+  h2.head .un{ background:linear-gradient(transparent 62%, var(--blue-50) 62%); }
+  .lead{ color:var(--muted); font-weight:500; font-size:clamp(16px,2.1vw,28px); margin-top:3vh; max-width:1020px; }
+  .note{ color:var(--muted); font-size:clamp(14px,1.7vw,20px); margin-top:3.2vh; max-width:1040px; }
+  .note strong, .lead strong{ color:var(--ink); }
+  .lead .em, .note .em{ color:var(--blue); }
+
+  /* 章節分隔 */
+  .actno{ color:var(--blue-300); font-weight:900; font-size:clamp(15px,1.9vw,22px); letter-spacing:.22em; margin-bottom:2.6vh; }
+
+  /* 重點清單 */
+  .points{ list-style:none; margin-top:3.4vh; display:flex; flex-direction:column; gap:2vh; max-width:1040px; width:100%; text-align:left; }
+  .points li{ display:flex; align-items:flex-start; gap:18px; font-weight:700; font-size:clamp(18px,2.5vw,34px); }
+  .points .n{ color:var(--blue); font-weight:900; flex:0 0 auto; }
+  .points small{ display:block; color:var(--muted); font-weight:500; font-size:.62em; margin-top:.3em; line-height:1.4; }
+  .points.compact{ gap:1.5vh; }
+  .points.fit{ width:auto; }
+  .points.compact li{ font-size:clamp(16px,2.05vw,28px); }
+
+  /* ---- 大字事實卡 ---- */
+  .facts{ list-style:none; margin-top:3.4vh; display:flex; flex-direction:column; gap:2.2vh; max-width:1120px; width:100%; }
+  .facts li{ display:flex; align-items:baseline; gap:22px; text-align:left; }
+  .facts .fn{ color:var(--blue); font-weight:900; font-size:clamp(17px,2.2vw,31px); flex:0 0 auto; line-height:1.1; min-width:4.6em; }
+  .facts .ft{ font-weight:700; font-size:clamp(16px,2.05vw,29px); line-height:1.3; }
+  .facts .ft b{ color:var(--blue); }
+  .facts .ft small{ display:block; color:var(--muted); font-weight:500; font-size:.62em; margin-top:.3em; }
+  .facts.tight{ gap:1.7vh; }
+
+  /* ---- 雙欄對照（同重量：淡底 + 左色邊） ---- */
+  .compare2{ display:flex; gap:1.8vw; margin-top:4vh; width:100%; max-width:1160px; text-align:left; }
+  .compare2 .c{ flex:1 1 0; background:var(--paper); border-left:5px solid var(--blue-300); border-radius:0 14px 14px 0; padding:3vh 2vw; }
+  .compare2 .ctag{ font-weight:900; color:var(--blue); font-size:clamp(13px,1.5vw,19px); letter-spacing:.06em; }
+  .compare2 .ctit{ font-weight:900; font-size:clamp(19px,2.5vw,34px); margin-top:1.2vh; line-height:1.25; }
+  .compare2 .cbig{ font-weight:900; color:var(--blue); font-size:clamp(28px,4.2vw,58px); margin-top:1.4vh; line-height:1.05; letter-spacing:-.01em; }
+  .compare2 .cbig .ar{ color:var(--soft); font-weight:500; margin:0 .2em; }
+  .compare2 .cdesc{ color:var(--muted); font-size:clamp(13px,1.6vw,20px); margin-top:1.8vh; line-height:1.55; }
+  .compare2 .cdesc b{ color:var(--ink); }
+
+  /* ---- 大引言（吳恩達） ---- */
+  .quote{ width:100%; max-width:1080px; margin-top:3.6vh; text-align:left; border-left:5px solid var(--blue); padding:.4vh 0 .4vh 2vw; }
+  .quote .zh{ font-weight:900; font-size:clamp(20px,2.9vw,40px); line-height:1.35; }
+  .quote .zh .em{ color:var(--blue); }
+  .quote .en{ color:var(--soft); font-size:clamp(12px,1.45vw,18px); margin-top:1vh; font-style:italic; line-height:1.45; }
+  .quote + .quote{ margin-top:2.6vh; }
+
+  /* ---- 30/70 切分 ---- */
+  .split{ display:flex; width:100%; max-width:1120px; margin-top:4.4vh; border-radius:16px; overflow:hidden; border:1px solid var(--line); }
+  .split .part{ padding:3vh 1.8vw; text-align:left; }
+  .split .ai{ flex:0 0 35%; background:var(--paper); }
+  .split .human{ flex:1 1 auto; background:var(--blue-50); border-left:1px solid var(--blue-300); }
+  .split .pct{ font-weight:900; font-size:clamp(26px,3.8vw,54px); line-height:1; color:var(--soft); }
+  .split .human .pct{ color:var(--blue); }
+  .split .plab{ font-weight:900; font-size:clamp(16px,2vw,27px); margin-top:1.2vh; }
+  .split .pdesc{ color:var(--muted); font-size:clamp(13px,1.55vw,20px); margin-top:1vh; line-height:1.55; }
+  .split .pdesc b{ color:var(--ink); }
+
+  /* ---- 大金句頁 ---- */
+  .bigquote{ font-weight:900; font-size:clamp(27px,4.6vw,64px); line-height:1.28; letter-spacing:-.01em; margin-top:1vh; max-width:1200px; }
+  .bigquote .em{ color:var(--blue); }
+  .bigquote.sm{ font-size:clamp(22px,3.4vw,48px); }
+
+  /* ---- 長條圖 ---- */
+  .bars{ width:100%; max-width:1040px; margin-top:4vh; display:flex; flex-direction:column; gap:1.5vh; text-align:left; }
+  .bars .row{ display:grid; grid-template-columns:minmax(9em,13em) 1fr 4.2em; align-items:center; gap:1.2vw; }
+  .bars .lab{ font-weight:700; font-size:clamp(13px,1.65vw,22px); line-height:1.3; }
+  .bars .lab small{ display:block; color:var(--muted); font-weight:500; font-size:.78em; }
+  .bars .track{ height:clamp(18px,3.2vh,32px); background:#efede8; border-radius:8px; overflow:hidden; }
+  .bars .fill{ height:100%; background:var(--blue-300); border-radius:8px; }
+  .bars .fill.hi{ background:var(--blue); }
+  .bars .fill.bad{ background:var(--warn); }
+  .bars .val{ font-weight:900; font-size:clamp(15px,2vw,27px); color:var(--blue); text-align:right; }
+  .bars .val.bad{ color:var(--warn); }
+  .bars .gap{ height:.8vh; }
+  .bars .grp{ color:var(--muted); font-weight:700; font-size:clamp(12px,1.4vw,17px); letter-spacing:.08em; margin-top:.6vh; }
+  .legend{ display:flex; gap:2vw; justify-content:center; margin-top:2.2vh; color:var(--muted); font-size:clamp(12px,1.4vw,17px); }
+  .legend i{ display:inline-block; width:.9em; height:.9em; border-radius:3px; margin-right:.4em; vertical-align:-.1em; }
+
+  /* ---- 判斷窗口：正／負循環 ---- */
+  .fork{ width:100%; max-width:1160px; margin-top:3vh; }
+  .fork .win{ margin:0 auto; width:fit-content; padding:1.4vh 2.2vw; border:2px solid var(--ink); border-radius:14px; background:#fff;
+              font-weight:900; font-size:clamp(16px,2.1vw,28px); }
+  .fork .win small{ display:block; color:var(--muted); font-weight:500; font-size:.62em; margin-top:.3em; }
+  .fork .branches{ display:flex; gap:2vw; margin-top:2.4vh; }
+  .fork .path{ flex:1 1 0; border-radius:16px; padding:2.2vh 1.6vw; text-align:left; border:1px solid var(--line); }
+  .fork .path.up{ background:var(--blue-50); border-color:var(--blue-300); }
+  .fork .path.down{ background:var(--warn-50); border-color:var(--warn-300); }
+  .fork .ptag{ font-weight:900; font-size:clamp(16px,2.1vw,28px); }
+  .fork .up .ptag{ color:var(--blue); }
+  .fork .down .ptag{ color:var(--warn); }
+  .fork .pflow{ list-style:none; margin-top:1.2vh; display:flex; flex-direction:column; }
+  .fork .pflow li{ font-weight:500; font-size:clamp(13px,1.6vw,21px); line-height:1.4; }
+  .fork .pflow li + li::before{ content:'↓'; display:block; color:var(--soft); font-weight:700; line-height:1.2; }
+  .fork .pend{ margin-top:1.4vh; padding-top:1.2vh; border-top:1px dashed var(--line); font-weight:900; font-size:clamp(17px,2.2vw,30px); }
+  .fork .up .pend{ color:var(--blue); border-color:var(--blue-300); }
+  .fork .down .pend{ color:var(--warn); border-color:var(--warn-300); }
+  .fork .pend small{ display:block; font-weight:500; color:var(--muted); font-size:.56em; margin-top:.3em; }
+
+  /* ---- 三道檢驗 ---- */
+  .tri{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.6vw; margin-top:4.4vh; width:100%; max-width:1160px; }
+  .tri .t{ border:1px solid var(--line); border-radius:18px; background:#fff; padding:3.4vh 1.4vw; text-align:center; }
+  .tri .tn{ color:var(--blue-300); font-weight:900; font-size:clamp(14px,1.6vw,20px); letter-spacing:.14em; }
+  .tri .tt{ font-weight:900; font-size:clamp(22px,3.2vw,46px); margin-top:1.2vh; color:var(--blue); }
+  .tri .td{ color:var(--muted); font-size:clamp(13px,1.6vw,20px); margin-top:1.6vh; line-height:1.55; }
+  .tri .td b{ color:var(--ink); }
+
+  /* ---- 招式表（逐列出現） ---- */
+  .moves{ width:100%; max-width:1180px; margin-top:2.6vh; border-collapse:separate; border-spacing:0; text-align:left; }
+  .moves th{ font-weight:900; font-size:clamp(14px,1.75vw,23px); padding:1.1vh 1.2vw; color:var(--ink); border-bottom:2px solid var(--ink); }
+  .moves th:first-child{ width:12%; }
+  .moves td{ padding:1.6vh 1.2vw; border-bottom:1px solid var(--line); vertical-align:top;
+             font-size:clamp(13px,1.6vw,21px); line-height:1.45; font-weight:500; }
+  .moves td.k{ font-weight:900; color:var(--blue); white-space:nowrap; font-size:clamp(14px,1.8vw,24px); }
+  .moves td b{ font-weight:900; }
+  .moves th small{ display:block; color:var(--muted); font-weight:500; font-size:.7em; margin-top:.2em; }
+  .strips{ display:flex; gap:1.4vw; width:100%; max-width:1180px; margin-top:2.2vh; }
+  .strip{ flex:1 1 0; background:var(--blue-50); border-left:5px solid var(--blue); border-radius:0 14px 14px 0; padding:1.6vh 1.4vw; text-align:left; }
+  .strip.alt{ flex:0 0 38%; background:var(--paper); border-left-color:var(--blue-300); }
+  .strip .sk{ color:var(--blue); font-weight:900; font-size:clamp(12px,1.4vw,17px); letter-spacing:.06em; }
+  .strip .sq{ font-weight:900; font-size:clamp(14px,1.75vw,23px); margin-top:.6vh; line-height:1.4; }
+
+  /* ---- 認知複利示意曲線 ---- */
+  .curve{ width:100%; max-width:1000px; margin-top:2.6vh; height:auto; max-height:44vh; }
+  .curve .axis{ stroke:var(--soft); stroke-width:1.5; }
+  .curve .ax{ fill:var(--muted); font-size:16px; font-weight:500; }
+  .curve .up{ fill:none; stroke:var(--blue); stroke-width:5; stroke-linecap:round; }
+  .curve .down{ fill:none; stroke:var(--warn); stroke-width:5; stroke-linecap:round; stroke-dasharray:2 10; }
+  .curve .up-dot{ fill:var(--blue); } .curve .down-dot{ fill:var(--warn); }
+  .curve .lu{ fill:var(--blue); font-size:22px; font-weight:900; }
+  .curve .ld{ fill:var(--warn); font-size:22px; font-weight:900; }
+  .tiny{ color:var(--soft); font-size:clamp(11px,1.2vw,14px); margin-top:1.4vh; }
+
+  /* 逐步出現 */
+  .frag{ opacity:0; transform:translateY(8px); transition:opacity .35s ease, transform .35s ease; }
+  .frag.on{ opacity:1; transform:none; }
+
+  /* ---- 互動步驟 ---- */
+  .steps{ display:flex; gap:1.6vw; margin-top:4.4vh; width:100%; max-width:1140px; }
+  .steps .s{ flex:1 1 0; text-align:left; }
+  .steps .sn{ color:var(--blue); font-weight:900; font-size:clamp(13px,1.5vw,19px); letter-spacing:.1em; }
+  .steps .st{ font-weight:900; font-size:clamp(17px,2.3vw,32px); margin-top:1.2vh; line-height:1.25; }
+  .steps .sd{ color:var(--muted); font-size:clamp(12px,1.5vw,19px); margin-top:1.2vh; line-height:1.5; }
+  .steps .s + .s{ border-left:1px solid var(--line); padding-left:1.6vw; }
+
+  /* ---- 結尾 / 謝謝頁 ---- */
+  .thanks{ font-weight:900; font-size:clamp(64px,15vw,190px); line-height:1; letter-spacing:.04em; margin-top:4vh; }
+  .end-tag{ font-weight:700; font-size:clamp(20px,2.8vw,38px); margin-top:5vh; line-height:1.35; }
+  .end-tag .em{ color:var(--blue); }
+  .end-logo{ height:34px; width:auto; }
+  .end-contact{ color:var(--muted); font-size:clamp(16px,2vw,26px); margin-top:6vh; }
+
+  /* ---- 底部來源小字 ---- */
+  .source{
+    position:absolute; left:6vw; right:6vw; bottom:5.5vh;
+    color:#a9a9a9; font-size:clamp(11px,1.2vw,14px);
+    letter-spacing:.01em; line-height:1.5; text-align:center;
+  }
+  .slide.center.has-source{ padding-bottom:11vh; }
+
+  /* ---- 導覽（可點頁碼 / 進度條 / 提示） ---- */
+  .navbar{ position:fixed; right:24px; bottom:16px; display:flex; align-items:center; gap:10px; z-index:40; color:var(--muted); user-select:none; }
+  .navbar .nav-arrow{ border:none; background:none; cursor:pointer; line-height:1; font-size:26px; color:var(--soft);
+                      padding:2px 9px; border-radius:8px; transition:color .2s,background .2s; }
+  .navbar .nav-arrow:hover{ color:var(--blue); background:var(--blue-50); }
+  .navbar .nav-count{ font-size:15px; font-weight:700; letter-spacing:.12em; min-width:64px; text-align:center; color:var(--muted); }
+  .navbar .nav-count b{ color:var(--ink); }
+  .progress{ position:fixed; left:0; bottom:0; height:3px; background:var(--blue); width:0; transition:width .35s ease; z-index:40; }
+  #help{ position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:30; background:rgba(35,60,134,.94);
+         color:#fff; font-size:13px; padding:8px 16px; border-radius:999px; transition:opacity .6s; }
+
+  /* ---- 響應式 ---- */
+  @media (max-width:760px), (max-aspect-ratio:1/1){
+    .points li, .facts li{ justify-content:flex-start; }
+    .compare2, .steps, .fork .branches, .split, .strips{ flex-direction:column; }
+    .split .human{ border-left:none; border-top:1px solid var(--blue-300); }
+    .tri{ grid-template-columns:1fr; }
+    .steps .s + .s{ border-left:none; padding-left:0; border-top:1px solid var(--line); padding-top:2vh; }
+    .bars .row{ grid-template-columns:8em 1fr 3.4em; }
+    .source{ position:static; margin-top:3vh; }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- ===== 1. 封面 ===== -->
+  <section class="slide center active">
+    <div class="logos">
+      <img class="ctk" src="images/ctkpro-logo.png" alt="CTK Pro">
+    </div>
+    <p class="kicker">CTK Pro · 內部分享</p>
+    <h1 class="title">別把「<span class="em">判斷</span>」<br>也外包出去</h1>
+    <p class="subtitle">用 AI 擴展認知邊界，而不是越用越鈍</p>
+    <p class="footer-line">2026-09-21 週一 Retro　｜　Alfred Kang・CTK Pro</p>
+  </section>
+
+  <!-- ===== 段 0 · 鉤子 ===== -->
+  <!-- 2 -->
+  <section class="slide center">
+    <img class="corner-logo" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <p class="kicker">先問一個問題——不用回答</p>
+    <h2 class="head">上週你交出去的東西<br>拿掉 AI<br>你<span class="em">講得出來</span>嗎？</h2>
+    <p class="lead">改了什麼、為什麼這樣改、為什麼不選另一個做法。</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide center">
+    <p class="kicker">最近我在自己身上，發現一種狀態</p>
+    <h2 class="head">東西做得<span class="em">越來越快</span><br>但想得<span class="un">越來越淺</span></h2>
+    <ul class="points compact fit">
+      <li><span class="n">①</span><span>似懂非懂<small>看起來都對，但說不清楚為什麼對。</small></span></li>
+      <li><span class="n">②</span><span>判斷變虛<small>決定下了，但理由是「AI 說的」。</small></span></li>
+      <li><span class="n">③</span><span>能力在退<small>以前自己想得出來的東西，現在不問 AI 就卡住。</small></span></li>
+    </ul>
+    <p class="note">這是我自己最近發現的狀況，<strong>想跟大家一起把它看清楚</strong>，再換一種用法。</p>
+    <!-- 講者：這裡先認自己，舉一個自己最近「照單全收」的例子 -->
+  </section>
+
+  <!-- ===== 段 1 · 吳恩達 ===== -->
+  <!-- 4 -->
+  <section class="slide center has-source">
+    <p class="actno">01 ｜ 吳恩達怎麼說</p>
+    <h2 class="head sm">這有個名字，叫<span class="em">認知外包</span></h2>
+    <div class="quote">
+      <p class="zh">把工作交給 AI，<span class="em">對推進工作很好</span>；<br>但人記住的東西，<span class="em">會差很多</span>。</p>
+      <p class="en">"when you ask AI to do work for you you're cognitive offloading to AI, which is great … but human retention is much worse"</p>
+    </div>
+    <div class="quote">
+      <p class="zh">我問 AI 前後端的問題，六個月後忘光，<br>要重做的時候，<span class="em">又去問一次</span>。</p>
+      <p class="en">"6 months later I don't remember the answer … I ask AI again"</p>
+    </div>
+    <p class="note">他甚至說：以現在常見的用法，<strong>AI 對學習是「terrible」</strong>。</p>
+    <div class="source">出處：Andrew Ng × Silicon Valley Girl podcast〈The Biggest Opportunities in AI Aren't Where You Think〉2026-08-28｜中文轉述：最佳拍檔 2026-09-15</div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide center has-source">
+    <p class="kicker">那 AI 接走之後，人剩下什麼？</p>
+    <h2 class="head sm">值錢的，是 AI 做不了的<span class="em">那一大塊</span></h2>
+    <div class="split">
+      <div class="part ai">
+        <div class="pct">30–40%</div>
+        <div class="plab">AI 做得掉的</div>
+        <div class="pdesc">寫、查、整理、生成第一版</div>
+      </div>
+      <div class="part human">
+        <div class="pct">60–70%</div>
+        <div class="plab">人要做的</div>
+        <div class="pdesc"><b>判斷、品味、決定做什麼</b><br>人判斷得比 AI 好，靠的是 AI 沒有的「<b>情境優勢</b>」：<br>客戶是誰、專案的來龍去脈、我們踩過的坑。</div>
+      </div>
+    </div>
+    <p class="note">做東西變便宜了，<strong>難的變成「決定做什麼」</strong>——吳恩達叫它「產品管理瓶頸」。</p>
+    <div class="source">出處：同上訪談。"don't do stuff that 30–40% AI can automate … gain your skills to do the other 60–70%"</div>
+  </section>
+
+  <!-- 6 · 核心命題 -->
+  <section class="slide center">
+    <p class="kicker">所以今天的核心，只有一句</p>
+    <p class="bigquote">你沒辦法把關<br><span class="em">你不懂的東西</span>。</p>
+    <p class="note">判斷、整合、審核、把關——全部建立在「<strong>我真的懂</strong>」上面。<br>把「做」外包出去沒關係；<strong>連「懂」也外包出去，我們就把最值錢的那塊交出去了。</strong></p>
+  </section>
+
+  <!-- ===== 段 2 · 證據 ===== -->
+  <!-- 7 · 拿掉工具就不會了 -->
+  <section class="slide center has-source">
+    <p class="actno">02 ｜ 這已經在專業工作者身上發生</p>
+    <h2 class="head sm">拿掉工具，<span class="em">就不會了</span></h2>
+    <div class="compare2">
+      <div class="c">
+        <div class="ctag">內視鏡醫師</div>
+        <div class="ctit">長期用 AI 輔助找息肉之後<br>不用 AI 時的偵測率</div>
+        <div class="cbig">28.4%<span class="ar">→</span>22.4%</div>
+        <div class="cdesc">不是 AI 出錯，是<b>醫師自己的眼力退了</b>。</div>
+      </div>
+      <div class="c">
+        <div class="ctag">會計師</div>
+        <div class="ctit">一套自動化系統用了 7 年<br>停用之後</div>
+        <div class="cbig">不會做<span class="ar">·</span>抓不到錯</div>
+        <div class="cdesc">研究者稱之為「<b>技能侵蝕的惡性循環</b>」。</div>
+      </div>
+    </div>
+    <div class="source">出處：Budzyń et al., Lancet Gastroenterol Hepatol 2025｜Rinta-Kahila et al., Journal of the Association for Information Systems 2023</div>
+  </section>
+
+  <!-- 8 · 資深也看不出錯 -->
+  <section class="slide center has-source">
+    <p class="kicker">那資深的人呢？</p>
+    <h2 class="head sm">資深，也看不出 <span class="em">AI 的錯</span></h2>
+    <p class="lead">放射科醫師判讀 50 張乳房攝影，AI 在旁給分級建議——<strong>其中 12 張，刻意給錯</strong>。</p>
+    <p class="note" style="margin-top:1.4vh">長條＝醫師最後<strong>判對分級的比例</strong></p>
+    <div class="bars" style="margin-top:2.4vh">
+      <div class="grp">新手</div>
+      <div class="row"><div class="lab">AI 建議正確時</div><div class="track"><div class="fill" style="width:79.7%"></div></div><div class="val">80%</div></div>
+      <div class="row"><div class="lab">AI 建議錯誤時</div><div class="track"><div class="fill bad" style="width:19.8%"></div></div><div class="val bad">20%</div></div>
+      <div class="gap"></div>
+      <div class="grp">資深</div>
+      <div class="row"><div class="lab">AI 建議正確時</div><div class="track"><div class="fill hi" style="width:82.3%"></div></div><div class="val">82%</div></div>
+      <div class="row"><div class="lab">AI 建議錯誤時</div><div class="track"><div class="fill bad" style="width:45.5%"></div></div><div class="val bad">46%</div></div>
+    </div>
+    <p class="note">AI 一給錯建議，<strong>新手 8 成判錯，資深也有一半以上判錯</strong>。<br>換成我們：資深工程師 review AI 寫的 code，擋得住的比想像中少。</p>
+    <div class="source">出處：Dratsch et al., "Automation Bias in Mammography", Radiology 2023（判讀正確率）</div>
+  </section>
+
+  <!-- 9 · 越自信錯越多 -->
+  <section class="slide center has-source">
+    <p class="kicker">BCG 顧問實驗：一題超出 AI 能力的任務（答對率）</p>
+    <h2 class="head sm">越相信 AI，<span class="em">錯越多</span></h2>
+    <div class="bars">
+      <div class="row"><div class="lab">不用 AI</div><div class="track"><div class="fill hi" style="width:84.5%"></div></div><div class="val">84.5%</div></div>
+      <div class="row"><div class="lab">用 AI</div><div class="track"><div class="fill" style="width:70.6%"></div></div><div class="val">70.6%</div></div>
+      <div class="row"><div class="lab">用 AI<small>＋上過提示詞課</small></div><div class="track"><div class="fill bad" style="width:60%"></div></div><div class="val bad">60%</div></div>
+    </div>
+    <ul class="points compact fit">
+      <li><span class="n">▸</span><span>上過提示詞課的人錯最多：<strong>學會「怎麼用」，不等於知道「什麼時候不能信」</strong></span></li>
+      <li><span class="n">▸</span><span>錯的答案，<strong>寫得反而更通順、更有說服力</strong></span></li>
+      <li><span class="n">▸</span><span>哪些任務 AI 做不好，<strong>事前看不出來</strong></span></li>
+    </ul>
+    <div class="source">出處：Dell'Acqua et al., "Navigating the Jagged Technological Frontier", HBS／BCG 2023（758 位顧問，答對率）</div>
+  </section>
+
+  <!-- 10 · 出包成真 -->
+  <section class="slide center has-source">
+    <p class="kicker">而且不只在實驗室裡</p>
+    <h2 class="head sm">出包成真，<span class="em">想法也變得一樣</span></h2>
+    <ul class="facts">
+      <li><span class="fn">顧問</span><span class="ft">Deloitte 澳洲給政府的報告，出現 AI 捏造的論文與判決<br>→ <b>退款約 29 萬澳幣</b><small>237 頁的報告，是外部學者讀出問題的。</small></span></li>
+      <li><span class="fn">律師</span><span class="ft">在法庭引用 AI 捏造的判例<br>→ 從 2023 年的一件，累積到 <b>2,000 件以上</b><small>明知有風險，還在增加。</small></span></li>
+      <li><span class="fn">發想</span><span class="ft">用 ChatGPT 發想玩具點子<br>→ <b>9 份獨立作答，取了同一個名字</b><small>用 AI 腦力激盪，點子的多樣性明顯下降。</small></span></li>
+    </ul>
+    <div class="source">出處：Fortune 2025-10-07｜Charlotin, AI Hallucination Cases Database（2026-09）｜Meincke, Nave &amp; Terwiesch, Nature Human Behaviour 2025</div>
+    <!-- 講者：「同一個名字」叫 Build-a-Breeze Castle，細節出自 Wharton 新聞稿，上台前再核對一次 -->
+  </section>
+
+  <!-- 11 · 用進廢退 -->
+  <section class="slide center has-source">
+    <p class="kicker">為什麼會這樣？大腦和技能，都是用進廢退</p>
+    <h2 class="head sm">先退化的不是手<br>是<span class="em">判斷</span></h2>
+    <ul class="facts tight">
+      <li><span class="fn">用了會長</span><span class="ft">倫敦計程車司機背熟整張地圖，<b>海馬迴真的變大</b><small>同一群人學習前後對照；沒考過的人沒有變化。</small></span></li>
+      <li><span class="fn">不用會退</span><span class="ft">技能停用一年，明顯退步；<b>動腦的技能比動手的退得快</b><small>53 篇研究的後設分析。</small></span></li>
+      <li><span class="fn">判斷先走</span><span class="ft">自動駕駛開久了，手還在；<b>先退的是「我在哪、哪裡出錯」</b><small>航空公司機師模擬機測試。</small></span></li>
+      <li><span class="fn">硬體會降</span><span class="ft">反應速度 18 歲到頂、短期記憶約 25 歲到頂，之後慢慢下滑；<br><b>能一路長到 60 多歲的，是累積出來的知識</b><small>你現在的快，靠的是硬體；十年後的判斷，靠的是累積。</small></span></li>
+    </ul>
+    <div class="source">出處：Woollett &amp; Maguire, Current Biology 2011｜Arthur et al., Human Performance 1998｜Casner et al., Human Factors 2014｜Hartshorne &amp; Germine, Psychological Science 2015</div>
+  </section>
+
+  <!-- ===== 段 3 · 核心圖 ===== -->
+  <!-- 12 -->
+  <section class="slide center">
+    <p class="actno">03 ｜ 同一個工具，兩條路</p>
+    <h2 class="head sm">每一次，都是一個<span class="em">判斷窗口</span></h2>
+    <div class="fork">
+      <div class="win">AI 給了一個建議<small>一段程式碼、一份需求、一個分析——要不要採用？</small></div>
+      <div class="branches">
+        <div class="path up">
+          <div class="ptag">停下來，搞懂</div>
+          <ul class="pflow">
+            <li>講得出來？問得倒？不懂的地方當場弄清楚</li>
+            <li>認知邊界往外推一點</li>
+            <li>下一輪判斷更準，更看得出 AI 的錯</li>
+          </ul>
+          <div class="pend">🔄 越用越強<small>每一輪，都站在更高的地方做判斷</small></div>
+        </div>
+        <div class="path down">
+          <div class="ptag">直接放過去</div>
+          <ul class="pflow">
+            <li>看起來沒問題，按下確認</li>
+            <li>沒長新的，舊的也沒用到</li>
+            <li>下一輪更依賴 AI，更看不出它的錯</li>
+          </ul>
+          <div class="pend">🔄 越用越鈍<small>原本懂的也慢慢模糊，再加上老化持續扣分</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 段 4 · 怎麼用 ===== -->
+  <!-- 13 · Anthropic -->
+  <section class="slide center has-source">
+    <p class="actno">04 ｜ 所以，怎麼用？</p>
+    <h2 class="head sm">同樣用 AI，差在<span class="em">有沒有追問</span></h2>
+    <p class="lead">52 位工程師學一個沒用過的 Python 函式庫，做完馬上考試。</p>
+    <div class="bars">
+      <div class="row"><div class="lab">自己寫</div><div class="track"><div class="fill" style="width:67%"></div></div><div class="val">67</div></div>
+      <div class="row"><div class="lab">用 AI（平均）</div><div class="track"><div class="fill" style="width:50%"></div></div><div class="val">50</div></div>
+      <div class="gap"></div>
+      <div class="grp">用 AI 的人裡面</div>
+      <div class="row"><div class="lab">追問為什麼<small>問概念、要解釋</small></div><div class="track"><div class="fill hi" style="width:65%"></div></div><div class="val">65+</div></div>
+      <div class="row"><div class="lab">整段交給 AI<small>出錯再丟回去修</small></div><div class="track"><div class="fill bad" style="width:38%"></div></div><div class="val bad">&lt;40</div></div>
+    </div>
+    <p class="note">用 AI 只快了約 2 分鐘。<strong>工具一樣，結果差在「叫它做」還是「問它為什麼」。</strong></p>
+    <div class="source">出處：Shen &amp; Tamkin, "How AI assistance impacts the formation of coding skills", Anthropic 2026（測驗分數）</div>
+  </section>
+
+  <!-- 14 · 三道檢驗 -->
+  <section class="slide center">
+    <p class="kicker">每個判斷窗口，問自己三件事</p>
+    <h2 class="head sm">三道<span class="em">自我檢驗</span></h2>
+    <div class="tri">
+      <div class="t">
+        <div class="tn">第一道</div>
+        <div class="tt">講得出來</div>
+        <div class="td">動手或交辦之前，<br>我能用<b>一句話</b>講清楚<br>目標是什麼、怎樣算做到嗎？</div>
+      </div>
+      <div class="t">
+        <div class="tn">第二道</div>
+        <div class="tt">看得懂</div>
+        <div class="td">AI 給的選項和分析，<br>我是<b>真的看懂</b>，<br>還是模模糊糊、用猜的？</div>
+      </div>
+      <div class="t">
+        <div class="tn">第三道</div>
+        <div class="tt">打得了槍</div>
+        <div class="td">AI 一定會推薦一個，<br>我有沒有<b>推翻它的理由</b>？<br>還是直接用它的結果？</div>
+      </div>
+    </div>
+    <p class="note">打槍不是目的。<strong>接受或拒絕都行，重點是講得出理由</strong>——沒理由的接受，和沒理由的拒絕，一樣是虛的。</p>
+  </section>
+
+  <!-- 15 · 招式（逐列出現） -->
+  <section class="slide center">
+    <h2 class="head sm">在每個判斷窗口，<span class="em">停下來做一件事</span></h2>
+    <table class="moves">
+      <thead>
+        <tr><th></th><th>👩‍💻 Developer<small>動手之前（Plan → Do）</small></th><th>🧭 PM<small>交辦之前</small></th></tr>
+      </thead>
+      <tbody>
+        <tr class="frag">
+          <td class="k">講得出來</td>
+          <td>最終<b>目標</b>是什麼？<br>要怎麼<b>驗證</b>算做到？</td>
+          <td>一句話講得清：<b>幫誰、解決什麼問題</b>？<br>在哪些情境下，才叫<b>真正完成</b>？</td>
+        </tr>
+        <tr class="frag">
+          <td class="k">看得懂</td>
+          <td>三個選項<b>各在說什麼、差在哪</b>？<br>還是都不對——AI 缺了或誤解了 context？</td>
+          <td>真的懂了，還是<b>原封搬進任務</b>？<br>同事拿到的會是<b>噪音</b>，不是 context。</td>
+        </tr>
+        <tr class="frag">
+          <td class="k">打得了槍</td>
+          <td>基於目標與驗證，<b>我選哪個、為什麼</b>？<br>有推翻它推薦的理由嗎？</td>
+          <td>在它的建議上，我能<b>加上什麼更好的判斷</b>？<br>還是被動全收，自己也模模糊糊，就讓它<b>做做看</b>？</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="strips frag">
+      <div class="strip">
+        <div class="sk">📊 你的打槍率是多少？</div>
+        <div class="sq">不是越高越好——但長期接近 0%，就該停下來想想。</div>
+      </div>
+      <div class="strip alt">
+        <div class="sk">🔁 看不懂時，讓 AI 考你</div>
+        <div class="sq">「先別給答案，出 3 題考我。」</div>
+      </div>
+    </div>
+    <!-- 講者：每出現一列，停下來問一句「上週有沒有哪一次，其實沒看懂就選了？」
+         PM 第一列「真正完成」可以接回 DOD 工作坊。PM 第二列可以帶出這句：別用「量的勤奮」，掩蓋「思考上的懶惰」——搬得多，不等於想得清楚；原封搬給同事，是把理解的成本轉嫁給他。
+         「讓 AI 考你」的依據：Karpicke & Roediger, Science 2008，一週後反覆被考的記得約 80%，只重讀的約 36%。 -->
+  </section>
+
+  <!-- ===== 段 5 · 收尾 ===== -->
+  <!-- 16 -->
+  <section class="slide center">
+    <p class="bigquote sm">每一個判斷窗口，<br>都是一次<span class="em">存款</span>。</p>
+    <p class="note">別用「量的勤奮」，掩蓋「思考上的懶惰」。<br>停下來搞懂一次，就存進一筆——<strong>而且這筆存款，會生利息。</strong></p>
+  </section>
+
+  <!-- 17 · 認知複利 -->
+  <section class="slide center">
+    <p class="kicker">存款之外，還有利息</p>
+    <h2 class="head sm">認知，會<span class="em">複利</span></h2>
+    <svg class="curve" viewBox="0 0 1040 300" role="img" aria-label="認知複利示意圖：停下來搞懂的曲線加速往上，直接放過去的曲線持平後下滑">
+      <line x1="60" y1="260" x2="790" y2="260" class="axis"/>
+      <line x1="60" y1="260" x2="60" y2="20" class="axis"/>
+      <text x="790" y="286" class="ax" text-anchor="end">一次又一次的判斷窗口 →</text>
+      <text x="48" y="30" class="ax" text-anchor="end">認知</text>
+      <path d="M60,220 C280,212 480,180 590,130 S740,40 780,26" class="up"/>
+      <path d="M60,220 C280,216 440,214 570,222 S720,240 780,246" class="down"/>
+      <circle cx="780" cy="26" r="6" class="up-dot"/>
+      <circle cx="780" cy="246" r="6" class="down-dot"/>
+      <text x="798" y="34" class="lu">每次停下來搞懂</text>
+      <text x="798" y="254" class="ld">每次直接放過去</text>
+      <text x="90" y="200" class="ax">起點一樣</text>
+    </svg>
+    <p class="note">懂得越多，新東西越掛得上去——<strong>學得更快、看得更準、打槍更有底氣</strong>。<br>複利的前提只有一個：<strong>本金得是你自己的</strong>。AI 懂的，不算你的本金。</p>
+    <p class="tiny">示意圖，非實測資料</p>
+    <!-- 講者：接回第 11 頁——硬體會降，但累積會長；複利長在「累積」那一塊。
+         學理：先備知識越多，新知識越容易吸收（學習科學共識；閱讀研究稱「馬太效應」，Stanovich 1986）。 -->
+  </section>
+
+  <!-- 18 · Retro 互動 -->
+  <section class="slide center">
+    <p class="actno">05 ｜ 現在就開始</p>
+    <h2 class="head sm">這次 Retro，<span class="em">我們一起做三件事</span></h2>
+    <div class="steps">
+      <div class="s">
+        <div class="sn">STEP 1 ｜ 現在</div>
+        <div class="st">說一個「其實沒看懂，<br>但照單全收」的時刻</div>
+        <div class="sd">一人一個，不用解釋、不用檢討。我先說。</div>
+      </div>
+      <div class="s">
+        <div class="sn">STEP 2 ｜ 現在</div>
+        <div class="st">挑一道檢驗<br>接下來兩週試試看</div>
+        <div class="sd">講得出來、看得懂、打得了槍——挑一個你最常跳過的。</div>
+      </div>
+      <div class="s">
+        <div class="sn">STEP 3 ｜ 兩週後</div>
+        <div class="st">帶著你的<br>打槍率回來</div>
+        <div class="sd">打槍了幾次、為什麼；有沒有哪一次，因為看懂了才選對。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 19 · 謝謝 -->
+  <section class="slide center">
+    <img class="end-logo" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <h2 class="thanks">謝謝</h2>
+    <p class="end-tag">把「做」交給 AI，<span class="em">把「懂」留給自己。</span></p>
+    <p class="end-contact">Alfred Kang｜CTK Pro</p>
+  </section>
+
+  <!-- ===== 補充（被問到再翻） ===== -->
+  <!-- 20 · METR -->
+  <section class="slide center has-source">
+    <p class="kicker">補充 ｜ 我們感覺得出來嗎？</p>
+    <h2 class="head sm">「我覺得變快了」<br><span class="em">不一定是真的</span></h2>
+    <p class="lead">16 位資深開源工程師，在自己的專案做 246 個真實任務，隨機決定能不能用 AI。</p>
+    <ul class="facts">
+      <li><span class="fn">做之前</span><span class="ft">預期 AI 會讓自己 <b>快 24%</b></span></li>
+      <li><span class="fn">實際量</span><span class="ft">用 AI 的任務反而 <b>慢了 19%</b></span></li>
+      <li><span class="fn">做完後</span><span class="ft">仍然覺得自己 <b>快了 20%</b></span></li>
+    </ul>
+    <p class="note">2026 年的後續研究改估為快 4～18%，統計上不顯著。<strong>結論不在快慢，在「自我感覺不可靠」。</strong></p>
+    <div class="source">出處：METR, "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity" 2025｜METR uplift update 2026-02</div>
+  </section>
+
+  <!-- 21 · Microsoft / CMU -->
+  <section class="slide center has-source">
+    <p class="kicker">補充 ｜ 知識工作者的調查</p>
+    <h2 class="head sm">越信任 AI，<span class="em">越少思考</span></h2>
+    <ul class="facts">
+      <li><span class="fn">越信任</span><span class="ft">越相信 AI 的人，<b>批判性思考越少</b></span></li>
+      <li><span class="fn">越有底</span><span class="ft">對自己能力有信心的人，<b>才會去檢查 AI</b></span></li>
+      <li><span class="fn">移了位</span><span class="ft">思考沒有消失，而是移到 <b>查證、整合、把關</b><small>這一段也放掉，就什麼都沒留下了。</small></span></li>
+    </ul>
+    <p class="note">319 位每週使用生成式 AI 的知識工作者、936 個真實情境。屬自評問卷，只能說明相關。</p>
+    <div class="source">出處：Lee et al., "The Impact of Generative AI on Critical Thinking", CHI 2025（Microsoft Research × Carnegie Mellon）</div>
+  </section>
+
+</div>
+
+<div class="navbar" id="navbar">
+  <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">20</span></span>
+  <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
+</div>
+<div class="progress" id="progress"></div>
+<div id="help">← → / 點兩側 / 右下箭頭 翻頁　·　F 全螢幕　·　Home／End 首尾</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let cur=0;
+  const progress=document.getElementById('progress');
+  const curNo=document.getElementById('curNo');
+  const totNo=document.getElementById('totNo');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  totNo.textContent=total;
+
+  // 逐步出現：往前進入時全部藏起、往回退時全部顯示
+  const frags=s=>[...s.querySelectorAll('.frag')];
+  function setFrags(s,allOn){ frags(s).forEach(f=>f.classList.toggle('on',allOn)); }
+
+  function clampHash(){const h=parseInt(location.hash.replace('#',''),10);return (h>=1&&h<=total)?h-1:0;}
+  function show(i,allOn){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    setFrags(slides[cur],!!allOn);
+    curNo.textContent=cur+1;
+    progress.style.width=(cur/(total-1))*100+'%';
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  function next(){
+    const hidden=frags(slides[cur]).find(f=>!f.classList.contains('on'));
+    if(hidden){ hidden.classList.add('on'); return; }
+    if(cur<total-1) show(cur+1,false);
+  }
+  function prev(){
+    const shown=frags(slides[cur]).filter(f=>f.classList.contains('on'));
+    if(shown.length){ shown[shown.length-1].classList.remove('on'); return; }
+    if(cur>0) show(cur-1,true);
+  }
+
+  document.addEventListener('keydown',e=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': next();e.preventDefault();break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': prev();e.preventDefault();break;
+      case 'Home': show(0);e.preventDefault();break;
+      case 'End': show(total-1,true);e.preventDefault();break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.(); e.preventDefault();break;
+    }
+  });
+
+  prevBtn.addEventListener('click',e=>{e.stopPropagation();prev();});
+  nextBtn.addEventListener('click',e=>{e.stopPropagation();next();});
+
+  // 點畫面左右各 1/6 才翻頁；中間 2/3 留給選字（避開導覽、按鈕、連結）
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#navbar')||e.target.closest('a')||e.target.closest('button'))return;
+    const w=window.innerWidth;
+    if(e.clientX < w/6) prev();
+    else if(e.clientX > w*5/6) next();
+  });
+
+  let tx=0,ty=0;
+  document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev();}
+  },{passive:true});
+
+  // 直接以 #頁碼 開啟時，逐步元素全部顯示（方便截圖與跳頁）
+  show(clampHash(), location.hash!=='');
+  setTimeout(()=>{document.getElementById('help').style.opacity='0';},5000);
+</script>
+</body>
+</html>

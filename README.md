@@ -13,6 +13,7 @@ CTK Pro（竑盛科技）參加標案評選用的簡報集合。暖白底極簡�
 - 給設計公司的合作提案：`sales-pitch/for-design-company/index-claude-v2.html`（A 版，現場可點示範）／`index-v2.html`（B 版，靜態排版）
 - 2026 Q3 全員發表：`internal-talks/2026q3-all-hands/index.html`
 - Prompt · Context · Harness 深化版：`internal-talks/prompt-context-harness-engineering/index.html`
+- 別把「判斷」也外包出去（認知外包 Retro 分享）：`internal-talks/2026q3-cognitive-offloading/index.html`
 
 投影片依用途分三類：`bids/`（標案）、`sales-pitch/`（對外）、`internal-talks/`（對內）。
 
