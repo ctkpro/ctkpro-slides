@@ -10,6 +10,7 @@ CTK Pro（竑盛科技）參加標案評選用的簡報集合。暖白底極簡�
 - 宜蘭縣育兒資源網 2.0 服務建議書：`bids/yilan-bids/index.html`
 - 桃園市原住民族發展基金會品牌網站：`bids/桃原基會-bids/index.html`
 - CTK Pro 公司介紹：`sales-pitch/ctkpro-intro/index.html`
+- 山太士企業官網重建：`sales-pitch/shantai-amc/index.html`
 - 給設計公司的合作提案：`sales-pitch/for-design-company/index-claude-v2.html`（A 版，現場可點示範）／`index-v2.html`（B 版，靜態排版）
 - 2026 Q3 全員發表：`internal-talks/2026q3-all-hands/index.html`
 - Prompt · Context · Harness 深化版：`internal-talks/prompt-context-harness-engineering/index.html`
