@@ -1,10 +1,12 @@
-# CTK Pro 標案簡報庫（bid-slides）
+# CTK Pro 簡報庫（ctkpro-slides）
 
-CTK Pro（竑盛科技）參加標案評選用的簡報集合。暖白底極簡、投影機友善、單檔自足 HTML，可推上 GitHub Pages。
+CTK Pro（竑盛科技）的標案、對外與對內簡報集合。暖白底極簡、投影機友善、單檔自足 HTML，可推上 GitHub Pages。
 
 ## 直接播放
 
 用瀏覽器開對應的 `index.html` 即可：
+
+線上目錄：[ctkpro.github.io/ctkpro-slides](https://ctkpro.github.io/ctkpro-slides/)
 
 - 著陸頁（目錄）：`index.html`
 - 宜蘭縣育兒資源網 2.0 服務建議書：`bids/yilan-bids/index.html`
@@ -12,10 +14,13 @@ CTK Pro（竑盛科技）參加標案評選用的簡報集合。暖白底極簡�
 - CTK Pro 公司介紹：`sales-pitch/ctkpro-intro/index.html`
 - 山太士企業官網重建：`sales-pitch/shantai-amc/index.html`
 - 給設計公司的合作提案：`sales-pitch/for-design-company/index-claude-v2.html`（A 版，現場可點示範）／`index-v2.html`（B 版，靜態排版）
+- 網站上線，只是開始（良艮設計）：`sales-pitch/liangen-talk/index.html`
+- 李綜合醫院網路掛號系統改版：`sales-pitch/lgh-reg-meeting/index.html`
 - 2026 Q3 全員發表：`internal-talks/2026q3-all-hands/index.html`
 - Prompt · Context · Harness 深化版：`internal-talks/prompt-context-harness-engineering/index.html`
 - 別把「判斷」也外包出去（認知外包 Retro 分享）：`internal-talks/2026q3-cognitive-offloading/index.html`
 - 西園醫院・永越健檢官網升級 PHP 8.4（評估與工作規劃）：`sales-pitch/west-php84-upgrade/index.html`
+- 從「做完」到「真正做完」（DOD 工作坊）：`internal-talks/2026q3-dod-workshop/index.html`
 
 投影片依用途分三類：`bids/`（標案）、`sales-pitch/`（對外）、`internal-talks/`（對內）。
 
@@ -48,9 +53,9 @@ CTK Pro（竑盛科技）參加標案評選用的簡報集合。暖白底極簡�
 
 ## 部署到 GitHub Pages
 
-1. 把整個專案推上 `ctkpro/bid-slides`（各 `index.html` 已是相對路徑）。
+1. 把整個專案推上 `ctkpro/ctkpro-slides`（各 `index.html` 已是相對路徑）。
 2. repo → **Settings** → **Pages** → Source 選 **Deploy from a branch**，分支 `main`、資料夾 `/ (root)`，Save。
-3. 用顯示的網址播放（例：`https://ctkpro.github.io/bid-slides/bids/yilan-bids/`）。
+3. 用顯示的網址播放（例：`https://ctkpro.github.io/ctkpro-slides/bids/yilan-bids/`）。
 
 ## 作圖工具（選用）
 
