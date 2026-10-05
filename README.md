@@ -15,6 +15,7 @@ CTK Pro（竑盛科技）參加標案評選用的簡報集合。暖白底極簡�
 - 2026 Q3 全員發表：`internal-talks/2026q3-all-hands/index.html`
 - Prompt · Context · Harness 深化版：`internal-talks/prompt-context-harness-engineering/index.html`
 - 別把「判斷」也外包出去（認知外包 Retro 分享）：`internal-talks/2026q3-cognitive-offloading/index.html`
+- 西園醫院・永越健檢官網升級 PHP 8.4（評估與工作規劃）：`sales-pitch/west-php84-upgrade/index.html`
 
 投影片依用途分三類：`bids/`（標案）、`sales-pitch/`（對外）、`internal-talks/`（對內）。
 

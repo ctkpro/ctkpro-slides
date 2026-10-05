@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>西園醫院・永越健檢 官網升級 PHP 8.4｜評估與工作規劃｜CTK Pro 竑盛科技</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d1b; --muted:#6b6b6b; --soft:#9a9a9a;
+    --line:#e6e6e6; --line2:#efefef;
+    /* 本案（醫療）主色＝深青 Teal；變數名沿用 --blue 以相容元件樣式 */
+    --blue:#0E7490; --blue-700:#0B5A70; --blue-300:#5EAEC4; --blue-50:#EAF6F9;
+    /* 輔助色＝靛藍（與主色做色相區隔，白字達 AA） */
+    --indigo:#3B4E8C; --indigo-700:#2C3B6B;
+    --bg:#FBFAF7; --paper:#F2F7F9; --warn:#9A6700; --danger:#B42318;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;width:100%;overflow:hidden;background:#eceef2;}
+  body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+       color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+  #stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;background:var(--bg);}
+
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg);padding:46px 148px 58px 70px;}
+  .slide.active{display:flex;}
+  .body{flex:1;display:flex;flex-direction:column;justify-content:center;}
+
+  /* ---- 共用文字元件 ---- */
+  .kicker{display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:700;
+          letter-spacing:3px;color:var(--blue);text-transform:uppercase;}
+  .kicker::before{content:"";width:28px;height:3px;border-radius:2px;background:var(--blue);}
+  .page-title{font-size:40px;font-weight:900;line-height:1.2;color:var(--ink);margin:10px 0 4px;letter-spacing:-.5px;}
+  .page-title .em{color:var(--blue);}
+  .page-sub{font-size:18px;line-height:1.55;color:var(--muted);max-width:980px;}
+
+  .tag{display:inline-block;font-size:14px;font-weight:700;padding:5px 13px;border-radius:999px;
+       background:var(--blue-50);color:var(--blue);}
+  .tag.warn{background:#FDF6E7;color:var(--warn);}
+  .tag.danger{background:#FDEEEC;color:var(--danger);}
+  .tag.ok{background:#EAF6EF;color:#1B7A4B;}
+
+  /* ---- 頁首 logo / 頁尾標記 ---- */
+  .logo-tr{position:absolute;top:40px;right:148px;height:28px;opacity:.92;}
+  .brandmark{position:absolute;left:70px;bottom:20px;font-size:12.5px;font-weight:500;letter-spacing:.5px;color:var(--soft);}
+
+  /* ---- 卡片 ---- */
+  .grid{display:grid;gap:18px;}
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:15px;padding:20px 22px;
+        box-shadow:0 6px 18px rgba(30,40,80,.05);display:flex;flex-direction:column;}
+  .card h3{font-size:21px;font-weight:800;color:var(--ink);margin-bottom:7px;display:flex;align-items:center;gap:10px;}
+  .card p{font-size:16.5px;line-height:1.58;color:var(--muted);}
+  .card p b{color:var(--ink);font-weight:700;}
+  .card.soft{background:var(--paper);border-color:var(--line2);}
+  .card.edge{border-left:5px solid var(--blue);}
+  .card.edge-warn{border-left:5px solid var(--warn);}
+  .card.edge-danger{border-left:5px solid var(--danger);}
+  .num-chip{flex:none;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;
+            justify-content:center;font-size:19px;font-weight:900;color:#fff;background:var(--blue);}
+  .card-foot{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);
+             font-size:13.5px;font-weight:700;color:var(--blue);}
+  .card-foot::before{content:"▸ ";}
+
+  /* ---- 封面 ---- */
+  .cover{justify-content:center;}
+  .cover .eyebrow{font-size:17px;font-weight:700;letter-spacing:4px;color:var(--blue);margin-bottom:20px;}
+  .cover h1{font-size:60px;font-weight:900;line-height:1.16;letter-spacing:-1.5px;}
+  .cover h1 .em{color:var(--blue);}
+  .cover .sub{font-size:21px;color:var(--muted);margin-top:18px;line-height:1.6;}
+  .cover .meta{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap;}
+  .cover .bigmark{position:absolute;right:120px;bottom:70px;font-size:150px;font-weight:900;
+                  color:var(--blue);opacity:.05;letter-spacing:-6px;line-height:1;}
+
+  /* ---- 圖 ---- */
+  .fig{width:100%;}
+  .fig svg{width:100%;height:auto;display:block;}
+
+  /* ---- 表格 ---- */
+  table.t{width:100%;border-collapse:collapse;font-size:15.5px;}
+  table.t th{background:var(--paper);color:var(--ink);font-weight:800;text-align:left;
+             padding:9px 12px;border-bottom:2px solid var(--blue-300);font-size:15px;}
+  table.t td{padding:9px 12px;border-bottom:1px solid var(--line);color:var(--muted);vertical-align:top;line-height:1.5;}
+  table.t td b{color:var(--ink);font-weight:700;}
+  table.t tr:last-child td{border-bottom:none;}
+  table.t .r{text-align:right;white-space:nowrap;}
+  table.t tr.total td{border-top:2px solid var(--blue-300);background:var(--blue-50);color:var(--ink);font-weight:800;}
+  table.t tr.total td .em{color:var(--blue);}
+
+  /* ---- 條列 ---- */
+  ul.bul{list-style:none;}
+  ul.bul li{position:relative;padding-left:19px;font-size:16.5px;line-height:1.62;color:var(--muted);margin-bottom:6px;}
+  ul.bul li::before{content:"";position:absolute;left:0;top:10px;width:7px;height:7px;border-radius:50%;background:var(--blue);}
+  ul.bul li b{color:var(--ink);font-weight:700;}
+  ul.bul.tight li{margin-bottom:3px;font-size:15.5px;}
+
+  /* ---- 欄位 ---- */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+
+  /* ---- 大數字 ---- */
+  .bignum{display:flex;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid var(--line);}
+  .bignum:last-child{border-bottom:none;}
+  .bignum .n{font-size:54px;font-weight:900;color:var(--blue);line-height:1;letter-spacing:-1px;min-width:92px;}
+  .bignum .u{font-size:18px;font-weight:800;color:var(--blue);margin-right:6px;}
+  .bignum .d{font-size:17px;line-height:1.5;color:var(--muted);}
+  .bignum .d b{color:var(--ink);font-weight:800;display:block;font-size:18.5px;}
+
+  /* ---- 階段 ---- */
+  .stages{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+  .stage{background:var(--bg);border:1px solid var(--line);border-top:4px solid var(--blue);border-radius:12px;
+         padding:14px 14px 13px;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(30,40,80,.05);}
+  .stage.big{border-top-color:var(--warn);background:#FFFCF5;}
+  .stage .no{font-size:13px;font-weight:800;letter-spacing:2px;color:var(--soft);}
+  .stage .nm{font-size:18px;font-weight:900;color:var(--ink);margin:3px 0 8px;line-height:1.3;min-height:47px;}
+  .stage .hr{font-size:26px;font-weight:900;color:var(--blue);line-height:1;}
+  .stage.big .hr{color:var(--warn);}
+  .stage .hr small{font-size:13px;font-weight:700;margin-left:3px;}
+  .stage .bar{position:relative;height:7px;border-radius:4px;background:var(--line2);margin:9px 0 11px;}
+  .stage .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;}
+  .stage .bar .mx{background:var(--blue-300);opacity:.45;}
+  .stage .bar .mn{background:var(--blue);}
+  .stage.big .bar .mx{background:#E8C77A;opacity:.6;}
+  .stage.big .bar .mn{background:var(--warn);}
+  .stage .ds{font-size:14px;line-height:1.55;color:var(--muted);}
+  .stage .ds b{color:var(--ink);font-weight:700;}
+
+  .p7 .card{padding:16px 20px !important;}
+  .p7 .card h3{font-size:19px !important;margin-bottom:6px;}
+  .p7 .card p,.p7 ul.bul.tight li{font-size:15px !important;line-height:1.55;}
+  .fee{padding:14px 20px 16px;}
+  .fee-head{display:flex;align-items:baseline;gap:14px;margin-bottom:10px;}
+  .fee-head h3{font-size:19px;margin:0;}
+  .fee-head span{font-size:13px;color:var(--soft);}
+  .fee-grid{display:grid;grid-template-columns:repeat(3,1fr) 1.05fr;gap:10px;}
+  .fee-it{background:var(--bg);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;}
+  .fee-it .nm{font-size:14px;font-weight:800;color:var(--ink);white-space:nowrap;}
+  .fee-it .pr{font-size:24px;font-weight:900;color:var(--ink);line-height:1.25;margin:2px 0 4px;}
+  .fee-it .pr small{font-size:13px;font-weight:700;color:var(--muted);margin-left:4px;}
+  .fee-it .nt{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap;}
+  .fee-it .nt .tag{font-size:12px;padding:2px 8px;}
+  .fee-it.total{background:var(--blue);border-color:var(--blue);}
+  .fee-it.total .nm,.fee-it.total .pr,.fee-it.total .nt,.fee-it.total .nt b{color:#fff;}
+  .flow{display:flex;align-items:center;gap:14px;font-size:18px;color:var(--muted);flex-wrap:wrap;}
+  .principle{display:flex;align-items:center;gap:16px;margin-top:20px;background:var(--paper);border-radius:13px;padding:15px 20px;}
+  .principle .ic{flex:none;width:40px;height:40px;border-radius:50%;background:var(--blue);color:#fff;
+                 display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;}
+  .principle p{font-size:16.5px;line-height:1.55;color:var(--muted);}
+  .principle p b{color:var(--ink);}
+
+
+  /* ---- 兩站標記 ---- */
+  .site{display:inline-block;font-size:12.5px;font-weight:800;padding:2px 9px;border-radius:6px;color:#fff;background:var(--blue);letter-spacing:.5px;}
+  .site.yy{background:var(--indigo);}
+  .stage .hrs{display:flex;flex-direction:column;gap:5px;margin:2px 0 10px;padding-bottom:10px;border-bottom:1px dashed var(--line);}
+  .stage .hrs div{display:flex;align-items:center;justify-content:space-between;}
+  .stage .hrs b{font-size:21px;font-weight:900;color:var(--ink);line-height:1;}
+  .stage .hrs b small{font-size:12px;font-weight:700;color:var(--muted);margin-left:2px;}
+  .stage.big .hrs div:first-child b{color:var(--warn);}
+  table.t.m td{padding:7px 10px;font-size:13.5px;line-height:1.45;}
+  table.t.m th{padding:7px 10px;font-size:14px;}
+  table.t.m th.si{color:#fff;background:var(--blue);border-bottom-color:var(--blue);}
+  table.t.m th.si.yy{background:var(--indigo);border-bottom-color:var(--indigo);}
+  table.t.m td.h{white-space:nowrap;text-align:right;font-weight:800;color:var(--ink);}
+  table.t.m tr.sub td{background:var(--paper);color:var(--ink);font-weight:800;border-top:1px solid var(--blue-300);}
+  .fee-t td,.fee-t th{padding:7px 11px !important;font-size:14px !important;}
+  .fee-t td.pr{white-space:nowrap;font-weight:900;color:var(--ink);font-size:15.5px !important;}
+  .fee-t tr.grp td{background:var(--paper);font-weight:800;color:var(--ink);padding:5px 11px !important;}
+  .sumbox{background:var(--blue);color:#fff;border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;}
+  .sumbox .row .k{font-size:13.5px;font-weight:700;opacity:.85;}
+  .sumbox .row .v{font-size:22px;font-weight:900;line-height:1.25;}
+  .sumbox .row .v small{font-size:13px;font-weight:700;opacity:.85;margin-left:4px;}
+  .sumbox .row.total{border-top:1px solid rgba(255,255,255,.35);padding-top:12px;}
+  .sumbox .row.total .v{font-size:25px;}
+  .p10 .card{padding:15px 18px !important;}
+  .p10 .card h3{font-size:18.5px !important;margin-bottom:6px;}
+  .p10 .card p,.p10 ul.bul.tight li{font-size:14.5px !important;line-height:1.55;margin-bottom:2px;}
+
+  .site{flex:none;white-space:nowrap;}
+  .stage .hrs b{font-size:19px;white-space:nowrap;}
+  .kicker.yy{color:var(--indigo);} .kicker.yy::before{background:var(--indigo);}
+  .stat{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;}
+  .stat::before{content:"";width:9px;height:9px;border-radius:50%;}
+  .stat.done::before{background:#1B7A4B;} .stat.done{color:#1B7A4B;}
+  .stat.wait::before{background:var(--warn);} .stat.wait{color:var(--warn);}
+  .stat.block::before{background:var(--danger);} .stat.block{color:var(--danger);}
+  .sumbox .row.total .v{font-size:18.5px;white-space:nowrap;}
+
+  /* ---- 右下角導覽 + 進度 ---- */
+  .navbar{position:fixed;right:24px;bottom:16px;display:flex;align-items:center;gap:10px;z-index:40;color:var(--muted);user-select:none;}
+  .navbar .nav-arrow{border:none;background:none;cursor:pointer;line-height:1;font-size:26px;color:var(--soft);
+                     padding:2px 9px;border-radius:8px;transition:color .2s,background .2s;}
+  .navbar .nav-arrow:hover{color:var(--blue);background:var(--blue-50);}
+  .navbar .nav-count{font-size:15px;font-weight:700;letter-spacing:.12em;min-width:64px;text-align:center;color:var(--muted);}
+  .navbar .nav-count b{color:var(--ink);}
+  .progress{position:fixed;left:0;bottom:0;height:3px;background:var(--blue);width:0;transition:width .35s ease;z-index:40;}
+  #help{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;background:rgba(11,90,112,.94);
+        color:#fff;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .6s;}
+
+  /* ---- 補充議題層（按 Q） ---- */
+  #qa{position:fixed;inset:0;z-index:80;background:rgba(251,250,247,.985);display:none;padding:40px 54px;overflow:auto;}
+  #qa.show{display:block;}
+  #qa h2{font-size:29px;font-weight:900;margin-bottom:4px;}
+  #qa .hint{font-size:14px;color:var(--soft);margin-bottom:18px;}
+  #qa .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px 26px;}
+  #qa .qa-item{border-bottom:1px solid var(--line);padding-bottom:9px;}
+  #qa .q{font-size:16px;font-weight:800;color:var(--ink);display:flex;gap:8px;line-height:1.45;}
+  #qa .q span{color:var(--blue);flex:none;}
+  #qa .a{font-size:14.5px;color:var(--muted);margin-top:3px;padding-left:26px;line-height:1.5;display:flex;gap:8px;}
+  #qa .a span{color:var(--blue-300);flex:none;font-weight:800;}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ============ P1 封面 ============ -->
+<div class="slide active cover">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="bigmark">PHP 8.4</div>
+  <div class="body">
+    <div class="eyebrow">西園醫院・永越健檢 × CTK PRO 竑盛科技</div>
+    <h1>兩站官網升級 PHP 8.4<br><span class="em">評估與工作規劃</span></h1>
+    <p class="sub">
+      西園醫院、永越健檢兩個官網：為什麼要升級、各有哪些地方要先處理<br>
+      分階段上線的做法、工時與授權費用，以及需要貴院確認的事
+    </p>
+    <div class="meta">
+      <span class="tag">升級原因</span>
+      <span class="tag">評估結果</span>
+      <span class="tag">工作規劃</span>
+      <span class="tag">工時估算</span>
+      <span class="tag">授權費用</span>
+      <span class="tag">待確認事項</span>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P2 為什麼要升級 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">升級原因</div>
+  <div class="page-title">PHP 7.4 已經<span class="em">停止安全更新</span>近四年</div>
+  <div class="body">
+    <div class="fig">
+      <!-- x = 60 + (年 - 2019) × 105 -->
+      <svg viewBox="0 0 1140 250" role="img" aria-label="時間軸：PHP 7.4 支援期為 2019 年 11 月到 2022 年 11 月；PHP 8.4 自 2024 年 11 月起支援，安全更新到 2028 年底；今天為 2026 年 10 月">
+        <!-- 年份格線 -->
+        <g stroke="#efefef" stroke-width="1">
+          <line x1="60" y1="20" x2="60" y2="200"/><line x1="165" y1="20" x2="165" y2="200"/><line x1="270" y1="20" x2="270" y2="200"/>
+          <line x1="375" y1="20" x2="375" y2="200"/><line x1="480" y1="20" x2="480" y2="200"/><line x1="585" y1="20" x2="585" y2="200"/>
+          <line x1="690" y1="20" x2="690" y2="200"/><line x1="795" y1="20" x2="795" y2="200"/><line x1="900" y1="20" x2="900" y2="200"/>
+          <line x1="1005" y1="20" x2="1005" y2="200"/><line x1="1110" y1="20" x2="1110" y2="200"/>
+        </g>
+        <g font-size="14" font-weight="700" fill="#9a9a9a" text-anchor="middle">
+          <text x="60" y="224">2019</text><text x="165" y="224">2020</text><text x="270" y="224">2021</text>
+          <text x="375" y="224">2022</text><text x="480" y="224">2023</text><text x="585" y="224">2024</text>
+          <text x="690" y="224">2025</text><text x="795" y="224">2026</text><text x="900" y="224">2027</text>
+          <text x="1005" y="224">2028</text><text x="1110" y="224">2029</text>
+        </g>
+
+        <!-- PHP 7.4 -->
+        <text x="154" y="50" font-size="17" font-weight="900" fill="#211d1b">PHP 7.4　兩站官網目前使用</text>
+        <rect x="154" y="62" width="316" height="30" rx="7" fill="#9a9a9a"/>
+        <text x="312" y="82" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">官方支援期　2019/11 – 2022/11</text>
+        <!-- 停止更新後的空窗 -->
+        <rect x="470" y="62" width="403" height="30" rx="0" fill="#FDEEEC"/>
+        <line x1="470" y1="62" x2="470" y2="92" stroke="#B42318" stroke-width="2"/>
+        <text x="672" y="82" text-anchor="middle" font-size="14" font-weight="800" fill="#B42318">已無安全更新：發現漏洞也不會修補</text>
+
+        <!-- PHP 8.4 -->
+        <text x="680" y="130" font-size="17" font-weight="900" fill="#211d1b">PHP 8.4　本次升級目標</text>
+        <rect x="680" y="142" width="219" height="30" rx="7" fill="#0E7490"/>
+        <rect x="892" y="142" width="213" height="30" rx="7" fill="#5EAEC4"/>
+        <rect x="892" y="142" width="10" height="30" fill="#5EAEC4"/>
+        <text x="789" y="162" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">一般支援 – 2026 年底</text>
+        <text x="998" y="162" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">安全更新 – 2028 年底</text>
+
+        <!-- 今天 -->
+        <line x1="873" y1="22" x2="873" y2="200" stroke="#211d1b" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <rect x="838" y="2" width="70" height="22" rx="11" fill="#211d1b"/>
+        <text x="873" y="18" text-anchor="middle" font-size="12.5" font-weight="800" fill="#fff">今天</text>
+      </svg>
+    </div>
+
+    <div class="three" style="margin-top:14px;">
+      <div class="card soft"><h3 style="font-size:18.5px;">漏洞不再修補</h3>
+        <p style="font-size:15.5px;">PHP 7.4 之後發現的安全問題，官方都<b>不會再出修補</b>。</p></div>
+      <div class="card soft"><h3 style="font-size:18.5px;">外掛更新跟不上</h3>
+        <p style="font-size:15.5px;">新版外掛陸續要求較新的 PHP。<b>外掛無法更新，外掛的漏洞也就無法修補。</b></p></div>
+      <div class="card soft"><h3 style="font-size:18.5px;">升到 8.4 一次到位</h3>
+        <p style="font-size:15.5px;">8.4 的安全更新到 <b>2028 年底</b>，升級後兩年多不必再處理執行環境。</p></div>
+    </div>
+  </div>
+  <!-- 講者備註：PHP 版本以我方測試環境為準（兩站皆為 PHP 7.4），正式站版本會在準備階段再次確認 -->
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P3 評估結果 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">西園醫院｜評估結果</div>
+  <div class="page-title">西園可以升級，<span class="em">有三個地方要先處理</span></div>
+  <div class="page-sub">我們以自動掃描檢查了主題、子主題與 40 套啟用中的外掛，再用新版 PHP 做語法檢查，並逐項人工確認。</div>
+  <div class="body">
+    <div class="three" style="align-items:stretch;">
+
+      <div class="card edge-danger">
+        <div style="margin-bottom:10px;"><span class="tag danger">不修會出錯</span></div>
+        <h3><span class="num-chip">1</span>首頁輪播</h3>
+        <p>主題的輪播程式有一行寫法，在 PHP 8 會直接中斷，<b>首頁整頁無法顯示</b>。</p>
+        <p style="margin-top:8px;">修正只要改一行，同時把主題其他功能也實測一遍。</p>
+        <div style="height:14px;flex:none;"></div><div class="card-foot" style="margin-top:auto;">主題 MediCenter</div>
+      </div>
+
+      <div class="card edge-danger">
+        <div style="margin-bottom:10px;"><span class="tag danger">需換新版</span></div>
+        <h3><span class="num-chip">2</span>表單收件匯出</h3>
+        <p>目前版本附帶的 Excel 匯出元件，<b>無法在 PHP 8 執行</b>。</p>
+        <p style="margin-top:8px;">改用官方新版：<b>收件資料沿用原資料表、不需搬移</b>，匯出仍是 Excel。</p>
+        <div style="height:14px;flex:none;"></div><div class="card-foot" style="margin-top:auto;">外掛 Advanced CF7 DB</div>
+      </div>
+
+      <div class="card edge-warn">
+        <div style="margin-bottom:10px;"><span class="tag warn">需升級，工作量最大</span></div>
+        <h3><span class="num-chip" style="background:var(--warn);">3</span>頁面編輯器</h3>
+        <p>目前是 2020 年的 6.4.1 版，需要升級到新版。</p>
+        <p style="margin-top:8px;">主題對它做了大量客製，<b>升級後要逐頁檢查版面</b>（下一頁說明）。</p>
+        <div style="height:14px;flex:none;"></div><div class="card-foot" style="margin-top:auto;color:var(--warn);">外掛 WPBakery Page Builder</div>
+      </div>
+
+    </div>
+    <p style="margin-top:18px;font-size:15.5px;line-height:1.6;color:var(--muted);">
+      <b style="color:var(--ink);">其餘外掛：</b>掃描到的舊寫法都有版本判斷保護，實際不會執行，更新到最新版即可。
+      已停用的舊輪播外掛 Slider Revolution 會一併移除。
+    </p>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P4 頁面編輯器 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">西園醫院｜最大的工作項目</div>
+  <div class="page-title">頁面編輯器升級後，<span class="em">版面要逐頁對齊</span></div>
+  <div class="body">
+    <div class="two" style="grid-template-columns:1fr 1.08fr;gap:34px;align-items:center;">
+
+      <div>
+        <div style="font-size:15px;font-weight:800;color:var(--soft);letter-spacing:1px;margin-bottom:2px;">主題對 WPBakery 的客製程度</div>
+        <div class="bignum"><span class="n">14</span><span class="d"><b>支版面模板被主題改寫</b>欄、列、頁籤、手風琴、按鈕等</span></div>
+        <div class="bignum"><span class="n">33</span><span class="d"><b>個主題自訂的編輯器元件</b>科別、醫師、門診表、輪播、文章列表等</span></div>
+        <div class="bignum"><span class="n">6</span><span class="d"><b>種自訂的設定欄位</b>元件設定視窗裡的下拉、多選、清單等</span></div>
+      </div>
+
+      <div class="card edge">
+        <h3>升級後我們會做的事</h3>
+        <ul class="bul" style="margin-top:4px;">
+          <li><b>移植版面模板</b>　把 14 支改寫過的模板對照新版結構重新整合</li>
+          <li><b>檢查編輯器元件</b>　確認後台每個元件的設定視窗都能開啟、存檔</li>
+          <li><b>前台逐頁比對</b>　升級前後逐頁比對畫面，修正跑掉的版面</li>
+        </ul>
+        <div style="background:var(--paper);border-radius:10px;padding:12px 14px;margin-top:10px;">
+          <div style="font-size:15px;font-weight:800;color:var(--ink);">預估 16–28 小時</div>
+          <div style="font-size:14.5px;line-height:1.6;color:var(--muted);margin-top:2px;">
+            區間取決於用 WPBakery 排版的頁面有多少。開工前我們會先統計頁面與元件用量，把估算收斂。
+          </div>
+        </div>
+        <div class="card-foot">WPBakery 需購買新授權（費用見最後一頁）</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P5 永越評估結果 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker yy">永越健檢｜評估結果</div>
+  <div class="page-title">永越也可以升級，<span class="em" style="color:var(--indigo);">有三個地方要先處理</span></div>
+  <div class="page-sub">同樣以自動掃描、新版 PHP 語法檢查與人工確認，檢查主題與約 39 套啟用中的外掛。</div>
+  <div class="body">
+    <div class="three" style="align-items:stretch;">
+
+      <div class="card edge-danger">
+        <div style="margin-bottom:10px;"><span class="tag danger">不修會出錯</span></div>
+        <h3><span class="num-chip" style="background:var(--indigo);">1</span>主題 2 個致命問題</h3>
+        <p>header.php 有<b>隱形空白字元</b>，會讓前台每一頁被截斷。</p>
+        <p style="margin-top:8px;">主題設定框架用了 PHP 8 已移除的函式，<b>後台會完全無法進入</b>。兩處修正約 0.5 小時。</p>
+        <div style="height:14px;flex:none;"></div><div class="card-foot" style="margin-top:auto;color:var(--indigo);">主題與 OptionTree 框架</div>
+      </div>
+
+      <div class="card edge-danger">
+        <div style="margin-bottom:10px;"><span class="tag danger">確定會出錯</span></div>
+        <h3><span class="num-chip" style="background:var(--indigo);">2</span>常見問題外掛</h3>
+        <p>目前版本在 PHP 8.4 上<b>確定會出錯</b>。</p>
+        <p style="margin-top:8px;">先嘗試更新到新版；不行就改用其他外掛，並<b>搬移 54 篇 FAQ</b>。1–5 小時，是永越最大的變數。</p>
+        <div style="height:14px;flex:none;"></div><div class="card-foot" style="margin-top:auto;color:var(--indigo);">外掛 Ultimate FAQs</div>
+      </div>
+
+      <div class="card edge-warn">
+        <div style="margin-bottom:10px;"><span class="tag warn">升級前先確認</span></div>
+        <h3><span class="num-chip" style="background:var(--warn);">3</span>外掛資安事件</h3>
+        <p>Admin Menu Editor Pro 的官方更新伺服器在 9/14 遭入侵。</p>
+        <p style="margin-top:8px;">升級前要先確認<b>正式站沒有受到影響</b>（下一頁說明）。</p>
+        <div style="height:14px;flex:none;"></div><div class="card-foot" style="margin-top:auto;color:var(--warn);">外掛 Admin Menu Editor Pro</div>
+      </div>
+
+    </div>
+    <p style="margin-top:18px;font-size:15.5px;line-height:1.6;color:var(--muted);">
+      <b style="color:var(--ink);">其餘外掛：</b>更新到最新版即可，其中 WPML、WPBakery、Contact Form 7 的版本跨度最大，會多花時間測試。
+      WordPress 核心也要從 6.7.9 更新到最新版。
+    </p>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P6 永越資安事件 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker yy">永越健檢｜升級前先確認</div>
+  <div class="page-title">Admin Menu Editor Pro <span class="em" style="color:var(--indigo);">資安事件</span></div>
+  <div class="page-sub">2026/9/14，官方更新伺服器遭入侵，對外派送了植入後門的 2.35 與 2.36 版。官網目前已暫停販售、下載與更新檢查。</div>
+  <div class="body">
+    <div class="two" style="grid-template-columns:1.05fr 1fr;align-items:start;">
+
+      <div class="card soft">
+        <h3 style="font-size:19.5px;">永越網站目前的狀況</h3>
+        <table class="t" style="margin-top:6px;font-size:14.5px;">
+          <tr><th style="width:28%;padding:7px 12px;">環境</th><th style="padding:7px 12px;">狀況</th></tr>
+          <tr><td style="padding:8px 12px;"><b>我方測試環境</b></td><td style="padding:8px 12px;"><span class="stat done">不受影響</span><br>安裝的是 2.18 版，也沒有發現入侵跡象</td></tr>
+          <tr><td style="padding:8px 12px;"><b>正式站</b></td><td style="padding:8px 12px;"><span class="stat wait">版本待確認</span><br>若授權有效又開了自動更新，可能在 9/14 收到惡意版本</td></tr>
+          <tr><td style="padding:8px 12px;"><b>若為 2.35 / 2.36</b></td><td style="padding:8px 12px;"><span class="stat block">應視為已遭入侵</span><br>需另外進行資安處理，工時不在本次估算內</td></tr>
+        </table>
+      </div>
+
+      <div class="card edge" style="border-left-color:var(--indigo);">
+        <h3 style="font-size:19.5px;">我們會檢查的入侵跡象</h3>
+        <ul class="bul tight" style="margin-top:4px;">
+          <li><code style="font-size:13px;">wp-content/object-cache/</code> 底下十六進位名稱的 PHP 檔</li>
+          <li><code style="font-size:13px;">mu-plugins/</code> 裡 <code style="font-size:13px;">wp-</code> 加十六進位名稱的檔案</li>
+          <li>外掛裡的 <code style="font-size:13px;">includes/wp-user-consent.php</code></li>
+          <li>以 <code style="font-size:13px;">wp_ocache</code> 開頭的資料庫選項</li>
+          <li><code style="font-size:13px;">wp_</code> 加十六進位、或 <code style="font-size:13px;">wpsecuresuppbot</code> 的隱藏帳號</li>
+          <li>名為 <code style="font-size:13px;">_wp_cconsent_tick</code> 的排程</li>
+        </ul>
+        <div class="card-foot" style="color:var(--indigo);">檢查約 1–2 小時，列在準備階段最先進行</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P7 工作規劃 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">工作規劃</div>
+  <div class="page-title">兩站都分六個階段，<span class="em">每段上線後網站都正常</span></div>
+  <div class="body">
+    <div class="stages">
+      <div class="stage">
+        <div class="no">STEP 0</div><div class="nm">準備</div>
+        <div class="hrs"><div><span class="site">西園</span><b>2–3<small>小時</small></b></div><div><span class="site yy">永越</span><b>3–6<small>小時</small></b></div></div>
+        <div class="ds">建立測試環境、全站備份；永越另檢查<b>資安事件</b>、盤點授權</div>
+      </div>
+      <div class="stage">
+        <div class="no">STEP 1</div><div class="nm">主題修正</div>
+        <div class="hrs"><div><span class="site">西園</span><b>12–20<small>小時</small></b></div><div><span class="site yy">永越</span><b>2–3<small>小時</small></b></div></div>
+        <div class="ds">修正會出錯的程式，實測主題功能，<b>含掛號與預約</b></div>
+      </div>
+      <div class="stage">
+        <div class="no">STEP 2</div><div class="nm">外掛更新</div>
+        <div class="hrs"><div><span class="site">西園</span><b>2–3<small>小時</small></b></div><div><span class="site yy">永越</span><b>6–10<small>小時</small></b></div></div>
+        <div class="ds">WordPress 與外掛更新到最新版，並回歸測試</div>
+      </div>
+      <div class="stage big">
+        <div class="no">STEP 3</div><div class="nm">外掛替換與升級</div>
+        <div class="hrs"><div><span class="site">西園</span><b>19.5–34<small>小時</small></b></div><div><span class="site yy">永越</span><b>2–8<small>小時</small></b></div></div>
+        <div class="ds">西園：<b>WPBakery</b>、表單外掛；永越：常見問題外掛</div>
+      </div>
+      <div class="stage">
+        <div class="no">STEP 4</div><div class="nm">PHP 8.4 測試</div>
+        <div class="hrs"><div><span class="site">西園</span><b>6–8<small>小時</small></b></div><div><span class="site yy">永越</span><b>6–8<small>小時</small></b></div></div>
+        <div class="ds">在 PHP 8.4 環境<b>整站回歸測試</b>，修正問題</div>
+      </div>
+      <div class="stage">
+        <div class="no">STEP 5</div><div class="nm">正式上線</div>
+        <div class="hrs"><div><span class="site">西園</span><b>2–3<small>小時</small></b></div><div><span class="site yy">永越</span><b>2–4<small>小時</small></b></div></div>
+        <div class="ds">切換到 PHP 8.4，<b>上線後監控</b></div>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="ic">✓</div>
+      <p>STEP 0–3 都在<b>現行 PHP 7.4</b> 上完成並分批上線，每一批上線後網站都正常運作。最後才切到 PHP 8.4：
+         <b>西園</b>搬到貴院新主機，舊主機保留到穩定為止；<b>永越</b>先在測試環境驗證，再切換正式站。兩站都<b>備妥隨時切回的退回方案</b>。</p>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P8 工時明細 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">工時估算</div>
+  <div class="page-title">兩站合計 <span class="em">65–110 小時</span>，約 9–14 個工作天</div>
+  <div class="body" style="justify-content:flex-start;padding-top:14px;">
+    <table class="t m">
+      <tr><th style="width:12%;">階段</th><th class="si">西園醫院</th><th class="si r" style="width:8%;">小時</th><th class="si yy">永越健檢</th><th class="si yy r" style="width:8%;">小時</th></tr>
+      <tr><td>0. 準備</td><td>同步正式站到測試環境、全站備份，WordPress 核心升到最新版</td><td class="h">2–3</td><td>確認正式站版本、檢查資安事件、盤點授權、建立測試環境與備份</td><td class="h">3–6</td></tr>
+      <tr><td>1. 主題修正</td><td>修首頁輪播；主題與子主題實測修正（含網路掛號、App 資料介面）；清理棄用警告</td><td class="h">12–20</td><td>修正 2 個致命問題、清除 PHP 警告，回歸測試並部署</td><td class="h">2–3</td></tr>
+      <tr><td>2. 外掛更新</td><td>約 35 套外掛更新到最新版，並確認設定</td><td class="h">2–3</td><td>WordPress 6.7.9 升到最新版、約 39 套外掛更新；回歸測試 16 種頁面範本、多語與預約表單</td><td class="h">6–10</td></tr>
+      <tr><td>3. 外掛替換與升級</td><td>WPBakery 升級與版面修正 16–28；表單收件外掛換新版 3–5；移除舊外掛 0.5–1</td><td class="h">19.5–34</td><td>常見問題外掛更新或替換 1–5；移除用不到的外掛；修正既有的後台錯誤（選做）；測試</td><td class="h">2–8</td></tr>
+      <tr><td>4. PHP 8.4 測試</td><td>部署到新主機（PHP 8.4），整站回歸測試</td><td class="h">6–8</td><td>測試環境切換 PHP 8.4，自動掃描與人工測試前後台，修正問題</td><td class="h">6–8</td></tr>
+      <tr><td>5. 正式上線</td><td>備份、切換到新主機、上線後監控；舊主機保留作為退回方案</td><td class="h">2–3</td><td>備份、正式站切換 PHP 8.4、冒煙測試，觀察錯誤紀錄 24–48 小時</td><td class="h">2–4</td></tr>
+      <tr class="sub"><td>小計</td><td>約 6–9 個工作天</td><td class="h">44–71</td><td>約 3–5 個工作天</td><td class="h">21–39</td></tr>
+      <tr class="total"><td colspan="4">兩站合計（約 9–14 個工作天）</td><td class="r"><span class="em">65–110</span></td></tr>
+    </table>
+    <p style="margin-top:10px;font-size:13px;line-height:1.6;color:var(--soft);">
+      不含：西園主題改版（另估 24–40 小時）與新主機的作業系統、軟體安裝；永越替換久未維護的外掛（每個另加 2–4 小時）；資安事件處理（若已遭入侵）；驗收時間；授權費用。
+    </p>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P9 授權費用 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">授權費用</div>
+  <div class="page-title">需付費的外掛，<span class="em">首年 US$213 起</span></div>
+  <div class="body">
+    <div class="two" style="grid-template-columns:1fr 260px;gap:22px;align-items:start;">
+      <table class="t fee-t">
+        <tr><th style="width:24%;">外掛</th><th style="width:15%;">價格</th><th style="width:20%;">何時需要</th><th>說明</th></tr>
+        <tr class="grp"><td colspan="4"><span class="site">西園醫院</span></td></tr>
+        <tr><td><b>WPBakery Page Builder</b></td><td class="pr">US$82 一次性</td><td><span class="tag danger" style="font-size:12px;padding:2px 9px;">必要</span></td><td>頁面編輯器，目前沒有有效授權</td></tr>
+        <tr><td><b>ACF PRO</b></td><td class="pr">US$49 / 年</td><td><span class="tag warn" style="font-size:12px;padding:2px 9px;">建議</span></td><td>自訂欄位，購買才能取得更新</td></tr>
+        <tr><td><b>Slider Revolution</b></td><td class="pr">US$45 / 年</td><td><span class="tag" style="font-size:12px;padding:2px 9px;">選購</span></td><td>目前停用，要繼續使用才需購買</td></tr>
+        <tr class="grp"><td colspan="4"><span class="site yy">永越健檢</span></td></tr>
+        <tr><td><b>WPBakery Page Builder</b></td><td class="pr">US$82 一次性</td><td><span class="tag danger" style="font-size:12px;padding:2px 9px;">必要</span></td><td>頁面編輯器，目前沒有有效授權</td></tr>
+        <tr><td><b>WPML</b></td><td class="pr">€99 / 年</td><td>授權到期才需續約</td><td>多語外掛 CMS 方案；網站用 WPBakery 排版，需此方案</td></tr>
+        <tr><td><b>ACF PRO</b></td><td class="pr">US$49 / 年</td><td>授權到期才需續約</td><td>子主題大量使用自訂欄位，不能拿掉</td></tr>
+      </table>
+      <div class="sumbox">
+        <div class="row"><div class="k">西園首年</div><div class="v">US$131<small>含選購 US$176</small></div></div>
+        <div class="row"><div class="k">永越首年（視授權狀況）</div><div class="v" style="font-size:18.5px;white-space:nowrap;">US$82 – €99 + US$131</div></div>
+        <div class="row total"><div class="k">兩站首年合計</div><div class="v">US$213 – €99 + US$262</div><div class="k" style="margin-top:4px;">含 Slider Revolution 再加 US$45</div></div>
+      </div>
+    </div>
+    <p style="margin-top:14px;font-size:13px;line-height:1.6;color:var(--soft);">
+      2026/10/5 官網公告價，未稅，皆為單一網站授權。永越的 Admin Menu Editor Pro 官網停售中，現有版本可在 PHP 8.4 執行，不需購買；兩個搬站工具建議移除，不需續約。
+    </p>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P10 需要貴院確認 + 下一步 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">下一步</div>
+  <div class="page-title">需要貴院確認的<span class="em">四件事</span></div>
+  <div class="body">
+    <div class="two p10" style="gap:14px;margin-bottom:16px;">
+      <div class="card edge">
+        <h3><span class="num-chip" style="width:30px;height:30px;font-size:16px;">1</span>西園：新主機環境</h3>
+        <ul class="bul tight">
+          <li>請準備一台<b>新的 VM</b>：<b>Ubuntu 24.04 LTS</b> 或 26.04 LTS</li>
+          <li><b>PHP 8.4</b>（含 curl、gd、mbstring、xml、zip、intl、mysqli），<b>MySQL 8.4</b> 或 <b>MariaDB 11.4</b></li>
+          <li>新主機需能連到<b>院內掛號系統</b>；若有來源 IP 白名單，請加入新主機</li>
+        </ul>
+      </div>
+      <div class="card edge" style="border-left-color:var(--indigo);">
+        <h3><span class="num-chip" style="width:30px;height:30px;font-size:16px;background:var(--indigo);">2</span>永越：授權與範圍</h3>
+        <ul class="bul tight">
+          <li>WPML、ACF PRO 的授權<b>是否有效、何時到期</b>、登記在誰名下</li>
+          <li>常見問題外掛（Ultimate FAQs）是否有使用<b>付費功能</b></li>
+          <li>是否一併替換<b>久未維護的外掛</b>（如 Timeline Express，每個另加 2–4 小時）</li>
+        </ul>
+      </div>
+      <div class="card edge">
+        <h3><span class="num-chip" style="width:30px;height:30px;font-size:16px;">3</span>測試協助</h3>
+        <ul class="bul tight">
+          <li><b>西園網路掛號</b>與<b>永越預約表單</b>都會串接院內系統，請協助安排測試方式或時段，避免產生真實掛號</li>
+          <li>請使用<b>表單匯出</b>的同仁，確認新版匯出檔案符合需求</li>
+        </ul>
+      </div>
+      <div class="card edge">
+        <h3><span class="num-chip" style="width:30px;height:30px;font-size:16px;">4</span>時程安排</h3>
+        <ul class="bul tight">
+          <li>依貴院可配合的時間，排定<b>新主機交付</b>與<b>測試窗口</b>；兩站可同時進行或錯開</li>
+          <li>確認兩站<b>正式上線</b>的日期，建議在夜間等離峰時段，以及需要事先通知的單位</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flow" style="font-size:16px;">
+      <b style="color:var(--ink);">① 確認範圍、授權與新主機</b><span style="color:var(--blue);font-weight:900;">→</span>
+      <b style="color:var(--ink);">② STEP 0–3 修正並分批上線</b><span style="color:var(--blue);font-weight:900;">→</span>
+      <b style="color:var(--ink);">③ PHP 8.4 整站測試</b><span style="color:var(--blue);font-weight:900;">→</span>
+      <b style="color:var(--ink);">④ 正式切換並觀察</b>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+</div><!-- /#stage -->
+
+<!-- 補充議題（按 Q） -->
+<div id="qa">
+  <h2>補充議題與備詢</h2>
+  <div class="hint">此區不在簡報主流程，按 Q 或 Esc 關閉。</div>
+  <div class="qgrid">
+    <div class="qa-item"><div class="q"><span>Q1</span>不升級會怎樣？</div><div class="a"><span>A</span>網站短期內仍能運作，但 PHP 7.4 自 2022 年 11 月起就沒有安全更新。新版外掛也陸續不支援舊 PHP，外掛會停在舊版，已知漏洞無法修補，風險會逐年累積。</div></div>
+    <div class="qa-item"><div class="q"><span>Q2</span>升級期間網站會停機嗎？</div><div class="a"><span>A</span>修正都先在測試環境完成，每批上線後網站都正常。最後切到 PHP 8.4 時安排在離峰時段：西園的舊主機會保留到穩定為止，永越也備妥退回方案，有異常可立即切回。</div></div>
+    <div class="qa-item"><div class="q"><span>Q3</span>網路掛號與預約會受影響嗎？</div><div class="a"><span>A</span>西園的掛號程式與永越的預約表單都已掃描，沒有發現在 PHP 8.4 會出錯的寫法。測試階段會完整跑過流程，需要貴院協助安排測試方式，避免產生真實掛號。</div></div>
+    <div class="qa-item"><div class="q"><span>Q4</span>西園的表單收件資料會不會遺失？</div><div class="a"><span>A</span>不會。新版外掛沿用同一份資料表，資料不需搬移。切換前會先完整備份，匯出也一樣是 Excel 檔。</div></div>
+    <div class="qa-item"><div class="q"><span>Q5</span>永越的資安事件會不會已經影響網站？</div><div class="a"><span>A</span>我方測試環境是 2.18 版，不受影響。正式站要在準備階段檢查版本與入侵跡象；若已收到 2.35 或 2.36 版，會先停下升級、另外進行資安處理。</div></div>
+    <div class="qa-item"><div class="q"><span>Q6</span>永越的常見問題外掛如果要換，FAQ 內容會不見嗎？</div><div class="a"><span>A</span>不會。會先嘗試更新原外掛；若必須替換，54 篇 FAQ 會完整搬到新外掛，並確認前台顯示與多語版本。</div></div>
+    <div class="qa-item"><div class="q"><span>Q7</span>西園為什麼不直接換新版主題？</div><div class="a"><span>A</span>子主題有大量客製，包括網路掛號流程。換主題等於網站改版，工時另估 24–40 小時以上，版面也會改變。本次以最小變動完成升級為原則。</div></div>
+    <div class="qa-item"><div class="q"><span>Q8</span>工時區間為什麼這麼大？</div><div class="a"><span>A</span>西園主要取決於 WPBakery 升級後要修正的頁面數量，永越主要取決於常見問題外掛能否直接更新。開工前我們會先盤點，把估算收斂。</div></div>
+    <div class="qa-item"><div class="q"><span>Q9</span>需要另外付費的外掛有哪些？</div><div class="a"><span>A</span>見授權費用頁。兩站的 WPBakery 都必須購買；西園的 ACF PRO 建議購買；永越的 WPML、ACF PRO 則視授權是否到期。兩站首年合計 US$213 起。</div></div>
+    <div class="qa-item"><div class="q"><span>Q10</span>升到 8.4 之後多久要再升級？</div><div class="a"><span>A</span>PHP 8.4 的安全更新到 2028 年底。在那之前只需要例行的外掛與 WordPress 更新，屆時再評估升到下一個版本。</div></div>
+  </div>
+</div>
+</div>
+
+<div class="navbar" id="navbar">
+  <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">10</span></span>
+  <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
+</div>
+<div class="progress" id="progress"></div>
+<div id="help">← → / 點兩側 / 右下箭頭 翻頁　·　F 全螢幕　·　Q 補充議題　·　Home／End 首尾</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let cur=0;
+  const stage=document.getElementById('stage');
+  const progress=document.getElementById('progress');
+  const curNo=document.getElementById('curNo');
+  const totNo=document.getElementById('totNo');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  const qa=document.getElementById('qa');
+  totNo.textContent=total;
+
+  function clampHash(){const h=parseInt(location.hash.replace('#',''),10);return (h>=1&&h<=total)?h-1:0;}
+  function show(i){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    curNo.textContent=cur+1;
+    progress.style.width=(cur/(total-1))*100+'%';
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  const next=()=>show(cur+1), prev=()=>show(cur-1);
+
+  function fit(){const s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+  window.addEventListener('resize',fit);
+
+  document.addEventListener('keydown',e=>{
+    if(qa.classList.contains('show')){
+      if(['q','Q','Escape'].includes(e.key)){qa.classList.remove('show');e.preventDefault();}
+      return;
+    }
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': next();e.preventDefault();break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': prev();e.preventDefault();break;
+      case 'Home': show(0);e.preventDefault();break;
+      case 'End': show(total-1);e.preventDefault();break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.(); e.preventDefault();break;
+      case 'q': case 'Q': qa.classList.add('show');e.preventDefault();break;
+    }
+  });
+
+  prevBtn.addEventListener('click',e=>{e.stopPropagation();prev();});
+  nextBtn.addEventListener('click',e=>{e.stopPropagation();next();});
+
+  // 點畫面左右各 1/6 才翻頁；中間 2/3 留給選字／點按
+  document.addEventListener('click',e=>{
+    if(qa.classList.contains('show'))return;
+    if(e.target.closest('#navbar')||e.target.closest('a')||e.target.closest('button'))return;
+    const w=window.innerWidth;
+    if(e.clientX < w/6) prev();
+    else if(e.clientX > w*5/6) next();
+  });
+
+  let tx=0,ty=0;
+  document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(qa.classList.contains('show'))return;
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev();}
+  },{passive:true});
+
+  fit(); show(clampHash());
+  setTimeout(()=>{document.getElementById('help').style.opacity='0';},5000);
+</script>
+</body>
+</html>
