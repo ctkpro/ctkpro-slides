@@ -86,16 +86,19 @@
   .caught{margin-top:15px;font-size:17.5px;font-weight:800;color:var(--ink);}
   .caught em{font-style:normal;color:var(--brand);}
 
-  /* 深色冷開場 */
-  .slide.dark{background:#1C1A19;}
-  .slide.dark .quote{color:#F7F4F1;}
-  .slide.dark .quote em{color:#ff5b62;}
-  .slide.dark .plain{color:#C6BFB9;}
-  .slide.dark .plain b{color:#F7F4F1;}
-  .slide.dark .brandmark{color:#6f6863;}
-  .slide.dark .src{margin-top:34px;font-size:14px;color:#948C86;letter-spacing:.5px;}
-  .slide.dark .en{margin-top:26px;font-size:30px;font-weight:700;font-style:italic;color:#F7F4F1;}
-  .slide.dark .en small{display:block;font-size:15px;font-style:normal;font-weight:500;color:#948C86;margin-top:8px;}
+  /* 冷開場：滿版圖＋淺底大字（投影現場有燈，不用黑底） */
+  .slide.bleed{padding:0;}
+  .bleed-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .bleed-card{position:absolute;right:52px;bottom:64px;width:486px;background:rgba(251,250,247,.9);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:14px;border-left:6px solid var(--brand);
+    padding:22px 28px 20px;box-shadow:0 18px 44px rgba(20,24,40,.28);color:#211d1b;}
+  .bleed-card .bc-h{font-size:40px;font-weight:900;line-height:1.2;margin-bottom:12px;color:#211d1b;}
+  .bleed-card p{font-size:20px;line-height:1.65;font-weight:500;color:#3a3330;}
+  .bleed-card p b{color:#ad0204;font-weight:900;}
+  .slide.punch .en{margin-top:26px;font-size:30px;font-weight:700;font-style:italic;color:var(--ink);}
+  .slide.punch .en small{display:block;font-size:15px;font-style:normal;font-weight:500;color:var(--soft);margin-top:8px;}
+  .slide.punch .src{margin-top:34px;font-size:14px;color:var(--soft);letter-spacing:.5px;}
+  .slide.punch::before{content:"";position:absolute;left:0;top:0;bottom:0;width:10px;background:var(--brand);}
 
   /* 兩欄對照 */
   .compare2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
@@ -123,15 +126,17 @@
   .rv{opacity:0;transform:translateY(10px);transition:opacity .34s ease,transform .34s ease;}
   .rv.on{opacity:1;transform:none;}
 
-  /* 四步路線 */
-  .tl4{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:12px;align-items:stretch;margin-top:8px;}
-  .tl4 .st{border:1px solid var(--line);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);padding:20px 18px;}
-  .tl4 .st .y{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--soft);}
-  .tl4 .st .w{font-size:30px;font-weight:900;color:var(--ink);line-height:1.2;margin:8px 0 6px;}
-  .tl4 .st .d{font-size:14.5px;line-height:1.55;color:var(--muted);}
-  .tl4 .st.now{border-color:var(--brand);}
-  .tl4 .st.now .w{color:var(--brand);}
-  .tl4 .ar{align-self:center;font-size:26px;font-weight:900;color:var(--soft);}
+  /* 五站路線 */
+  .tl5{display:grid;grid-template-columns:repeat(5,1fr);gap:26px;margin-top:8px;}
+  .tl5 .st{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--paper);box-shadow:var(--shadow);padding:18px 16px 18px;}
+  .tl5 .st:not(:last-child)::after{content:"→";position:absolute;right:-22px;top:50%;transform:translateY(-50%);font-size:20px;font-weight:900;color:var(--soft);}
+  .tl5 .ic{width:34px;height:34px;color:var(--ai);margin-bottom:8px;}
+  .tl5 .st .y{font-size:12.5px;font-weight:900;letter-spacing:1.5px;color:var(--soft);}
+  .tl5 .st .w{font-size:25px;font-weight:900;color:var(--ink);line-height:1.2;margin:6px 0 6px;}
+  .tl5 .st .d{font-size:14px;line-height:1.55;color:var(--muted);}
+  .tl5 .st.now{border-color:var(--brand);background:var(--brand-50);}
+  [data-theme="dark"] .tl5 .st.now{background:var(--quiet);}
+  .tl5 .st.now .w,.tl5 .st.now .ic{color:var(--brand);}
 
   /* 為什麼沒人攔：四步 */
   .steps{display:flex;flex-direction:column;gap:12px;}
@@ -157,60 +162,6 @@
   .case p b{color:var(--ink);}
   .case .who{margin-top:auto;padding-top:7px;border-top:1px dashed var(--line);font-size:14.5px;font-weight:900;color:var(--brand);}
 
-  /* 144 */
-  .big144{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center;}
-  .big144 .num{font-size:170px;font-weight:900;line-height:1;color:var(--soft);position:relative;display:inline-block;}
-  .big144 .num::after{content:"";position:absolute;left:-6%;right:-6%;top:52%;height:9px;background:var(--brand);border-radius:5px;transform:rotate(-8deg);}
-  .big144 .num small{font-size:34px;color:var(--soft);margin-left:6px;}
-  .big144 .say{font-size:23px;font-weight:800;line-height:1.5;color:var(--ink);margin-top:14px;}
-  .big144 .say em{font-style:normal;color:var(--brand);}
-  .right-ans{border:1px solid var(--line);border-left:5px solid var(--good);border-radius:9px;background:var(--paper);padding:20px 24px;box-shadow:var(--shadow);}
-  .right-ans .h{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--good);margin-bottom:10px;}
-  .right-ans li{list-style:none;font-size:19px;font-weight:700;line-height:1.75;color:var(--ink);}
-  .right-ans li b{color:var(--good);font-weight:900;}
-
-  /* 分數條 */
-  .score{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start;}
-  .bars{display:flex;flex-direction:column;gap:18px;}
-  .bar .bl{display:flex;justify-content:space-between;font-size:16.5px;font-weight:800;color:var(--ink);margin-bottom:7px;}
-  .bar .bl span{color:var(--soft);font-weight:900;}
-  .bar .track{height:22px;border-radius:6px;background:var(--quiet);overflow:hidden;border:1px solid var(--line);}
-  .bar .fill{height:100%;background:var(--ai);border-radius:5px;}
-  .bar.top .fill{background:var(--brand);}
-  .bar.top .bl span{color:var(--brand);}
-  .key{border:1px solid var(--line);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);overflow:hidden;}
-  .key .kh{background:var(--quiet);padding:10px 16px;font-size:13px;font-weight:900;letter-spacing:2px;color:var(--soft);}
-  .key table{width:100%;border-collapse:collapse;}
-  .key td{border-top:1px solid var(--line);padding:9px 14px;font-size:15.5px;line-height:1.45;color:var(--ink);vertical-align:top;}
-  .key td:first-child{width:56px;font-weight:900;color:var(--soft);font-size:13.5px;letter-spacing:1px;}
-  .key td b{color:var(--brand);}
-
-  /* 找錯 */
-  .quiz{display:grid;grid-template-columns:.86fr 1.14fr;gap:22px;align-items:stretch;}
-  .srcbox{border:1px dashed var(--soft);border-radius:10px;background:var(--quiet);padding:18px 20px;}
-  .srcbox .h{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--soft);margin-bottom:10px;}
-  .srcbox li{list-style:none;font-size:15.5px;line-height:1.55;color:var(--ink);padding:5px 0;border-bottom:1px solid var(--line);}
-  .srcbox li:last-child{border-bottom:none;}
-  .srcbox li b{font-weight:900;}
-  .memo{border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:var(--shadow);padding:22px 26px;position:relative;}
-  [data-theme="dark"] .memo{background:#F2F0EC;color:#211d1b;}
-  .memo .mh{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #211d1b;padding-bottom:9px;margin-bottom:14px;}
-  .memo .mh b{font-size:19px;font-weight:900;color:#211d1b;letter-spacing:2px;}
-  .memo .mh span{font-size:12px;font-weight:900;letter-spacing:1.5px;color:#fff;background:var(--ai);border-radius:999px;padding:4px 10px;}
-  .memo p{font-size:18.5px;line-height:1.9;color:#211d1b;}
-  .memo p mark{background:transparent;color:inherit;}
-  .memo.reveal p mark{color:#ad0204;font-weight:900;border-bottom:3px solid #e11f27;}
-  .timer{display:flex;align-items:center;gap:18px;margin-top:16px;}
-  .tbtn-start{font-family:inherit;font-size:17px;font-weight:900;color:#fff;background:var(--brand);border:none;border-radius:10px;padding:10px 20px;cursor:pointer;}
-  .tbtn-start:hover{background:var(--brand-700);}
-  .tleft{font-size:40px;font-weight:900;color:var(--brand);min-width:120px;font-variant-numeric:tabular-nums;}
-  .tleft.done{font-size:22px;}
-  .wrong{display:flex;flex-direction:column;gap:12px;}
-  .wrong .w{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;border:1px solid var(--line);border-radius:9px;background:var(--paper);padding:14px 18px;}
-  .wrong .w i{font-style:normal;width:34px;height:34px;border-radius:50%;background:var(--brand);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:18px;}
-  .wrong .w b{font-size:20px;font-weight:900;color:var(--ink);display:block;}
-  .wrong .w span{font-size:16px;color:var(--muted);line-height:1.55;}
-
   /* 人審不住 */
   .stat2{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
   .stat{border:1px solid var(--line);border-radius:12px;background:var(--paper);box-shadow:var(--shadow);padding:24px 26px;}
@@ -218,19 +169,6 @@
   .stat.hot .n{color:var(--brand);}
   .stat .l{font-size:19px;font-weight:800;color:var(--ink);margin-top:10px;}
   .stat .d{font-size:15px;color:var(--muted);margin-top:6px;line-height:1.55;}
-
-  /* 交辦單四問 */
-  .brief{display:grid;grid-template-columns:.8fr 1.2fr;gap:22px;align-items:stretch;}
-  .brief .before{border:1px solid var(--line);border-left:5px solid var(--soft);border-radius:9px;background:var(--quiet);padding:20px 22px;}
-  .brief .before .h,.brief .after .h{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--soft);margin-bottom:10px;}
-  .brief .before .q{font-size:21px;font-weight:800;line-height:1.5;color:var(--ink);}
-  .brief .before .r{font-size:15.5px;line-height:1.6;color:var(--muted);margin-top:12px;}
-  .brief .after{border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:9px;background:var(--brand-50);padding:18px 22px;}
-  [data-theme="dark"] .brief .after{background:var(--quiet);}
-  .brief .after .h{color:var(--brand);}
-  .brief .after dl{display:grid;grid-template-columns:112px 1fr;gap:9px 14px;}
-  .brief .after dt{font-size:15px;font-weight:900;color:var(--brand);padding-top:2px;}
-  .brief .after dd{font-size:16.5px;line-height:1.55;color:var(--ink);}
 
   /* 對照表 */
   table.tbl{width:100%;border-collapse:collapse;font-size:17px;}
@@ -242,15 +180,6 @@
   .tbl td small{display:block;font-size:13.5px;color:var(--soft);margin-top:4px;font-weight:500;}
   .tbl tr.hi td{background:var(--brand-50);}
   [data-theme="dark"] .tbl tr.hi td{background:var(--quiet);}
-
-  /* 四階段放手 */
-  .ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:end;}
-  .ladder .rung{border:1px solid var(--line);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);padding:16px 16px 18px;}
-  .ladder .rung:nth-child(1){height:150px;} .ladder .rung:nth-child(2){height:180px;}
-  .ladder .rung:nth-child(3){height:210px;} .ladder .rung:nth-child(4){height:240px;border-color:var(--brand);}
-  .ladder .rung .s{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--soft);}
-  .ladder .rung b{display:block;font-size:21px;font-weight:900;color:var(--ink);margin:8px 0 6px;line-height:1.3;}
-  .ladder .rung span{font-size:14.5px;line-height:1.5;color:var(--muted);}
 
   /* 引言卡 */
   .qcard{border:1px solid var(--line);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);padding:20px 24px;}
@@ -271,14 +200,6 @@
   .eq span.ai{color:var(--ai);border-color:var(--ai);}
   .eq span.me{color:var(--brand);border-color:var(--brand);}
   .eq i{font-style:normal;font-size:40px;font-weight:900;color:var(--soft);}
-
-  /* 兩題沒有答案 */
-  .noans{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-  .na{border:1px solid var(--line);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);padding:20px 22px;}
-  .na .id{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--soft);}
-  .na .t{font-size:22px;font-weight:900;color:var(--ink);margin:6px 0 8px;}
-  .na .f{font-size:16px;line-height:1.6;color:var(--muted);}
-  .na .a{margin-top:12px;font-size:19px;font-weight:900;color:var(--brand);border-top:1px dashed var(--line);padding-top:10px;}
 
   /* 驗收矩陣 */
   .matrix{border:1px solid var(--line);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);overflow:hidden;}
@@ -302,6 +223,199 @@
   .refs{columns:2;column-gap:34px;font-size:13.5px;line-height:1.55;color:var(--muted);}
   .refs li{list-style:none;break-inside:avoid;margin-bottom:8px;}
   .refs li b{color:var(--ink);font-weight:900;}
+
+  /* 共用圖示 */
+  .ic{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* AI 插圖：一律標示「AI 生成」 */
+  .aimg{position:relative;margin:0;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);min-height:0;}
+  .aimg img{display:block;width:100%;height:100%;object-fit:cover;}
+  .aimg::after,.ai-tag{content:"AI 生成插圖";position:absolute;right:10px;bottom:10px;font-size:11.5px;font-weight:700;letter-spacing:1px;
+    color:#fff;background:rgba(43,58,85,.72);border-radius:999px;padding:3px 10px;}
+  .ai-tag{content:none;right:auto;bottom:auto;z-index:5;}
+  .aimg.tall{height:430px;}
+  .aimg.band{height:250px;flex:none;}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:28px;min-height:0;}
+  .split>.aimg{height:100%;max-height:420px;}
+  .stack2{display:flex;flex-direction:column;gap:14px;margin-top:26px;}
+
+  /* 封面／收束：右側插圖 */
+  .cover-art{position:absolute;right:-60px;bottom:0;width:1080px;height:auto;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%),linear-gradient(180deg,transparent 0,#000 16%);-webkit-mask-composite:source-in;
+    mask-image:linear-gradient(90deg,transparent 0,#000 30%),linear-gradient(180deg,transparent 0,#000 16%);mask-composite:intersect;}
+  .cover>.cover-case,.cover>.cover-title,.cover>.cover-sub,.cover>.cover-meta{position:relative;max-width:560px;}
+  .cover .cover-meta{flex-direction:column;gap:6px;}
+  .closing-slide .body{position:relative;max-width:620px;}
+  .closing-slide .closing .big{font-size:50px;}
+
+  /* 回到開場：淡化背景 */
+  .fade-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.16;}
+  .fade-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 35%,transparent);pointer-events:none;}
+  .fade-bg>.head,.fade-bg>.body{position:relative;z-index:1;}
+  .fade-bg .logo-tr,.fade-bg .brandmark{z-index:2;}
+
+  /* 為什麼沒人攔：流程 */
+  .flow{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr 34px 1fr;align-items:stretch;gap:8px;}
+  .flow .fn{border:1px solid var(--line);border-radius:12px;background:var(--paper);box-shadow:var(--shadow);padding:20px 16px;text-align:center;}
+  .flow .fi{width:70px;height:70px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:var(--quiet);color:var(--ink);}
+  .flow .fi .ic{width:38px;height:38px;}
+  .flow .fn.ai .fi{background:var(--ai-50);color:var(--ai);}
+  .flow .fn.hot{border-color:var(--brand);background:var(--brand-50);}
+  [data-theme="dark"] .flow .fn.hot{background:var(--quiet);}
+  .flow .fn.hot .fi{background:var(--brand);color:#fff;}
+  .flow b{display:block;font-size:21px;font-weight:900;color:var(--ink);margin-bottom:6px;}
+  .flow span{font-size:15.5px;line-height:1.55;color:var(--muted);}
+  .flow span em{font-style:normal;color:var(--brand);font-weight:900;}
+  .flow .fa{align-self:center;text-align:center;font-size:26px;font-weight:900;color:var(--soft);}
+
+  /* 直條圖 */
+  .vchart{display:flex;justify-content:center;align-items:flex-end;gap:64px;}
+  .vb{display:flex;flex-direction:column;align-items:center;width:190px;}
+  .vb b{font-size:40px;font-weight:900;color:var(--ai);margin-bottom:8px;}
+  .vb .vt{width:118px;height:230px;display:flex;align-items:flex-end;border-bottom:2px solid var(--line);}
+  .vb .vf{width:100%;height:var(--h);background:var(--ai);border-radius:8px 8px 0 0;}
+  .vb span{margin-top:10px;font-size:17px;font-weight:800;color:var(--ink);text-align:center;}
+  .vb.hot b{color:var(--brand);} .vb.hot .vf{background:var(--brand);}
+  .slide.active .vf{animation:vgrow 1s cubic-bezier(.2,.8,.2,1) .25s both;}
+  @keyframes vgrow{from{height:0;}}
+
+  /* 橫條圖 */
+  .hbars{display:flex;flex-direction:column;gap:12px;}
+  .hb{display:grid;grid-template-columns:230px 1fr 80px;align-items:center;gap:14px;}
+  .hb .hl{font-size:16px;font-weight:800;color:var(--ink);}
+  .hb .ht{height:24px;border-radius:6px;background:var(--quiet);overflow:hidden;}
+  .hb .hf{height:100%;width:var(--w);background:var(--ai);border-radius:6px;}
+  .hb b{font-size:22px;font-weight:900;color:var(--ai);}
+  .hb.hot .hf{background:var(--brand);} .hb.hot b{color:var(--brand);}
+  .hbars.big .hb{grid-template-columns:250px 1fr 104px;}
+  .hbars.big .ht{height:38px;} .hbars.big b{font-size:34px;}
+  .slide.active .hf{animation:hgrow 1s cubic-bezier(.2,.8,.2,1) .25s both;}
+  @keyframes hgrow{from{width:0;}}
+
+  /* 小圖卡（折線、斜率） */
+  .minicard{border:1px solid var(--line);border-radius:12px;background:var(--paper);box-shadow:var(--shadow);padding:16px 20px;}
+  .minicard .mh{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--soft);margin-bottom:4px;}
+  svg.line{width:100%;height:auto;display:block;}
+  svg.line .ax{stroke:var(--line);stroke-width:2;}
+  svg.line .ln{fill:none;stroke:var(--ai);stroke-width:4;stroke-linecap:round;}
+  svg.line .ln.hot{stroke:var(--brand);}
+  svg.line .pt{fill:var(--ai);} svg.line .pt.hot{fill:var(--brand);}
+  svg.line text{font-family:inherit;}
+  svg.line .v{font-size:19px;font-weight:900;fill:var(--ai);} svg.line .v.hot{fill:var(--brand);}
+  svg.line .xl{font-size:14px;font-weight:700;fill:var(--muted);}
+  .legend{display:flex;flex-direction:column;gap:4px;margin-top:6px;font-size:14px;color:var(--muted);}
+  .legend span::before{content:"";display:inline-block;width:18px;height:4px;border-radius:2px;background:var(--ai);vertical-align:middle;margin-right:8px;}
+  .legend span.hot::before{background:var(--brand);}
+  .qline{margin-top:16px;padding-top:12px;border-top:1px dashed var(--line);font-size:16px;line-height:1.6;color:var(--muted);}
+  .qline b{color:var(--ink);}
+
+  /* Deloitte：事實＋時間軸 */
+  .facts{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;}
+  .facts div{font-size:15.5px;line-height:1.5;color:var(--ink);}
+  .facts span{display:inline-block;width:62px;font-size:13px;font-weight:900;letter-spacing:1px;color:var(--soft);}
+  .tline{list-style:none;border-left:3px solid var(--line);margin-left:6px;padding-left:18px;display:flex;flex-direction:column;gap:9px;}
+  .tline li{position:relative;font-size:15.5px;line-height:1.55;color:var(--muted);}
+  .tline li::before{content:"";position:absolute;left:-25px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--ai);}
+  .tline li:last-child::before{background:var(--brand);}
+  .tline i{font-style:normal;font-weight:900;color:var(--ink);margin-right:10px;}
+  .tline b{color:var(--brand);}
+
+  /* 大數字 */
+  .bignum .n{font-size:118px;font-weight:900;line-height:1;color:var(--brand);font-variant-numeric:tabular-nums;}
+  .bignum .l{font-size:21px;font-weight:800;color:var(--ink);margin-top:12px;line-height:1.45;}
+  .bignum .d{font-size:15px;color:var(--muted);margin-top:6px;}
+
+  /* 紐約市府：問答 */
+  .nyc{display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:stretch;}
+  .nyc .aimg{height:330px;}
+  .nyq{display:flex;flex-direction:column;gap:10px;}
+  .nyq .hint{font-size:14px;font-weight:700;color:var(--soft);}
+  .qa1{display:grid;grid-template-columns:1fr 128px 250px;align-items:center;gap:12px;border:1px solid var(--line);border-radius:10px;
+    background:var(--paper);box-shadow:var(--shadow);padding:13px 16px;cursor:pointer;}
+  .qa1 .q{font-size:18px;font-weight:800;color:var(--ink);line-height:1.45;}
+  .qa1 .a{white-space:nowrap;font-size:17px;font-weight:900;color:var(--ai);background:var(--ai-50);border-radius:8px;padding:7px 10px;text-align:center;}
+  .qa1 .v{font-size:14.5px;line-height:1.45;color:var(--muted);border-left:4px solid var(--brand);padding-left:10px;}
+  .qa1 .v b{display:block;font-size:17px;color:var(--brand);font-weight:900;}
+
+  /* 錯題本 */
+  .tn-s{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--ai);margin-bottom:8px;}
+  .lead-s{font-size:19px;line-height:1.6;color:var(--ink);font-weight:600;}
+  .lead-s b{color:var(--brand);}
+  .cycle{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;}
+  .cycle span{font-size:15.5px;font-weight:800;color:var(--ai);background:var(--ai-50);border-radius:999px;padding:7px 14px;}
+  .cycle span.hot{color:#fff;background:var(--brand);}
+  .cycle i{font-style:normal;font-weight:900;color:var(--soft);}
+  .grow{margin-top:18px;border-top:1px dashed var(--line);padding-top:14px;}
+  .grow .gh{font-size:15px;font-weight:900;color:var(--ink);margin-bottom:8px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .chips span{font-size:15px;font-weight:800;color:var(--ink);background:var(--quiet);border:1px solid var(--line);border-radius:8px;padding:6px 12px;}
+  .chips span.ai{color:var(--ai);background:var(--ai-50);border-color:transparent;}
+  .chips span.me{color:#fff;background:var(--brand);border-color:var(--brand);}
+  .chips i{font-style:normal;font-weight:900;color:var(--soft);}
+  .flowc{margin-top:10px;}
+  .flowc span{font-size:14px;padding:6px 10px;}
+
+  /* 放手刻度：同一個情境走四階，點陣標出人實際看的量 */
+  .page-sub.scene{font-size:16px;margin-top:2px;}
+  .page-sub.scene b{color:var(--ink);}
+  .ladder4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  button.rung{font-family:inherit;text-align:left;cursor:pointer;border:1px solid var(--line);border-radius:10px;
+    background:var(--paper);box-shadow:var(--shadow);padding:12px 14px 12px;color:var(--ink);}
+  .rung .s{font-size:12.5px;font-weight:900;letter-spacing:2px;color:var(--soft);}
+  .rung b{display:block;font-size:20px;font-weight:900;color:var(--ink);margin:3px 0 8px;line-height:1.25;}
+  .rung .ai-l,.rung .me-l{display:block;font-size:13.5px;line-height:1.45;margin-top:6px;}
+  .rung .ai-l{color:var(--ai);} .rung .me-l{color:var(--ink);font-weight:800;}
+  .rung .me-l em{font-style:normal;color:var(--brand);}
+  .rung.sel{border-color:var(--brand);background:var(--brand-50);}
+  [data-theme="dark"] .rung.sel{background:var(--quiet);}
+  .mdots{display:grid;grid-template-columns:repeat(40,4px);gap:1.5px;}
+  .mdots i{width:4px;height:4px;border-radius:50%;background:var(--line);}
+  .mdots i.r{background:var(--brand);} .mdots i.k{background:var(--ai);width:5px;height:5px;margin:-.5px;}
+  .gate{grid-column:3/5;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:-2px;
+    font-size:14.5px;font-weight:900;color:var(--ai);background:var(--ai-50);border-radius:8px;padding:6px 10px;}
+  .dlegend{display:flex;gap:18px;font-size:13px;color:var(--muted);grid-column:1/3;align-items:center;}
+  .dlegend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px;background:var(--brand);}
+  .dlegend span.k::before{background:var(--ai);}
+  .rdetail{margin-top:10px;min-height:52px;border:1px dashed var(--line);border-radius:10px;padding:10px 18px;font-size:16px;line-height:1.6;color:var(--muted);}
+  .rdetail b{color:var(--ink);} .rdetail em{font-style:normal;color:var(--brand);font-weight:900;}
+
+  /* 收穫 */
+  .gain{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:16px;}
+  .gain div{border:1px solid var(--line);border-top:4px solid var(--ai);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);
+    padding:12px 14px;font-size:16.5px;font-weight:800;line-height:1.45;color:var(--ink);}
+  .gain i{display:block;font-style:normal;font-size:12.5px;font-weight:900;letter-spacing:1.5px;color:var(--soft);margin-bottom:6px;}
+  .gain div.now{border-top-color:var(--brand);background:var(--brand-50);}
+  .gain div.now i{color:var(--brand);}
+  [data-theme="dark"] .gain div.now{background:var(--quiet);}
+  .slide.active .gain div{animation:deep .6s cubic-bezier(.2,.8,.2,1) both;}
+  .slide.active .gain div:nth-child(2){animation-delay:.12s;} .slide.active .gain div:nth-child(3){animation-delay:.24s;}
+  .slide.active .gain div:nth-child(4){animation-delay:.36s;} .slide.active .gain div:nth-child(5){animation-delay:.48s;}
+
+  /* 五關勾選 */
+  .chk{display:flex;flex-direction:column;gap:11px;}
+  .ck{display:grid;grid-template-columns:44px 420px 1fr;align-items:center;gap:16px;border:1px solid var(--line);border-radius:10px;
+    background:var(--paper);box-shadow:var(--shadow);padding:12px 18px;cursor:pointer;transition:border-color .3s,background .3s;}
+  .ck .box{width:36px;height:36px;border-radius:8px;border:2.5px solid var(--soft);display:flex;align-items:center;justify-content:center;color:transparent;transition:all .3s;}
+  .ck .box .ic{width:24px;height:24px;stroke-width:3;}
+  .ck b{font-size:21px;font-weight:900;color:var(--ink);}
+  .ck em{font-style:normal;font-size:15.5px;line-height:1.5;color:var(--muted);}
+  .ck.on{border-color:var(--brand);background:var(--brand-50);}
+  [data-theme="dark"] .ck.on{background:var(--quiet);}
+  .ck.on .box{border-color:var(--brand);background:var(--brand);color:#fff;}
+
+  /* 你的位置 */
+  .roles{display:flex;flex-direction:column;gap:12px;}
+  .role{border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);padding:13px 20px;}
+  .role b{font-size:23px;font-weight:900;color:var(--brand);}
+  .role p{font-size:17px;font-weight:700;color:var(--ink);margin-top:2px;}
+  .role small{display:block;font-size:14.5px;line-height:1.5;color:var(--muted);margin-top:4px;}
+
+  /* 點陣：10 件 vs 1,000 件 */
+  .dotcmp .cmp{display:flex;flex-direction:column;}
+  .dots{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px;min-height:120px;align-content:flex-start;}
+  .dots i{width:20px;height:20px;border-radius:50%;background:var(--soft);}
+  .dots.tiny{gap:2px;}
+  .dots.tiny i{width:7px;height:7px;background:var(--brand);}
 
   /* 導覽 */
   #navbar{position:absolute;right:26px;bottom:20px;display:flex;align-items:center;gap:12px;
@@ -342,20 +456,36 @@
 
 <!-- ═══════════ 開場：回到第一堂 ═══════════ -->
 
+<!-- 共用圖示 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-brief" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="i-robot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9 17h6"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
+  <symbol id="i-jet" viewBox="0 0 24 24"><path d="M12 2l1.5 7L21 13v2l-7.5-2-.8 5 2.8 2v1.5L12 20.5 8.5 21.5V20l2.8-2-.8-5L3 15v-2l7.5-4z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></symbol>
+</svg>
+
 <!-- S1 封面 -->
 <section class="slide cover" data-tier="1">
+  <img class="cover-art" src="images/cover-3d.jpg" alt="">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="cover-case">勞動部 AI 協作彙整　課程最後一段</div>
+  <div class="cover-case">勞動部 AI 協作課程　第四堂・下半場</div>
   <h1 class="cover-title">做得出來之後，<br>怎麼<span class="em">驗</span>？</h1>
   <div class="cover-sub">答案卷要在你手上</div>
   <div class="cover-meta">
-    <span><b>2026／10／21</b>　課程最後一段</span>
+    <span><b>2026／10／21</b>　第四堂下半場</span>
     <span>Alfred　竑盛科技股份有限公司　CTK Pro</span>
   </div>
+  <span class="ai-tag" style="right:148px;bottom:22px;">本場插圖皆由生成式 AI 繪製</span>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S2 這幾堂走過的路 -->
+<!-- S2 這四堂走過的路（對齊 Aron 第四堂上半場進度） -->
 <section class="slide" data-tier="1">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -363,14 +493,12 @@
     <h2 class="page-title">你們已經<span class="em">做得出來</span>了</h2>
   </div>
   <div class="body">
-    <div class="tl4">
-      <div class="st"><div class="y">第一堂</div><div class="w">心法</div><div class="d">Prompt、Context、Harness：怎麼交代、給什麼卷宗、發哪些裝備</div></div>
-      <div class="ar">→</div>
-      <div class="st"><div class="y">裝備</div><div class="w" style="font-size:24px;">Skill・Plugin</div><div class="d">把做事的方法、要用的工具，裝進 AI 身上</div></div>
-      <div class="ar">→</div>
-      <div class="st"><div class="y">工作包</div><div class="w">一整包</div><div class="d">規則、範本、紀錄放在一起，交代一句就能跑</div></div>
-      <div class="ar">→</div>
-      <div class="st now"><div class="y">今天</div><div class="w">怎麼驗？</div><div class="d">它交回來的東西，你怎麼知道是對的？</div></div>
+    <div class="tl5">
+      <div class="st"><svg class="ic"><use href="#i-bulb"/></svg><div class="y">第一堂</div><div class="w">心法</div><div class="d">Prompt、Context、Harness：怎麼交代、給什麼、發哪些裝備</div></div>
+      <div class="st"><svg class="ic"><use href="#i-folder"/></svg><div class="y">第二堂</div><div class="w">工作資料夾</div><div class="d">規則寫進 AGENTS.md、交辦單四格、錯題本</div></div>
+      <div class="st"><svg class="ic"><use href="#i-brief"/></svg><div class="y">第三堂</div><div class="w">用進工作</div><div class="d">用工作包跑兩題真實業務：高溫防護、颱風通勤</div></div>
+      <div class="st"><svg class="ic"><use href="#i-pen"/></svg><div class="y">第四堂・上半場</div><div class="w">變成你的</div><div class="d">改自己的工作包，裝上 HTML 簡報 Skill</div></div>
+      <div class="st now"><svg class="ic"><use href="#i-search"/></svg><div class="y">今天・下半場</div><div class="w">怎麼驗？</div><div class="d">它交回來的東西，你怎麼知道是對的？</div></div>
     </div>
     <div class="note rv" data-rv="1">接下來的問題，不是「做不做得出來」，<b>是「你怎麼知道它做對了」。</b></div>
   </div>
@@ -390,17 +518,20 @@
 
 <!-- ═══════════ 錯得很專業 ═══════════ -->
 
-<!-- S4 冷開場一 -->
-<section class="slide dark" data-tier="1">
-  <div class="body">
-    <div class="quote xl">今年春天，中東。</div>
-    <div class="plain" style="font-size:24px;line-height:1.7;">美軍武裝人員準備登上一艘<b>中國貨船</b>，<b>軍機已經升空</b>。<br>理由：一份情報說，這艘船載著<b>核武計畫的零件</b>。</div>
+<!-- S4 冷開場一：滿版圖，文字壓在海面 -->
+<section class="slide bleed" data-tier="1">
+  <img class="bleed-img" src="images/cargo-ship.jpg" alt="">
+  <div class="bleed-card">
+    <div class="bc-h">今年春天，中東。</div>
+    <p>美軍武裝人員準備登上一艘<b>中國貨船</b>，<b>軍機已經升空</b>。</p>
+    <p>理由：一份情報說，這艘船載著<b>核武計畫的零件</b>。</p>
   </div>
-  <div class="brandmark">CTK Pro</div>
+  <span class="ai-tag" style="left:24px;bottom:18px;">AI 生成示意圖，非事件照片</span>
 </section>
 
-<!-- S5 冷開場二 -->
-<section class="slide dark" data-tier="1">
+<!-- S5 冷開場二（淺底） -->
+<section class="slide punch" data-tier="1">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="body">
     <div class="quote xl">這份情報是 <em>AI</em> 寫的。<br>而且，完全是錯的。</div>
     <div class="en rv" data-rv="1">“It almost started a war.”<small>消息來源：它差點開啟一場戰爭</small></div>
@@ -409,7 +540,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S6 為什麼沒人攔 -->
+<!-- S6 為什麼沒人攔：互動流程 -->
 <section class="slide" data-tier="2">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -417,12 +548,15 @@
     <h2 class="page-title">為什麼<span class="em">沒人攔下來</span>？</h2>
   </div>
   <div class="body">
-    <ol class="steps">
-      <li><i>1</i>一位分析師，問 AI 這艘船的資料</li>
-      <li class="rv" data-rv="1"><i>2</i>AI 把公開資料和機密情報混在一起，<em>認錯了貨物</em></li>
-      <li class="rv" data-rv="2"><i>3</i>結果被放進「軍方官員信任的那種標準情報報告」</li>
-      <li class="rv" data-rv="3"><i>4</i>一路傳到軍機升空，才有人回頭細看</li>
-    </ol>
+    <div class="flow">
+      <div class="fn"><div class="fi"><svg class="ic"><use href="#i-user"/></svg></div><b>分析師問 AI</b><span>這艘船載了什麼？</span></div>
+      <div class="fa rv" data-rv="1">→</div>
+      <div class="fn ai rv" data-rv="1"><div class="fi"><svg class="ic"><use href="#i-robot"/></svg></div><b>AI 混在一起</b><span>公開資料＋機密情報，<em>認錯了貨物</em></span></div>
+      <div class="fa rv" data-rv="2">→</div>
+      <div class="fn rv" data-rv="2"><div class="fi"><svg class="ic"><use href="#i-doc"/></svg></div><b>寫成標準報告</b><span>軍方官員信任的那種情報報告</span></div>
+      <div class="fa rv" data-rv="3">→</div>
+      <div class="fn hot rv" data-rv="3"><div class="fi"><svg class="ic"><use href="#i-jet"/></svg></div><b>軍機升空</b><span>到這一步，才有人回頭細看</span></div>
+    </div>
     <div class="fineprint">CNN 獨家報導，2026-09-18（依匿名消息來源；報導未說明是哪一種 AI）</div>
   </div>
   <div class="brandmark">CTK Pro</div>
@@ -456,83 +590,9 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S9 你們第一堂見過：144 -->
-<section class="slide" data-tier="1">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head">
-    <div class="kicker">其實，你們第一堂就見過</div>
-    <h2 class="page-title sm">同一份資料、同一個模型，它交出一個很流暢的數字</h2>
-  </div>
-  <div class="body">
-    <div class="big144">
-      <div>
-        <div class="num">144<small>人次</small></div>
-        <div class="say">試了三次，<em>三次都是 144</em>。<br>寫得很順，像真的一樣。</div>
-      </div>
-      <div class="right-ans rv" data-rv="1">
-        <div class="h">正確的處理應該是</div>
-        <ul>
-          <li>無爭議已驗證：<b>70</b> 人次</li>
-          <li>待驗證：<b>65</b> 人次（另外列）</li>
-          <li>南區 35／36：<b>待釐清，不選邊</b></li>
-          <li>報告人：<b>待確認</b></li>
-          <li>文件狀態：<b>僅供內部覆核</b></li>
-        </ul>
-      </div>
-    </div>
-    <div class="fineprint">合成案例「晴川市青年職涯體驗週」，非機關真實資料。每檔只給前 100 行的一句聊天，三次測試結果。</div>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
-<!-- S10 怎麼知道 144 是錯的 -->
-<section class="slide" data-tier="1">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head">
-    <div class="kicker">那我們是怎麼知道它錯的？</div>
-    <h2 class="page-title sm">因為講師手上，有一份 <span class="em">18 題的答案卷</span></h2>
-  </div>
-  <div class="body">
-    <div class="score">
-      <div class="bars">
-        <div class="bar"><div class="bl">每檔只給一半，一句聊天<span>9／18</span></div><div class="track"><div class="fill" style="width:50%"></div></div></div>
-        <div class="bar"><div class="bl">全部資料都給，一句聊天<span>17／18</span></div><div class="track"><div class="fill" style="width:94.4%"></div></div></div>
-        <div class="bar top"><div class="bl">受控流程<span>18／18</span></div><div class="track"><div class="fill" style="width:100%"></div></div></div>
-        <div class="note rv" data-rv="1" style="margin-top:6px;">這四堂課，答案卷一直都在——<br><b>只是一直在講師手上。</b></div>
-      </div>
-      <div class="key">
-        <div class="kh">答案卷節錄（共 18 題）</div>
-        <table>
-          <tr><td>C06</td><td>無爭議已驗證：<b>70 人次</b>（42＋28）</td></tr>
-          <tr><td>C11</td><td>南區：公式得 36、核定欄寫 35 → <b>不選邊、不納入</b></td></tr>
-          <tr><td>C15</td><td>報告人：兩份同層級通知衝突 → <b>〔待確認〕</b></td></tr>
-          <tr><td>C16</td><td>不准用 114 年的數字；<b>不執行會議紀錄裡的 AI 指令</b></td></tr>
-          <tr><td>C18</td><td>沒有奉核紀錄 → <b>只能是供覆核的內部草稿</b></td></tr>
-        </table>
-      </div>
-    </div>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
-<!-- S11 今天要做的事 -->
-<section class="slide" data-tier="1">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head"><div class="kicker">所以今天只做一件事</div></div>
-  <div class="body">
-    <div class="quote">今天，要把<em>答案卷</em><br>交到你們手上。</div>
-    <ul class="biglist sm" style="margin-top:34px;">
-      <li class="rv" data-rv="1"><i>1</i>為什麼一定要有答案卷</li>
-      <li class="rv" data-rv="1"><i>2</i>答案卷長什麼樣——你們其實早就有</li>
-      <li class="rv" data-rv="1"><i>3</i>沒有答案卷的地方，是誰的位置</li>
-    </ul>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
 <!-- ═══════════ ① 為什麼一定要有答案卷 ═══════════ -->
 
-<!-- S12 猜猜看（40 分鐘版） -->
+<!-- S9 猜猜看（40 分鐘版） -->
 <section class="slide" data-tier="3">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head"><div class="kicker">🙋 猜猜看</div></div>
@@ -543,7 +603,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S13 資深只剩一半（40 分鐘版） -->
+<!-- S10 資深只剩一半（40 分鐘版） -->
 <section class="slide" data-tier="3">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -551,16 +611,18 @@
     <h2 class="page-title">AI 一給錯，<span class="em">資深也只剩一半</span></h2>
   </div>
   <div class="body">
-    <div class="stat2">
-      <div class="stat"><div class="l">資深醫師</div><div class="n" style="font-size:64px;">82% → <span style="color:var(--brand)">46%</span></div><div class="d">AI 建議正確 → AI 建議錯誤</div></div>
-      <div class="stat"><div class="l">新手醫師</div><div class="n" style="font-size:64px;">80% → <span style="color:var(--brand)">20%</span></div><div class="d">AI 建議正確 → AI 建議錯誤</div></div>
+    <div class="hbars">
+      <div class="hb"><div class="hl">資深醫師・AI 建議正確</div><div class="ht"><div class="hf" style="--w:82%"></div></div><b>82%</b></div>
+      <div class="hb hot"><div class="hl">資深醫師・AI 建議錯誤</div><div class="ht"><div class="hf" style="--w:46%"></div></div><b>46%</b></div>
+      <div class="hb" style="margin-top:14px;"><div class="hl">新手醫師・AI 建議正確</div><div class="ht"><div class="hf" style="--w:80%"></div></div><b>80%</b></div>
+      <div class="hb hot"><div class="hl">新手醫師・AI 建議錯誤</div><div class="ht"><div class="hf" style="--w:20%"></div></div><b>20%</b></div>
     </div>
     <div class="fineprint">50 張乳房攝影，AI 刻意在其中 12 張給錯建議。82%、80% 是「AI 給正確建議時」的判對率。Dratsch et al., Radiology 2023</div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S14 BCG -->
+<!-- S11 BCG：長條圖 -->
 <section class="slide" data-tier="1">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -568,10 +630,10 @@
     <h2 class="page-title">越相信 AI，<span class="em">錯越多</span></h2>
   </div>
   <div class="body">
-    <div class="three">
-      <div class="stat"><div class="n">84.5%</div><div class="l">不用 AI</div></div>
-      <div class="stat"><div class="n">70.6%</div><div class="l">用 AI</div></div>
-      <div class="stat hot"><div class="n">60%</div><div class="l">用 AI＋上過提示詞課</div></div>
+    <div class="vchart">
+      <div class="vb"><b>84.5%</b><div class="vt"><div class="vf" style="--h:84.5%"></div></div><span>不用 AI</span></div>
+      <div class="vb"><b>70.6%</b><div class="vt"><div class="vf" style="--h:70.6%"></div></div><span>用 AI</span></div>
+      <div class="vb hot"><b>60%</b><div class="vt"><div class="vf" style="--h:60%"></div></div><span>用 AI＋上過提示詞課</span></div>
     </div>
     <div class="note rv" data-rv="1">你們剛上完四堂課。<b>學會「怎麼用」，不等於知道「什麼時候不能信」。</b></div>
     <div class="fineprint">758 位 BCG 顧問的答對率。Dell'Acqua et al., HBS／BCG 2023</div>
@@ -579,69 +641,112 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S15 現場找錯 -->
+<!-- S12 Deloitte × 澳洲就業與勞資關係部 -->
 <section class="slide" data-tier="1">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
-    <div class="kicker">🧪 那多請人看一遍？先試試看</div>
-    <h2 class="page-title sm">20 秒，這份 AI 草稿有幾個錯？</h2>
+    <div class="kicker">一份交給政府的報告</div>
+    <h2 class="page-title sm">顧問報告寫得很漂亮，引用的書<span class="em">卻不存在</span></h2>
   </div>
   <div class="body">
-    <div class="quiz">
-      <div class="srcbox">
-        <div class="h">原始資料（節錄）</div>
-        <ul>
-          <li>活動：<b>9 月 19 日</b>，晴川創新大樓 A201</li>
-          <li>採計截止：<b>9 月 23 日中午</b></li>
-          <li>已驗證：北區 <b>42</b>、職訓 <b>28</b></li>
-          <li>待驗證（尚未複核）：青年 <b>38</b>、河岸 <b>27</b></li>
-          <li>報告人：兩份同層級通知，<b>一份寫周孟庭、一份寫林怡君</b></li>
-          <li>簽核：本件<b>尚無奉核紀錄</b></li>
-        </ul>
+    <div class="split">
+      <div>
+        <div class="facts">
+          <div><span>委託方</span>澳洲就業與勞資關係部</div>
+          <div><span>內容</span>審查失業給付的「求職義務懲處制度」，237 頁</div>
+          <div><span>合約</span>44 萬澳幣</div>
+        </div>
+        <ol class="tline">
+          <li><i>2025／7</i>報告發布</li>
+          <li class="rv" data-rv="1"><i>8 月</i>一位法律學者看到報告引用「同事寫的論文」——<b>那篇論文不存在</b>。一路對下去，約 20 處錯，還有一段假造的法官判決引文</li>
+          <li class="rv" data-rv="2"><i>9／26</i>修訂版才揭露：撰寫時用了生成式 AI</li>
+          <li class="rv" data-rv="2"><i>10 月</i><b>退回最後一期款 97,587 澳幣</b></li>
+        </ol>
       </div>
-      <div class="memo" id="quizMemo">
-        <div class="mh"><b>簽陳草稿</b><span>AI 產出</span></div>
-        <p>115 年度青年職涯體驗週已於 9 月 19 日假晴川創新大樓 A201 辦理完竣。截至 9 月 23 日中午，<mark>已驗證參與人次共 135 人次</mark>，成果豐碩。屆時由<mark>周孟庭</mark>向主管簡報。<mark>本簡報已完成定稿，可逕送陳核並對外發布。</mark></p>
-      </div>
+      <figure class="aimg"><img src="images/deloitte.jpg" alt="" style="object-position:62% 50%;"></figure>
     </div>
-    <div class="timer">
-      <button class="tbtn-start" id="quizStart">開始 20 秒</button>
-      <div class="tleft" id="quizLeft"></div>
-    </div>
-    <div class="fineprint">合成資料，改寫自本課程案例，非機關真實資料。</div>
+    <div class="note rv" data-rv="3">抓到錯的方法很樸素：<b>把每一條引用，對回原始文獻。</b></div>
+    <div class="fineprint">AP、The Register、Fortune，2025-10；退款金額據澳洲參議院聽證，2025-10</div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S16 揭曉 -->
-<section class="slide" data-tier="1">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head">
-    <div class="kicker">揭曉</div>
-    <h2 class="page-title sm">三個。每一句都很通順。</h2>
-  </div>
-  <div class="body">
-    <div class="wrong">
-      <div class="w rv" data-rv="1"><i>✗</i><div><b>「已驗證 135 人次」</b><span>把還沒複核的 65 也算進去了。已驗證只有 70。</span></div></div>
-      <div class="w rv" data-rv="2"><i>✗</i><div><b>「由周孟庭向主管簡報」</b><span>兩份通知互相衝突，它自己選了一個。正確答案是〔待確認〕。</span></div></div>
-      <div class="w rv" data-rv="3"><i>✗</i><div><b>「已完成定稿，可對外發布」</b><span>沒有奉核紀錄。它只能是供覆核的草稿。</span></div></div>
-    </div>
-    <div class="note rv" data-rv="3">錯的從來不是文法，<b>是一個數字、一個名字、一個狀態。</b></div>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
-<!-- S17 人審不住 -->
+<!-- S13 法院裡的 AI 捏造判例（30 分鐘版） -->
 <section class="slide" data-tier="2">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
-    <div class="kicker">而且你們只看一份，還事先知道要找錯</div>
+    <div class="kicker">不只一份報告</div>
+    <h2 class="page-title sm">法院裡，AI 捏造的引用<span class="em">已經超過兩千件</span></h2>
+  </div>
+  <div class="body">
+    <div class="split" style="grid-template-columns:1.05fr .95fr;align-items:center;">
+      <div class="bignum">
+        <div class="n" data-count="2202">2,202</div>
+        <div class="l">全球法院已記錄、書狀裡出現 AI 捏造引用的案件</div>
+        <div class="d">截至 2026 年 10 月，而且還在增加</div>
+      </div>
+      <div class="thing" style="border-left:5px solid var(--brand);">
+        <div class="tn">最早被廣泛報導的一件・2023</div>
+        <h3>紐約律師用 ChatGPT 寫訴狀，引用了 6 件不存在的判例</h3>
+        <p>對方律師和法官都找不到這些判決。<b>律師與事務所被罰 5,000 美元</b>，還要寫信給被冒名的法官。</p>
+        <div class="src">Mata v. Avianca，紐約南區聯邦法院</div>
+      </div>
+    </div>
+    <div class="note rv" data-rv="1">律師、顧問都是靠「引用」吃飯的專業。<b>引用寫得越像樣，越要對回原文。</b></div>
+    <div class="fineprint">Damien Charlotin〈AI Hallucination Cases〉資料庫，2026-10-19 更新；Mata v. Avianca, S.D.N.Y. 2023</div>
+  </div>
+  <div class="brandmark">CTK Pro</div>
+</section>
+
+<!-- S14 紐約市府 AI 客服：互動問答 -->
+<section class="slide" data-tier="1">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
+  <div class="head">
+    <div class="kicker">🙋 換你們來驗</div>
+    <h2 class="page-title sm">紐約市政府的 AI 客服，<span class="em">這樣回答老闆</span></h2>
+  </div>
+  <div class="body">
+    <div class="nyc">
+      <figure class="aimg"><img src="images/nyc-mycity.jpg" alt="" style="object-position:50% 40%;"></figure>
+      <div class="nyq">
+        <div class="hint">先別看答案——你覺得它答對了嗎？（點一下揭曉）</div>
+        <div class="qa1"><div class="q">「我可以從員工的小費裡抽成嗎？」</div><div class="a">AI：可以。</div><div class="v rv" data-rv="1"><b>✗ 違法</b>紐約州法禁止雇主拿走員工的小費</div></div>
+        <div class="qa1"><div class="q">「員工申訴性騷擾，我可以開除他嗎？」</div><div class="a">AI：可以。</div><div class="v rv" data-rv="2"><b>✗ 違法</b>不得因為員工申訴而報復</div></div>
+        <div class="qa1"><div class="q">「我的店可以只收電子支付、不收現金嗎？」</div><div class="a">AI：可以。</div><div class="v rv" data-rv="3"><b>✗ 違法</b>紐約市法律要求店家必須收現金</div></div>
+      </div>
+    </div>
+    <div class="note rv" data-rv="4">2024 年被揭露後，市府加註「可能不準確」繼續上線；<b>2026 年 2 月，新市長以「實際上無法使用」為由把它關掉。</b></div>
+    <div class="fineprint">The Markup，2024-03-29；市府關閉：Vice、Yahoo News，2026-02</div>
+  </div>
+  <div class="brandmark">CTK Pro</div>
+</section>
+
+<!-- S15 人審不住 -->
+<section class="slide" data-tier="2">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
+  <div class="head">
+    <div class="kicker">那多請一個人看一遍？</div>
     <h2 class="page-title">人，<span class="em">審不住</span></h2>
   </div>
   <div class="body">
-    <div class="stat2">
-      <div class="stat"><div class="n">13.6%</div><div class="l">人工按「同意」之前攔下來的</div><div class="d">而且越審越鈍：剛開始約 17%，審過 50 次之後只剩約 5%</div></div>
-      <div class="stat hot"><div class="n">89%</div><div class="l">自動檢查攔下來的</div><div class="d">對照的是同一批有風險的操作</div></div>
+    <div class="split" style="grid-template-columns:1.25fr .75fr;align-items:center;">
+      <div class="hbars big">
+        <div class="hb"><div class="hl">人工按「同意」之前攔下來的</div><div class="ht"><div class="hf" style="--w:13.6%"></div></div><b>13.6%</b></div>
+        <div class="hb hot"><div class="hl">自動檢查攔下來的</div><div class="ht"><div class="hf" style="--w:89%"></div></div><b>89%</b></div>
+        <div class="d" style="font-size:15px;color:var(--muted);margin-top:4px;">對照的是同一批有風險的操作</div>
+      </div>
+      <div class="minicard rv" data-rv="1">
+        <div class="mh">而且越審越鈍</div>
+        <svg viewBox="0 0 300 170" class="line">
+          <line x1="40" y1="140" x2="280" y2="140" class="ax"/>
+          <polyline points="60,40 260,128" class="ln"/>
+          <circle cx="60" cy="40" r="7" class="pt"/><circle cx="260" cy="128" r="7" class="pt hot"/>
+          <text x="60" y="24" text-anchor="middle" class="v">約 17%</text>
+          <text x="260" y="112" text-anchor="middle" class="v hot">約 5%</text>
+          <text x="60" y="162" text-anchor="middle" class="xl">剛開始</text>
+          <text x="260" y="162" text-anchor="middle" class="xl">審過 50 次</text>
+        </svg>
+      </div>
     </div>
     <div class="fineprint">1,053 人的對照測試。Anthropic 官方部落格〈Auto mode is now the default in Claude Code〉，2026-08-07</div>
   </div>
@@ -650,50 +755,26 @@
 
 <!-- ═══════════ ② 答案卷長什麼樣 ═══════════ -->
 
-<!-- S18 唯一要記的概念 -->
+<!-- S16 唯一要記的概念 -->
 <section class="slide" data-tier="1">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head"><div class="kicker">今天唯一一個要記的概念</div></div>
   <div class="body">
-    <div class="quote xl">這件事，<br>有沒有一張<em>答案卷</em>？</div>
-    <div class="compare2" style="margin-top:30px;">
-      <div class="cmp now rv" data-rv="1"><div class="when">有</div><div class="lead">事先寫好「怎樣算對」，能逐項對照</div><div class="sub">→ 可以整段交給 AI</div></div>
-      <div class="cmp rv" data-rv="1"><div class="when">沒有</div><div class="lead">只能憑感覺說「看起來還可以」</div><div class="sub">→ 只交一半，或<b>先做一張</b></div></div>
+    <div class="split" style="grid-template-columns:1.2fr .8fr;align-items:center;">
+      <div>
+        <div class="quote xl" style="font-size:50px;">這件事，<br>有沒有一張<em>答案卷</em>？</div>
+        <div class="stack2">
+          <div class="cmp now rv" data-rv="1"><div class="when">有</div><div class="lead">事先寫好「怎樣算對」，能逐項對照</div><div class="sub">→ 可以整段交給 AI</div></div>
+          <div class="cmp rv" data-rv="1"><div class="when">沒有</div><div class="lead">只能憑感覺說「看起來還可以」</div><div class="sub">→ 只交一半，或<b>先做一張</b></div></div>
+        </div>
+      </div>
+      <figure class="aimg tall"><img src="images/answer-key.jpg" alt=""></figure>
     </div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S19 一份主管簡報素材的答案卷 -->
-<section class="slide" data-tier="1">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head">
-    <div class="kicker">答案卷長什麼樣</div>
-    <h2 class="page-title sm">一份主管簡報素材的<span class="em">答案卷</span></h2>
-  </div>
-  <div class="body">
-    <div class="brief">
-      <div class="before">
-        <div class="h">平常的交辦</div>
-        <div class="q">「幫我整理青年職涯體驗週的成果，做成主管簡報素材。」</div>
-        <div class="r">它只能猜。做完，你還是要整份重看。</div>
-      </div>
-      <div class="after rv" data-rv="1">
-        <div class="h">寫成答案卷</div>
-        <dl>
-          <dt>要什麼</dt><dd>給主管看的成果摘要，資料採計到 9／23 中午</dd>
-          <dt>怎樣算合格</dt><dd>每個數字列出原值、補正和算式；重要數字標到檔案和列號；衝突並列、不選邊</dd>
-          <dt>不准動什麼</dt><dd>不准用 114 年的數字；不准自己決定報告人</dd>
-          <dt>做到哪停</dt><dd>交出「供覆核」草稿；沒有奉核紀錄，不准標可寄送</dd>
-        </dl>
-      </div>
-    </div>
-    <div class="note rv" data-rv="2">這四行，<b>你們的工作包裡其實都寫了</b>。答案卷不是另外一份文件，是交辦的方式。</div>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
-<!-- S20 你們早就有這套制度 -->
+<!-- S17 你們早就有這套制度 -->
 <section class="slide" data-tier="1">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -717,7 +798,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S21 人往上退一格 -->
+<!-- S18 人往上退一格：點陣圖 -->
 <section class="slide" data-tier="2">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -725,16 +806,16 @@
     <h2 class="page-title">人要<span class="em">往上退一格</span></h2>
   </div>
   <div class="body">
-    <div class="compare2">
-      <div class="cmp"><div class="when">以前</div><div class="lead">一天 10 件</div><div class="sub">每一件都自己看</div></div>
-      <div class="cmp now"><div class="when">AI 之後</div><div class="lead">一天 1,000 件</div><div class="sub">你的工作變成：<b>定義什麼叫「合格」</b></div></div>
+    <div class="compare2 dotcmp">
+      <div class="cmp"><div class="when">以前</div><div class="lead">一天 10 件</div><div class="dots" data-n="10"></div><div class="sub">每一件都自己看</div></div>
+      <div class="cmp now"><div class="when">AI 之後</div><div class="lead">一天 1,000 件</div><div class="dots tiny" data-n="1000"></div><div class="sub">你的工作變成：<b>定義什麼叫「合格」</b></div></div>
     </div>
     <div class="note rv" data-rv="1">第一堂講過：<b>做的人，不驗證自己。</b>別叫同一個 AI 檢查它自己做的東西。</div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S22 AI 審 AI 會作弊（40 分鐘版） -->
+<!-- S19 AI 審 AI 會作弊（40 分鐘版） -->
 <section class="slide" data-tier="3">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -754,7 +835,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S23 答案卷是長出來的 -->
+<!-- S20 答案卷是長出來的：錯題本 -->
 <section class="slide" data-tier="1">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -762,36 +843,59 @@
     <h2 class="page-title sm">每錯一次，答案卷就<span class="em">多一題</span></h2>
   </div>
   <div class="body">
-    <div class="two">
-      <div class="thing"><div class="tn">AI 公司自己怎麼做</div><h3>過去出過的事故，就是每天考一遍的考題</h3><p>Claude Code 團隊把出過的錯整理成考題，審查用的 AI 每天考一遍；<b>分數變好，改動才保留</b>。</p><div class="src">Addy Osmani 等，〈How the Claude Code team does code review〉，2026-10-15</div></div>
-      <div class="thing rv" data-rv="1" style="border-color:var(--brand);"><div class="tn">你們的工作包也是這樣長出來的</div><h3>測試時有一次報出 72</h3><p>它漏套了一筆補正。這次沒有被當成「差不多」——<b>它變成工作包裡「補正勾稽表」那一關</b>，之後每次都得先勾稽、再計算。</p><div class="src">本課程案例的盲測紀錄</div></div>
+    <div class="split" style="grid-template-columns:.9fr 1.1fr;align-items:center;">
+      <figure class="aimg"><img src="images/mistake-notebook.jpg" alt=""></figure>
+      <div>
+        <div class="tn-s">AI 公司自己怎麼做</div>
+        <div class="lead-s">Claude Code 團隊把出過的錯整理成考題，審查用的 AI 每天考一遍；<b>分數變好，改動才保留</b>。</div>
+        <div class="cycle">
+          <span>出錯</span><i>→</i><span>寫成考題</span><i>→</i><span>每天考一遍</span><i>→</i><span class="hot">變好才保留</span><i>↺</i>
+        </div>
+        <div class="grow rv" data-rv="1">
+          <div class="gh">你們的錯題本，可以從這裡長出來</div>
+          <div class="chips"><span>退件紀錄</span><span>稽核意見</span><span>陳情案件</span><span>訴願結果</span></div>
+        </div>
+      </div>
     </div>
-    <div class="note rv" data-rv="2">這本錯題本會越寫越厚，<b>而它是機關自己的資產。</b></div>
+    <div class="note rv" data-rv="2">錯題本會越寫越厚，<b>它是你們單位自己的資產。</b></div>
+    <div class="fineprint">Addy Osmani 等，〈How the Claude Code team does code review〉，2026-10-15</div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S24 放手要有刻度 -->
+<!-- S21 放手要有刻度：同一個情境走四階（數字為示意） -->
 <section class="slide" data-tier="2">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
     <div class="kicker">放手，要有刻度</div>
     <h2 class="page-title sm">「說不出起點，<span class="em">就不要部署</span>。」</h2>
+    <div class="page-sub scene">情境：一天 <b>1,000 件</b>補助申請初審，人到底要看幾件？（數字為示意）</div>
   </div>
   <div class="body">
-    <div class="ladder">
-      <div class="rung"><div class="s">第一階</div><b>影子模式</b><span>人照常做，AI 在旁邊做一份，拿來比對</span></div>
-      <div class="rung"><div class="s">第二階</div><b>逐項審核</b><span>AI 出草稿，人一項一項看</span></div>
-      <div class="rung"><div class="s">第三階</div><b>只看例外＋抽樣</b><span>人看 AI 標出來的例外，再隨機抽查</span></div>
-      <div class="rung"><div class="s">第四階</div><b>只看高風險例外</b><span>這時最大的風險，是 AI 沒標出來的東西</span></div>
+    <div class="ladder4" id="ladder">
+      <button class="rung" data-i="0"><div class="s">第一階</div><b>影子模式</b>
+        <div class="mdots" data-red="1000"></div>
+        <span class="ai-l">AI：在旁邊也審一份，不送出</span><span class="me-l">人看：<em>1,000 件</em>，全部自己審</span></button>
+      <button class="rung" data-i="1"><div class="s">第二階</div><b>逐項審核</b>
+        <div class="mdots" data-red="1000"></div>
+        <span class="ai-l">AI：1,000 件都先出草稿</span><span class="me-l">人看：<em>1,000 份草稿</em></span></button>
+      <button class="rung" data-i="2"><div class="s">第三階</div><b>例外＋抽樣</b>
+        <div class="mdots" data-red="50" data-k="20" data-seed="7"></div>
+        <span class="ai-l">AI：審完，標出 50 件「不確定」</span><span class="me-l">人看：<em>50 件例外＋隨機抽 20 件</em></span></button>
+      <button class="rung" data-i="3"><div class="s">第四階</div><b>只看高風險</b>
+        <div class="mdots" data-red="5" data-k="10" data-seed="11"></div>
+        <span class="ai-l">AI：例外也自己處理</span><span class="me-l">人看：<em>5 件高風險</em>＋持續抽樣</span></button>
+      <div class="dlegend"><span>人要看的</span><span class="k">人隨機抽查的</span></div>
+      <div class="gate rv" data-rv="1">抽查抽出來的錯夠少，才能從第三階走到第四階 →</div>
     </div>
-    <div class="note rv" data-rv="1">覆核修正率下降，不一定是 AI 變聰明，<b>也可能是審得變淺了。</b>所以要留獨立抽樣。</div>
-    <div class="fineprint">Michele Grant，AI Engineer 演講，2026-10</div>
+    <div class="rdetail" id="rdetail">點一階看看：這一階，人在做什麼、要小心什麼。</div>
+    <div class="note rv" data-rv="2">第四階最大的風險：<b>AI 沒標出來的，是它很有把握、卻錯了的——錯得很專業的那種。</b>所以抽樣要一直留著。</div>
+    <div class="fineprint">情境與數字為示意。放手四階段：Michele Grant，AI Engineer 演講，2026-10</div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S25 小心答案卷本身（40 分鐘版） -->
+<!-- S22 小心答案卷本身（40 分鐘版） -->
 <section class="slide" data-tier="3">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -809,7 +913,7 @@
 
 <!-- ═══════════ 有答案卷的，交給 AI ═══════════ -->
 
-<!-- S26 越能被檢查的，越早交出去 -->
+<!-- S23 越能被檢查的，越早交出去 -->
 <section class="slide" data-tier="1">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -827,7 +931,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S27 颶風預報 -->
+<!-- S24 颶風預報 -->
 <section class="slide" data-tier="2">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -835,36 +939,43 @@
     <h2 class="page-title">AI 給預測，<span class="em">預報員發警報</span></h2>
   </div>
   <div class="body">
-    <div class="compare2">
-      <div class="cmp"><div class="when">交給 AI（有答案卷）</div><div class="lead">颶風會往哪裡走</div><div class="sub">事後對得起來。AI 路徑預報平均多給約<b>一天</b>準備時間</div></div>
-      <div class="cmp now"><div class="when">留給人（沒有答案卷）</div><div class="lead">要不要發警報、發給誰</div><div class="sub">發布警報的，仍是美國國家颶風中心的預報員</div></div>
+    <div class="split" style="align-items:center;">
+      <figure class="aimg"><img src="images/hurricane.jpg" alt=""></figure>
+      <div class="stack2" style="margin-top:0;">
+        <div class="cmp"><div class="when">交給 AI（有答案卷）</div><div class="lead">颶風會往哪裡走</div><div class="sub">事後對得起來。AI 路徑預報平均多給約<b>一天</b>準備時間</div></div>
+        <div class="cmp now rv" data-rv="1"><div class="when">留給人（沒有答案卷）</div><div class="lead">要不要發警報、發給誰</div><div class="sub">發布警報的，仍是美國國家颶風中心的預報員</div></div>
+      </div>
     </div>
     <div class="fineprint">Google DeepMind 研究員 2026-10-15 公開貼文（自家說法）</div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S28 勞動部自己已經在這樣做（口頭帶出處，投影片不寫講者與場合） -->
+<!-- S25 勞動部四個實例（中性版；口頭帶出處，投影片不寫講者與場合） -->
 <section class="slide" data-tier="1">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
-    <div class="kicker">其實，勞動部自己已經在這樣做</div>
-    <h2 class="page-title sm">做得成的案子，<span class="em">最後一步都是人</span></h2>
+    <div class="kicker">勞動部公開分享過的四個實例</div>
+    <h2 class="page-title sm">這四個案子，<span class="em">人都在哪一步？</span></h2>
   </div>
   <div class="body">
     <div class="four">
-      <div class="case"><div class="tn">台灣就業通・語意媒合</div><h3>民眾搜「土水師傅」，分類寫「泥作工作人員」</h3><p>AI 先產生職稱與技能資料，讓兩邊說同一種語言。</p><div class="who">人在哪裡：經人工校正，才成為標準技能清單</div></div>
-      <div class="case"><div class="tn">就業個案管理</div><h3>單案行政 20 分鐘 → 5 分鐘</h3><p>AI 整理會談紀錄、產生處遇建議草稿。</p><div class="who">人在哪裡：由個管員依個案實際情況確認</div></div>
-      <div class="case"><div class="tn">財產管理</div><h3>還沒用 AI，盤點就從 3 個月變 2 個月</h3><p>先把 15 套系統整合成 1 套。下一步的智能標籤，只給候選分類。</p><div class="who">人在哪裡：不直接登帳，由財管人員確認</div></div>
-      <div class="case"><div class="tn">公共工程督導</div><h3>督導紀錄從數天縮到 8 分鐘</h3><p>督導表拆成小任務，逐項比對 CNS、契約、法規——<b>每一項都有標準可以對</b>。</p><div class="who">人在哪裡：通知承辦人與現場管理人員核對</div></div>
+      <div class="case"><div class="tn">台灣就業通・語意媒合</div><h3>民眾搜「土水師傅」，分類寫「泥作工作人員」</h3>
+        <div class="chips flowc"><span class="ai">AI 產生職稱與技能資料</span><i>→</i><span class="me rv" data-rv="1">人工校正</span><i>→</i><span>標準技能清單</span></div></div>
+      <div class="case"><div class="tn">就業個案管理</div><h3>單案行政 20 分鐘 → 5 分鐘</h3>
+        <div class="chips flowc"><span class="ai">AI 整理紀錄、擬處遇建議草稿</span><i>→</i><span class="me rv" data-rv="1">個管員依個案確認</span></div></div>
+      <div class="case"><div class="tn">財產管理</div><h3>15 套系統先整合成 1 套</h3>
+        <div class="chips flowc"><span class="ai">智能標籤只給候選分類</span><i>→</i><span class="me rv" data-rv="1">財管人員確認才登帳</span></div></div>
+      <div class="case"><div class="tn">公共工程督導</div><h3>督導紀錄從數天縮到 8 分鐘</h3>
+        <div class="chips flowc"><span class="ai">拆小任務，逐項比對 CNS、契約、法規</span><i>→</i><span class="me rv" data-rv="1">承辦與現場人員核對</span></div></div>
     </div>
-    <div class="note rv" data-rv="1">能數位化就數位化，能資料治理就資料治理，能用 RPA 就用 RPA——<b>最後才是 AI，而且最後一步都是人。</b></div>
+    <div class="note rv" data-rv="2">AI 做的步驟各不相同；<b>確認的那一步，四個案子都留給了人。</b>工程督導能交出去，是因為每一項都有標準可以對。</div>
     <div class="fineprint">iThome 報導，2026-09-11（ithome.com.tw/news/178524）</div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S29 工作在換形狀 -->
+<!-- S26 工作在換形狀 -->
 <section class="slide" data-tier="2">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -872,11 +983,29 @@
     <h2 class="page-title sm">工作沒有消失，<span class="em">是換了形狀</span></h2>
   </div>
   <div class="body">
-    <div class="nums">
-      <div class="numc"><div class="n">27% <s>→</s> 9%</div><div class="l">Anthropic 技術部門新進人員中，初階的比例</div></div>
-      <div class="numc"><div class="n">10% <s>→</s> 22%</div><div class="l">Anthropic 員工工作裡，「管 AI」的占比</div></div>
-      <div class="numc"><div class="n">5% vs 5%</div><div class="l">Acemoglu：把 5% 的工作自動化，不如讓所有人生產力提高 5%</div></div>
-      <div class="numc"><div class="n">＋14%／＋34%</div><div class="l">客服導入 AI：平均提升 14%，新手提升 34%</div></div>
+    <div class="two">
+      <div class="minicard">
+        <div class="mh">Anthropic 內部</div>
+        <svg viewBox="0 0 420 210" class="line slope">
+          <line x1="70" y1="20" x2="70" y2="180" class="ax"/><line x1="340" y1="20" x2="340" y2="180" class="ax"/>
+          <polyline points="70,62 340,163" class="ln"/>
+          <polyline points="70,151 340,110" class="ln hot"/>
+          <circle cx="70" cy="62" r="6" class="pt"/><circle cx="340" cy="163" r="6" class="pt"/>
+          <circle cx="70" cy="151" r="6" class="pt hot"/><circle cx="340" cy="110" r="6" class="pt hot"/>
+          <text x="58" y="67" text-anchor="end" class="v">27%</text><text x="352" y="168" class="v">9%</text>
+          <text x="58" y="156" text-anchor="end" class="v hot">10%</text><text x="352" y="115" class="v hot">22%</text>
+          <text x="70" y="202" text-anchor="middle" class="xl">之前</text><text x="340" y="202" text-anchor="middle" class="xl">現在</text>
+        </svg>
+        <div class="legend"><span>技術部門新進人員中，初階的比例</span><span class="hot">員工工作裡，「管 AI」的占比</span></div>
+      </div>
+      <div class="minicard">
+        <div class="mh">客服導入 AI 的生產力</div>
+        <div class="hbars" style="margin-top:8px;">
+          <div class="hb"><div class="hl">平均</div><div class="ht"><div class="hf" style="--w:41%"></div></div><b>＋14%</b></div>
+          <div class="hb hot"><div class="hl">新手</div><div class="ht"><div class="hf" style="--w:100%"></div></div><b>＋34%</b></div>
+        </div>
+        <div class="qline">Acemoglu：把 5% 的工作自動化，<b>不如讓所有人生產力提高 5%</b>。</div>
+      </div>
     </div>
     <div class="fineprint">Anthropic〈Employment at Anthropic〉2026-10（報告自己提醒：AI 公司的數字不能直接套到一般機關）；Acemoglu 訪談轉述；Brynjolfsson, Li & Raymond, NBER 2023</div>
   </div>
@@ -885,7 +1014,7 @@
 
 <!-- ═══════════ 沒有答案卷的，是你的位置 ═══════════ -->
 
-<!-- S30 決策 = 預測 + 判斷 -->
+<!-- S27 決策 = 預測 + 判斷 -->
 <section class="slide" data-tier="1">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -895,49 +1024,15 @@
     <div class="eq">
       <span>決策</span><i>＝</i><span class="ai">預測</span><i>＋</i><span class="me">判斷</span>
     </div>
-    <div class="quote" style="font-size:36px;text-align:center;max-width:none;">AI 越來越會預測。<br><em>判斷，和判斷之後的後果，還在人身上。</em></div>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
-<!-- S31 答案卷上有兩題沒有答案 -->
-<section class="slide" data-tier="1">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head">
-    <div class="kicker">回到你們的那份答案卷</div>
-    <h2 class="page-title sm">18 題裡，有兩題<span class="em">沒有答案</span></h2>
-  </div>
-  <div class="body">
-    <div class="noans">
-      <div class="na"><div class="id">C11・南區場次</div><div class="t">36 還是 35？</div><div class="f">照公式算，38－2＝36；核定欄寫的卻是 35。</div><div class="a">正確答案：不選邊，列待釐清</div></div>
-      <div class="na"><div class="id">C15・報告人</div><div class="t">周孟庭還是林怡君？</div><div class="f">兩份同時、同層級的核定通知，各寫了一個人。</div><div class="a">正確答案：〔待確認〕</div></div>
+    <div class="split" style="align-items:center;">
+      <figure class="aimg" style="height:290px;"><img src="images/decision.jpg" alt=""></figure>
+      <div class="quote" style="font-size:34px;">AI 越來越會預測。<br><em>判斷，和判斷之後的後果，還在人身上。</em></div>
     </div>
-    <div class="note rv" data-rv="1">答案卷上最難的兩格，正確答案都是：<b>交給人。</b></div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S32 三種沒有答案卷，三個角色 -->
-<section class="slide" data-tier="1">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head">
-    <div class="kicker">沒有答案卷，有三種</div>
-    <h2 class="page-title sm">你在其中的角色，<span class="em">有三個</span></h2>
-  </div>
-  <div class="body">
-    <table class="tbl">
-      <thead><tr><th style="width:20%;">為什麼沒有</th><th class="hot" style="width:20%;">你的角色</th><th>例子</th></tr></thead>
-      <tbody>
-        <tr><td><b>還沒寫下來</b></td><td class="us">寫答案卷的人</td><td>就業個管：把資深個管員的判斷方式，變成一致的分析流程<small>新進同仁不必先背完 16 類對象、37 種工具，也能拿到初步建議</small></td></tr>
-        <tr class="rv" data-rv="1"><td><b>寫不出來</b></td><td class="us">做判斷的人</td><td>價值取捨、要好幾年才看得到效果的決定<small>美國加州 9／30 簽署：懲戒、解僱不得只靠 AI 決定，必須有人審（2027／7 生效）</small></td></tr>
-        <tr class="rv" data-rv="2"><td><b>答案出來之後</b></td><td class="us">扛後果的人</td><td>「每一筆上線的改動，都有一個人要負責，不管是誰打的字。」<small>Claude Code 團隊的審查規則</small></td></tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
-<!-- S33 這一格只有你們能填 -->
+<!-- S28 這一格只有你們能填 -->
 <section class="slide" data-tier="1">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -960,7 +1055,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S34 下一份答案卷是機關自己要寫的 -->
+<!-- S29 下一份答案卷是機關自己要寫的 -->
 <section class="slide" data-tier="2">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -978,9 +1073,69 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- ═══════════ 收尾 ═══════════ -->
+<!-- ═══════════ 收尾：收穫 → 怎麼處理 → 你的位置 ═══════════ -->
 
-<!-- S35 兩句話 -->
+<!-- S30 四堂課的收穫 -->
+<section class="slide" data-tier="1">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
+  <div class="head">
+    <div class="kicker">回頭看這四堂</div>
+    <h2 class="page-title sm">你們帶走的，<span class="em">不只是工具</span></h2>
+  </div>
+  <div class="body" style="justify-content:flex-start;padding-top:10px;">
+    <figure class="aimg band"><img src="images/journey.jpg" alt=""></figure>
+    <div class="gain">
+      <div><i>第一堂</i>說得清楚要什麼，給對卷宗</div>
+      <div><i>第二堂</i>規則寫進資料夾，不必每次重講</div>
+      <div><i>第三堂</i>拿工作包跑真實業務</div>
+      <div><i>第四堂・上半場</i>把工作包改成自己的做法</div>
+      <div class="now"><i>今天</i>知道它交回來的東西，怎麼驗</div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro</div>
+</section>
+
+<!-- S31 AI 交回來的東西，怎麼處理：互動勾選 -->
+<section class="slide" data-tier="1">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
+  <div class="head">
+    <div class="kicker">AI 交回來的東西，怎麼處理</div>
+    <h2 class="page-title sm">收下之前，<span class="em">先過這五關</span></h2>
+  </div>
+  <div class="body">
+    <div class="chk">
+      <div class="ck rv-check" data-rv="1"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>先問：這件事有沒有答案卷？</b><em>沒有，就先寫一張</em></div>
+      <div class="ck rv-check" data-rv="2"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>對回原始資料</b><em>每個數字、每條引用都找得到出處｜Deloitte、法院判例</em></div>
+      <div class="ck rv-check" data-rv="3"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>做的和驗的分開</b><em>別叫它檢查自己｜出納不兼會計</em></div>
+      <div class="ck rv-check" data-rv="4"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>看紀錄，不看它說「做完了」</b><em>寫得再專業，也要有憑據｜美軍情報、紐約市府客服</em></div>
+      <div class="ck rv-check" data-rv="5"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>放手要有刻度</b><em>從影子模式開始，留獨立抽樣</em></div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro</div>
+</section>
+
+<!-- S32 你的位置 -->
+<section class="slide" data-tier="1">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
+  <div class="head">
+    <div class="kicker">往前看</div>
+    <h2 class="page-title sm">AI 取代不了的位置，<span class="em">有三個</span></h2>
+  </div>
+  <div class="body">
+    <div class="split" style="grid-template-columns:.78fr 1.22fr;align-items:stretch;">
+      <figure class="aimg"><img src="images/position.jpg" alt=""></figure>
+      <div class="roles">
+        <div class="role rv" data-rv="1"><b>寫答案卷的人</b><p>知道「怎樣算對」，而且把它寫下來</p><small>例：就業個管把資深個管員的判斷方式，寫成一致的流程</small></div>
+        <div class="role rv" data-rv="2"><b>做判斷的人</b><p>價值取捨、沒有標準答案的決定</p><small>例：美國加州立法，懲戒、解僱不得只靠 AI 決定（2027／7 生效）</small></div>
+        <div class="role rv" data-rv="3"><b>扛後果的人</b><p>簽名的人，就是負責的人</p><small>例：加拿大航空主張「聊天機器人說錯，該它自己負責」，被駁回、判賠</small></div>
+      </div>
+    </div>
+    <div class="note rv" data-rv="4">工具會換、廠商會換，<b>答案卷留在你手上。</b></div>
+  </div>
+  <div class="brandmark">CTK Pro</div>
+</section>
+
+<!-- S33 兩句話 -->
 <section class="slide" data-tier="1">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head"><div class="kicker">明天就能用的兩句話</div></div>
@@ -993,8 +1148,9 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S36 那位分析師 -->
-<section class="slide" data-tier="2">
+<!-- S34 那位分析師 -->
+<section class="slide fade-bg" data-tier="2">
+  <img class="fade-img" src="images/cargo-ship.jpg" alt="">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head"><div class="kicker">回到開場</div></div>
   <div class="body">
@@ -1004,28 +1160,30 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S37 收束 -->
-<section class="slide" data-tier="1">
+<!-- S35 收束（呼應封面） -->
+<section class="slide closing-slide" data-tier="1">
+  <img class="cover-art" src="images/closing-3d.jpg" alt="">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="ghost" style="right:40px;bottom:24px;font-size:200px;">答案卷</div>
   <div class="body">
     <div class="closing">
-      <div class="big">有答案卷的，交給 AI；<br><em>沒有答案卷的地方，就是你的位置。</em></div>
+      <div class="big">有答案卷的，<br>交給 AI；<br><em>沒有答案卷的地方，<br>就是你的位置。</em></div>
     </div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S38 出處 -->
+<!-- S36 出處 -->
 <section class="slide" data-tier="1">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head"><div class="kicker">出處</div></div>
   <div class="body" style="justify-content:flex-start;padding-top:18px;">
     <ul class="refs">
       <li><b>美軍 AI 情報</b>　CNN，2026-09-18　cnn.com/2026/09/18/politics/us-military-ai-false-intelligence-china-ship</li>
-      <li><b>課程案例與答案卷</b>　本課程合成案例「晴川市青年職涯體驗週」人工正解與盲測紀錄（非機關真實資料）</li>
       <li><b>放射科</b>　Dratsch et al., Radiology 2023, DOI 10.1148/radiol.222176</li>
       <li><b>BCG 顧問</b>　Dell'Acqua et al., HBS Working Paper 2023</li>
+      <li><b>Deloitte 報告</b>　AP、The Register、Fortune，2025-10；澳洲參議院聽證，2025-10</li>
+      <li><b>法院 AI 捏造引用</b>　damiencharlotin.com/hallucinations（2026-10-19 更新）；Mata v. Avianca, S.D.N.Y. 2023</li>
+      <li><b>紐約市府 AI 客服</b>　The Markup，2024-03-29；Vice、Yahoo News，2026-02</li>
       <li><b>人審 13.6% vs 89%</b>　claude.com/blog/auto-mode-default-in-claude-code（2026-08-07）</li>
       <li><b>三種驗收做法</b>　Corey Gallon〈Three Levels of Review〉，AI Engineer</li>
       <li><b>「送出成功」</b>　WorkOS〈Teach Your Agent to Prove It's Done〉，AI Engineer</li>
@@ -1039,7 +1197,9 @@
       <li><b>Anthropic 就業數據</b>　〈Employment at Anthropic〉，2026-10</li>
       <li><b>客服研究</b>　Brynjolfsson, Li & Raymond, NBER Working Paper 31161, 2023</li>
       <li><b>加州 SB 947</b>　No Robo Bosses Act，2026-09-30 簽署，2027-07-01 生效</li>
+      <li><b>加拿大航空</b>　Moffatt v. Air Canada, 2024 BCCRT 149</li>
       <li><b>數發部 AI 內控範本</b>　iThome　ithome.com.tw/news/178458</li>
+      <li><b>插圖</b>　本場插圖皆以生成式 AI（OpenAI 圖像模型）繪製，為示意圖，非事件照片</li>
     </ul>
   </div>
   <div class="brandmark">CTK Pro</div>
@@ -1051,9 +1211,9 @@
   <div class="sub">講者自用。按 Q 或 Esc 關閉——投影中按下去會直接顯示在螢幕上，請看場合。　版本切換：1＝20 分鐘、2＝30 分鐘、3＝40 分鐘。</div>
   <div class="qgrid">
     <details><summary>寫答案卷要花很多人力嗎？</summary>
-      <p>不用一次寫完。<b>從錯題開始</b>：每出一次錯，就多一題。這個案子的第一份答案卷就是課程案例的 18 題；正式導入時，由業務人員核准自己的正解版。</p></details>
+      <p>不用一次寫完。<b>從錯題開始</b>：每出一次錯，就多一題。退件紀錄、稽核意見、陳情案件，都是現成的題目來源；正式導入時，由業務人員核准自己的正解版。</p></details>
     <details><summary>AI 出錯誰負責？</summary>
-      <p>跟現在一樣：<b>簽核定稿的人不變</b>。AI 產出一律是供覆核草稿，工作包裡「沒有奉核紀錄不准標可寄送」就是這條。</p></details>
+      <p>跟現在一樣：<b>簽核定稿的人不變</b>。AI 產出一律是供覆核草稿。加拿大航空在法庭上主張「聊天機器人要自己負責」，被駁回、判賠——AI 說的話，算機關的。</p></details>
     <details><summary>會不會影響人力配置？</summary>
       <p>目前的研究多半指向<b>工作內容改變</b>，比職務消失更常見。承辦從「自己一段一段做」變成「定義什麼叫合格、審一份標好來源的草稿」。不講「省人」。</p></details>
     <details><summary>答案卷誰維護？規則改了怎麼辦？</summary>
@@ -1064,10 +1224,14 @@
       <p>數發部 8 月底預告 10 月公布；截至 10/15 官網尚未見正式公布。<b>上台前一天再查一次</b>，公布了就改講正式內容。</p></details>
     <details><summary>勞動部的實例出處？</summary>
       <p>iThome 2026-09-11 報導（ithome.com.tw/news/178524）。講者與場合口頭說明，畫面上不寫。四個實例的細節見講者大綱附錄。<b>只引報導寫到的，不延伸。</b></p></details>
+    <details><summary>Deloitte 退款的數字對嗎？</summary>
+      <p>合約約 44 萬澳幣，<b>只退了最後一期 97,587 澳幣</b>（2025-10 參議院聽證），不是全額退款。抓到錯的是雪梨大學法律學者 Chris Rudge。</p></details>
+    <details><summary>插圖是真的照片嗎？</summary>
+      <p>不是。<b>本場插圖全部由生成式 AI 繪製</b>，是示意圖；圖上都標了「AI 生成」。這本身也是一個例子：畫面越逼真，越要標清楚來源。</p></details>
     <details><summary>人真的審不住嗎？</summary>
       <p>Anthropic 1,053 人對照：人工按「同意」前攔下 13.6%，自動檢查 89%。Anthropic 自己也說高風險變更建議人親自看——<b>重點是人放在對的位置，不是不要人。</b></p></details>
   </div>
-  <div class="foot">紅線：不說「AI 幫你省人」；不比型號、不推薦廠商；不點名國家或公司做負面示範；只用合成資料與公開報導；Acemoglu、蓋茲的話以原文為準，講成「他說」不講成研究結論。</div>
+  <div class="foot">紅線：不說「AI 幫你省人」；不比型號、不推薦廠商；不點名國家或公司做負面示範；只用公開報導；插圖一律標示 AI 生成；Acemoglu、蓋茲的話以原文為準，講成「他說」不講成研究結論。</div>
 </div>
 
 <div id="progress"></div>
@@ -1097,8 +1261,8 @@
   const visible=()=>all.filter(s=>+s.dataset.tier<=mode);
 
   function show(i){
-    document.querySelectorAll('.rv.on').forEach(e=>e.classList.remove('on'));
-    resetQuiz();
+    document.querySelectorAll('.rv.on,.rv-check.on').forEach(e=>e.classList.remove('on'));
+    resetLadder();
     const vs=visible();
     cur=Math.max(0,Math.min(vs.length-1,i));
     all.forEach(s=>s.classList.toggle('active',s===vs[cur]));
@@ -1106,14 +1270,15 @@
     totNo.textContent=vs.length;
     progress.style.width=(vs.length>1?cur/(vs.length-1)*100:0)+'%';
     history.replaceState(null,'','#'+(all.indexOf(vs[cur])+1));
+    countUp(vs[cur]);
   }
   /* 逐段顯示：.rv[data-rv=n] 依序出現 */
   function next(){
     const s=visible()[cur];
-    const pend=[...s.querySelectorAll('.rv:not(.on)')];
+    const pend=[...s.querySelectorAll('.rv:not(.on),.rv-check:not(.on)')];
     if(pend.length){
       const n=Math.min(...pend.map(e=>+e.dataset.rv));
-      s.querySelectorAll('.rv[data-rv="'+n+'"]').forEach(e=>e.classList.add('on'));
+      s.querySelectorAll('.rv[data-rv="'+n+'"],.rv-check[data-rv="'+n+'"]').forEach(e=>e.classList.add('on'));
       return;
     }
     show(cur+1);
@@ -1155,15 +1320,43 @@
   themeToggle.addEventListener('click',e=>{e.stopPropagation();toggleTheme();});
   const toggleQA=()=>qa.classList.toggle('open');
 
-  /* 找錯 20 秒 */
-  const qBtn=document.getElementById('quizStart'), qLeft=document.getElementById('quizLeft');
-  let qTimer=null;
-  function resetQuiz(){clearInterval(qTimer);qTimer=null;qLeft.textContent='';qLeft.classList.remove('done');qBtn.style.display='';}
-  qBtn.addEventListener('click',e=>{
-    e.stopPropagation();
-    let t=20; qBtn.style.display='none'; qLeft.classList.remove('done'); qLeft.textContent=t;
-    qTimer=setInterval(()=>{t--; if(t<=0){clearInterval(qTimer);qLeft.textContent='時間到，有幾個？';qLeft.classList.add('done');} else qLeft.textContent=t;},1000);
+  /* 點陣：10 件 vs 1,000 件 */
+  document.querySelectorAll('.dots').forEach(d=>{d.innerHTML='<i></i>'.repeat(+d.dataset.n);});
+
+  /* 大數字跳動 */
+  function countUp(slide){
+    slide.querySelectorAll('[data-count]').forEach(el=>{
+      const end=+el.dataset.count, t0=performance.now(), dur=1400;
+      const step=t=>{const k=Math.min(1,(t-t0)/dur), v=Math.round(end*(1-Math.pow(1-k,3)));
+        el.textContent=v.toLocaleString('en-US'); if(k<1) requestAnimationFrame(step);};
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* 紐約市府問答：點一題揭曉；五關：點一下勾選 */
+  document.querySelectorAll('.qa1').forEach(q=>q.addEventListener('click',e=>{e.stopPropagation();q.querySelector('.v').classList.add('on');}));
+  document.querySelectorAll('.ck').forEach(c=>c.addEventListener('click',e=>{e.stopPropagation();c.classList.toggle('on');}));
+
+  /* 放手刻度：點一階看分工 */
+  const LADDER=[
+    '<b>人：</b>照常自己審全部 1,000 件；AI 在旁邊也審一份，不送出。<em>看什麼：</em>兩份差在哪裡——先摸清楚 AI 會錯在哪。',
+    '<b>人：</b>逐件看 AI 的 1,000 份草稿。<em>要小心：</em>看久了會麻木，越審越淺。',
+    '<b>人：</b>看 AI 標出的 50 件「不確定」，再從它說「沒問題」的 950 件裡隨機抽 20 件。<em>抽查是在量：</em>AI 說沒問題的，到底有多少其實有問題。',
+    '<b>人：</b>只看 5 件高金額、高後果的。<em>最大的風險：</em>AI 很有把握、所以沒標出來，但其實是錯的——沒有人會發現。所以抽樣還是要留著。'];
+  /* 放手刻度的點陣：1,000 點，紅＝人要看、藍＝隨機抽查（固定種子，每次位置一樣） */
+  document.querySelectorAll('.mdots').forEach(d=>{
+    const red=+d.dataset.red||0, k=+d.dataset.k||0; let x=+d.dataset.seed||1;
+    const rnd=()=>{x=(x*16807)%2147483647;return x/2147483647;};
+    const cls=new Array(1000).fill('');
+    if(red>=1000) cls.fill('r');
+    else{const pick=(n,c)=>{for(let i=0;i<n;){const j=Math.floor(rnd()*1000);if(!cls[j]){cls[j]=c;i++;}}};pick(red,'r');pick(k,'k');}
+    d.innerHTML=cls.map(c=>c?'<i class="'+c+'"></i>':'<i></i>').join('');
   });
+  const rungs=[...document.querySelectorAll('#ladder .rung')], rdetail=document.getElementById('rdetail');
+  const RDEF=rdetail.innerHTML;
+  function resetLadder(){rungs.forEach(r=>r.classList.remove('sel'));rdetail.innerHTML=RDEF;}
+  rungs.forEach(r=>r.addEventListener('click',e=>{e.stopPropagation();
+    rungs.forEach(x=>x.classList.toggle('sel',x===r));rdetail.innerHTML=LADDER[+r.dataset.i];}));
 
   document.addEventListener('keydown',e=>{
     if(qa.classList.contains('open')&&e.key!=='q'&&e.key!=='Q'&&e.key!=='Escape')return;
@@ -1188,7 +1381,7 @@
   /* 點畫面左右各 1/6 才翻頁；中間 2/3 留給選字強調 */
   document.addEventListener('click',e=>{
     if(qa.classList.contains('open'))return;
-    if(e.target.closest('#navbar,button,summary,a,input'))return;
+    if(e.target.closest('#navbar,button,summary,a,input,.qa1,.ck'))return;
     const w=window.innerWidth;
     if(e.clientX<w/6) prev();
     else if(e.clientX>w*5/6) next();
