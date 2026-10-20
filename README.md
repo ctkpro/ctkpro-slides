@@ -15,6 +15,7 @@ CTK Pro（竑盛科技）的標案、對外與對內簡報集合。暖白底極�
 - 山太士企業官網重建：`sales-pitch/shantai-amc/index.html`
 - 給設計公司的合作提案：`sales-pitch/for-design-company/index-claude-v2.html`（A 版，現場可點示範）／`index-v2.html`（B 版，靜態排版）
 - 網站上線，只是開始（良艮設計）：`sales-pitch/liangen-talk/index.html`
+- 做得出來之後，怎麼驗？（AI 協作課程最後一段，20／30／40 分鐘三版）：`sales-pitch/mol-answer-key/index.html`
 - 李綜合醫院網路掛號系統改版：`sales-pitch/lgh-reg-meeting/index.html`
 - 2026 Q3 全員發表：`internal-talks/2026q3-all-hands/index.html`
 - Prompt · Context · Harness 深化版：`internal-talks/prompt-context-harness-engineering/index.html`
