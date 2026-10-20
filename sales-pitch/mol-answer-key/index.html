@@ -149,6 +149,13 @@
   .thing p b{color:var(--ink);}
   .thing .src{margin-top:auto;padding-top:12px;font-size:12.5px;color:var(--soft);}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .four{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;}
+  .case{border:1px solid var(--line);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);padding:13px 18px 12px;display:flex;flex-direction:column;}
+  .case .tn{font-size:12.5px;font-weight:900;letter-spacing:2px;color:var(--ai);margin-bottom:5px;}
+  .case h3{font-size:18.5px;font-weight:900;color:var(--ink);line-height:1.35;}
+  .case p{font-size:14.5px;color:var(--muted);line-height:1.5;margin-top:4px;}
+  .case p b{color:var(--ink);}
+  .case .who{margin-top:auto;padding-top:7px;border-top:1px dashed var(--line);font-size:14.5px;font-weight:900;color:var(--brand);}
 
   /* 144 */
   .big144{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center;}
@@ -837,20 +844,22 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S28 台灣已經在做 -->
-<section class="slide" data-tier="2">
+<!-- S28 勞動部自己已經在這樣做（口頭帶出處，投影片不寫講者與場合） -->
+<section class="slide" data-tier="1">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
-    <div class="kicker">台灣已經在做</div>
-    <h2 class="page-title sm">做得成的案子，<span class="em">都留了人核對的那一關</span></h2>
+    <div class="kicker">其實，勞動部自己已經在這樣做</div>
+    <h2 class="page-title sm">做得成的案子，<span class="em">最後一步都是人</span></h2>
   </div>
   <div class="body">
-    <div class="three">
-      <div class="thing"><div class="tn">玉山金・AI 徵信</div><h3>初稿 7 分鐘</h3><p>先列出報告<b>該有哪些東西</b>，AI 寫、另一個 AI 照清單核對、人再複審。一年省 8.4 萬人時（自估）。</p><div class="src">iThome 報導</div></div>
-      <div class="thing"><div class="tn">勞動部・工程督導</div><h3>8 分鐘完成督導紀錄</h3><p>電腦視覺＋RPA＋多模態 AI 產出紀錄，<b>再通知承辦人與現場管理者核對、改善</b>。</p><div class="src">iThome，2026 數位政府高峰會報導</div></div>
-      <div class="thing"><div class="tn">勞動部・就業個案管理</div><h3>單案 20 分鐘 → 5 分鐘</h3><p>省下來的時間，回到個案身上。</p><div class="src">iThome，2026 數位政府高峰會報導</div></div>
+    <div class="four">
+      <div class="case"><div class="tn">台灣就業通・語意媒合</div><h3>民眾搜「土水師傅」，分類寫「泥作工作人員」</h3><p>AI 先產生職稱與技能資料，讓兩邊說同一種語言。</p><div class="who">人在哪裡：經人工校正，才成為標準技能清單</div></div>
+      <div class="case"><div class="tn">就業個案管理</div><h3>單案行政 20 分鐘 → 5 分鐘</h3><p>AI 整理會談紀錄、產生處遇建議草稿。</p><div class="who">人在哪裡：由個管員依個案實際情況確認</div></div>
+      <div class="case"><div class="tn">財產管理</div><h3>還沒用 AI，盤點就從 3 個月變 2 個月</h3><p>先把 15 套系統整合成 1 套。下一步的智能標籤，只給候選分類。</p><div class="who">人在哪裡：不直接登帳，由財管人員確認</div></div>
+      <div class="case"><div class="tn">公共工程督導</div><h3>督導紀錄從數天縮到 8 分鐘</h3><p>督導表拆成小任務，逐項比對 CNS、契約、法規——<b>每一項都有標準可以對</b>。</p><div class="who">人在哪裡：通知承辦人與現場管理人員核對</div></div>
     </div>
-    <div class="note rv" data-rv="1">「如果能夠數位化，我們就數位化；如果能資料治理，我們就資料治理；如果能用 RPA，就用 RPA。」<b>——勞動部綜合規劃司，2026 數位政府高峰會</b></div>
+    <div class="note rv" data-rv="1">能數位化就數位化，能資料治理就資料治理，能用 RPA 就用 RPA——<b>最後才是 AI，而且最後一步都是人。</b></div>
+    <div class="fineprint">iThome 報導，2026-09-11（ithome.com.tw/news/178524）</div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
@@ -919,7 +928,7 @@
     <table class="tbl">
       <thead><tr><th style="width:20%;">為什麼沒有</th><th class="hot" style="width:20%;">你的角色</th><th>例子</th></tr></thead>
       <tbody>
-        <tr><td><b>還沒寫下來</b></td><td class="us">寫答案卷的人</td><td>「那個沒辦法休假的同事」——先把他的判斷寫成答案卷<small>新呈工業：員工早就學過提示工程卻沒人用，直到把流程本身改寫成提示詞</small></td></tr>
+        <tr><td><b>還沒寫下來</b></td><td class="us">寫答案卷的人</td><td>就業個管：把資深個管員的判斷方式，變成一致的分析流程<small>新進同仁不必先背完 16 類對象、37 種工具，也能拿到初步建議</small></td></tr>
         <tr class="rv" data-rv="1"><td><b>寫不出來</b></td><td class="us">做判斷的人</td><td>價值取捨、要好幾年才看得到效果的決定<small>美國加州 9／30 簽署：懲戒、解僱不得只靠 AI 決定，必須有人審（2027／7 生效）</small></td></tr>
         <tr class="rv" data-rv="2"><td><b>答案出來之後</b></td><td class="us">扛後果的人</td><td>「每一筆上線的改動，都有一個人要負責，不管是誰打的字。」<small>Claude Code 團隊的審查規則</small></td></tr>
       </tbody>
@@ -964,7 +973,7 @@
       <li><i>2</i>數發部預告：機關 AI 內控範本<small>大型政府 AI 服務上線前納入風險審查；各機關再依範本訂自己的內控規範</small></li>
     </ul>
     <div class="note rv" data-rv="1">範本會告訴你「要檢查」。<b>檢查什麼、怎樣算對，只有業務單位寫得出來。</b></div>
-    <div class="fineprint">iThome，2026-08-26 數位政府高峰會報導</div>
+    <div class="fineprint">iThome 報導，2026-08（ithome.com.tw/news/178458）</div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
@@ -1026,7 +1035,6 @@
       <li><b>Acemoglu／蓋茲</b>　影片轉述（最佳拍档、Gary Chen 導讀），上台引述以原文為準</li>
       <li><b>密碼學懸案</b>　Anthropic，2026-10-16</li>
       <li><b>颶風預報</b>　Google DeepMind 研究員公開貼文，2026-10-15</li>
-      <li><b>玉山金 AI 徵信</b>　iThome　ithome.com.tw/news/178722</li>
       <li><b>勞動部實例</b>　iThome　ithome.com.tw/news/178524</li>
       <li><b>Anthropic 就業數據</b>　〈Employment at Anthropic〉，2026-10</li>
       <li><b>客服研究</b>　Brynjolfsson, Li & Raymond, NBER Working Paper 31161, 2023</li>
@@ -1053,9 +1061,9 @@
     <details><summary>哪一家模型最準？</summary>
       <p>不比型號、不排名。<b>拿你們自己的答案卷去考</b>，才知道哪一個適合你們的業務；廠商自己的跑分不算數。</p></details>
     <details><summary>數發部的內控範本出了嗎？</summary>
-      <p>數發部 8/26 預告 10 月公布；截至 10/15 官網尚未見正式公布。<b>上台前一天再查一次</b>，公布了就改講正式內容。</p></details>
+      <p>數發部 8 月底預告 10 月公布；截至 10/15 官網尚未見正式公布。<b>上台前一天再查一次</b>，公布了就改講正式內容。</p></details>
     <details><summary>勞動部的實例出處？</summary>
-      <p>iThome 2026-09-11 報導（王若樸），綜合規劃司丁玉珍司長在 2026 數位政府高峰會（8/26）的分享：工程督導 8 分鐘完成紀錄、再通知承辦人與現場管理人員核對；就業個管單案 20 分鐘→5 分鐘。<b>只引報導寫到的，不延伸。</b></p></details>
+      <p>iThome 2026-09-11 報導（ithome.com.tw/news/178524）。講者與場合口頭說明，畫面上不寫。四個實例的細節見講者大綱附錄。<b>只引報導寫到的，不延伸。</b></p></details>
     <details><summary>人真的審不住嗎？</summary>
       <p>Anthropic 1,053 人對照：人工按「同意」前攔下 13.6%，自動檢查 89%。Anthropic 自己也說高風險變更建議人親自看——<b>重點是人放在對的位置，不是不要人。</b></p></details>
   </div>
