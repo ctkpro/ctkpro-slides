@@ -157,6 +157,26 @@ const IMAGES = {
       'Mood: dignified, hopeful — the human holds the position the machines cannot take: defining what is right, judging, and signing for the consequences. ' + STYLE,
   },
 
+  // 人的價值①：驗收（對回原始資料）
+  verify: {
+    bg: PAPER,
+    prompt:
+      'Wide 3:2 composition. A bright Taiwanese government office. A focused mid-career civil servant sits at a desk comparing a polished AI-generated draft report ' +
+      'line by line against thick binders of original source documents that lie open beside it; one finger traces a line in the source file while the other hand holds a vermilion red pen ' +
+      'over the draft, a few items already ticked in red, one item circled. A small friendly white robot assistant stands next to the desk, politely waiting with the next draft. ' +
+      'Desk details: colored file folders, sticky tabs, a mug, a potted plant. Mood: careful, calm verification — nothing is accepted until it matches the source. ' + STYLE,
+  },
+
+  // 人的價值②：判斷（沒有標準答案的決定）
+  judge: {
+    bg: PAPER,
+    prompt:
+      'Wide 3:2 composition. A calm meeting room in a Taiwanese public agency with large windows. On a wall screen, an AI recommendation is displayed as abstract charts and a highlighted ' +
+      'suggestion card in slate blue. A thoughtful senior civil servant stands in the foreground holding a closed personnel file folder against their chest, one hand on the chin, ' +
+      'looking at the screen and clearly weighing the decision; a small white robot beside the table holds out a printed recommendation and waits. Two colleagues at the table look toward the person deciding. ' +
+      'Mood: the machine offers a recommendation, the human decides — serious, humane, unhurried. ' + STYLE,
+  },
+
   // 收束頁：呼應封面的 3D 公仔風
   'closing-3d': {
     bg: PAPER,

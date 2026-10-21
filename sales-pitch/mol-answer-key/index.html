@@ -146,7 +146,6 @@
   .steps li em{font-style:normal;color:var(--brand);}
 
   /* 小卡三欄 */
-  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
   .thing{border:1px solid var(--line);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);padding:20px 22px;display:flex;flex-direction:column;}
   .thing .tn{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--brand);margin-bottom:8px;}
   .thing h3{font-size:24px;font-weight:900;color:var(--ink);line-height:1.35;margin-bottom:10px;}
@@ -194,32 +193,27 @@
   .numc .n s{color:var(--soft);text-decoration:none;font-size:32px;}
   .numc .l{font-size:16px;font-weight:700;color:var(--ink);margin-top:8px;line-height:1.5;}
 
-  /* 拆公式：預測有人做、判斷沒人做 */
-  .dissect{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-  .dc{border-radius:12px;padding:16px 20px;display:flex;gap:16px;align-items:center;min-height:132px;}
-  .dc.ai{border:2px solid var(--ai);background:var(--ai-50);}
-  .dc.ai img{width:150px;height:100px;object-fit:cover;border-radius:8px;flex:none;}
-  .dc.me{border:2.5px dashed var(--brand);background:var(--paper);position:relative;justify-content:center;}
-  .dc .dh{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--ai);}
-  .dc.me .dh{color:var(--brand);}
-  .dc .dt{font-size:24px;font-weight:900;color:var(--ink);margin:4px 0;line-height:1.35;}
-  .dc .dt b{color:var(--ai);} .dc .dd{font-size:15.5px;color:var(--muted);}
-  .dc.me .dd b{color:var(--brand);font-size:19px;}
-  .qmark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:84px;font-weight:900;color:var(--brand);opacity:.85;transition:opacity .3s;}
-  .dc.me:has(.rv.on) .qmark{opacity:0;}
-  .dc.me:has(.rv.on){border-style:solid;background:var(--brand-50);}
-  [data-theme="dark"] .dc.me:has(.rv.on){background:var(--quiet);}
-  .roles2{display:flex;gap:16px;margin-top:16px;}
-  .roles2 div{flex:1;display:flex;align-items:center;justify-content:center;gap:14px;border-radius:10px;background:var(--brand);color:#fff;padding:12px;}
-  .roles2 span{font-size:20px;font-weight:700;opacity:.85;} .roles2 i{font-style:normal;font-size:22px;}
-  .roles2 b{font-size:28px;font-weight:900;}
+  /* 人的價值：一頁一件事 */
+  .vpage{display:flex;flex-direction:column;gap:14px;justify-content:center;}
+  .vdef{font-size:23px;font-weight:800;line-height:1.5;color:var(--ink);}
+  .vdef b{color:var(--brand);}
+  .vcase{border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);padding:14px 20px;}
+  .vcase .vh{font-size:13px;font-weight:900;letter-spacing:1.5px;color:var(--brand);margin-bottom:6px;}
+  .vcase p{font-size:17px;line-height:1.62;color:var(--ink);}
+  .vcase p b{color:var(--brand);}
+  .vcase small{display:block;margin-top:6px;font-size:13px;color:var(--soft);}
+  .vback{font-size:15.5px;line-height:1.55;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px;}
+  .vback b{color:var(--ink);}
 
-  /* 方程式 */
-  .eq{display:flex;align-items:center;justify-content:center;gap:22px;margin:4px 0 26px;}
-  .eq span{font-size:44px;font-weight:900;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 34px;box-shadow:var(--shadow);}
-  .eq span.ai{color:var(--ai);border-color:var(--ai);}
-  .eq span.me{color:var(--brand);border-color:var(--brand);}
-  .eq i{font-style:normal;font-size:40px;font-weight:900;color:var(--soft);}
+  /* 回到中東的現場：三格接力 */
+  .chain{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;align-items:stretch;gap:8px;}
+  .chain .ch{border:1px solid var(--line);border-top:6px solid var(--brand);border-radius:12px;background:var(--paper);box-shadow:var(--shadow);padding:18px 20px;display:flex;flex-direction:column;}
+  .chain .ch i{font-style:normal;font-size:14px;font-weight:900;color:#fff;background:var(--brand);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+  .chain .ch b{font-size:34px;font-weight:900;color:var(--ink);margin:10px 0 8px;}
+  .chain .ch p{font-size:18px;font-weight:700;line-height:1.5;color:var(--ink);}
+  .chain .ch p b{font-size:inherit;margin:0;color:var(--brand);}
+  .chain .ch small{margin-top:auto;padding-top:12px;border-top:1px dashed var(--line);font-size:15px;line-height:1.55;color:var(--muted);}
+  .chain .ca{align-self:center;text-align:center;font-size:26px;font-weight:900;color:var(--soft);}
 
   /* 結尾 */
   .closing{display:flex;flex-direction:column;gap:15px;}
@@ -274,17 +268,6 @@
   .flow span{font-size:15.5px;line-height:1.55;color:var(--muted);}
   .flow span em{font-style:normal;color:var(--brand);font-weight:900;}
   .flow .fa{align-self:center;text-align:center;font-size:26px;font-weight:900;color:var(--soft);}
-
-  /* 直條圖 */
-  .vchart{display:flex;justify-content:center;align-items:flex-end;gap:64px;}
-  .vb{display:flex;flex-direction:column;align-items:center;width:190px;}
-  .vb b{font-size:40px;font-weight:900;color:var(--ai);margin-bottom:8px;}
-  .vb .vt{width:118px;height:230px;display:flex;align-items:flex-end;border-bottom:2px solid var(--line);}
-  .vb .vf{width:100%;height:var(--h);background:var(--ai);border-radius:8px 8px 0 0;}
-  .vb span{margin-top:10px;font-size:17px;font-weight:800;color:var(--ink);text-align:center;}
-  .vb.hot b{color:var(--brand);} .vb.hot .vf{background:var(--brand);}
-  .slide.active .vf{animation:vgrow 1s cubic-bezier(.2,.8,.2,1) .25s both;}
-  @keyframes vgrow{from{height:0;}}
 
   /* 橫條圖 */
   .hbars{display:flex;flex-direction:column;gap:12px;}
@@ -347,16 +330,6 @@
   .qa1 .v{font-size:14.5px;line-height:1.45;color:var(--muted);border-left:4px solid var(--brand);padding-left:10px;}
   .qa1 .v b{display:block;font-size:17px;color:var(--brand);font-weight:900;}
 
-  /* 錯題本 */
-  .tn-s{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--ai);margin-bottom:8px;}
-  .lead-s{font-size:19px;line-height:1.6;color:var(--ink);font-weight:600;}
-  .lead-s b{color:var(--brand);}
-  .cycle{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;}
-  .cycle span{font-size:15.5px;font-weight:800;color:var(--ai);background:var(--ai-50);border-radius:999px;padding:7px 14px;}
-  .cycle span.hot{color:#fff;background:var(--brand);}
-  .cycle i{font-style:normal;font-weight:900;color:var(--soft);}
-  .grow{margin-top:18px;border-top:1px dashed var(--line);padding-top:14px;}
-  .grow .gh{font-size:15px;font-weight:900;color:var(--ink);margin-bottom:8px;}
   .chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
   .chips span{font-size:15px;font-weight:800;color:var(--ink);background:var(--quiet);border:1px solid var(--line);border-radius:8px;padding:6px 12px;}
   .chips span.ai{color:var(--ai);background:var(--ai-50);border-color:transparent;}
@@ -394,6 +367,10 @@
   .gain div{border:1px solid var(--line);border-top:4px solid var(--ai);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);
     padding:12px 14px;font-size:16.5px;font-weight:800;line-height:1.45;color:var(--ink);}
   .gain i{display:block;font-style:normal;font-size:12.5px;font-weight:900;letter-spacing:1.5px;color:var(--soft);margin-bottom:6px;}
+  .gain b{display:block;font-size:22px;font-weight:900;color:var(--ink);margin-bottom:6px;}
+  .gain div.now b{color:var(--brand);}
+  .gain span{display:block;font-size:14px;font-weight:500;line-height:1.5;color:var(--muted);}
+  .gain div.now span{font-size:17px;font-weight:900;color:var(--ink);}
   .gain div.now{border-top-color:var(--brand);background:var(--brand-50);}
   .gain div.now i{color:var(--brand);}
   [data-theme="dark"] .gain div.now{background:var(--quiet);}
@@ -415,7 +392,7 @@
 
   /* 你的位置 */
   .roles{display:flex;flex-direction:column;gap:12px;}
-  .role{border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);padding:13px 20px;}
+  .role{border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);padding:10px 18px;}
   .role b{font-size:23px;font-weight:900;color:var(--brand);}
   .role p{font-size:17px;font-weight:700;color:var(--ink);margin-top:2px;}
   .role small{display:block;font-size:14.5px;line-height:1.5;color:var(--muted);margin-top:4px;}
@@ -521,8 +498,6 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- ═══════════ 錯得很專業 ═══════════ -->
-
 <!-- S4 冷開場一：滿版圖，文字壓在海面 -->
 <section class="slide bleed">
   <img class="bleed-img" src="images/cargo-ship.jpg" alt="">
@@ -577,46 +552,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S8 它還會說做完了 -->
-<section class="slide">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head">
-    <div class="kicker">而且它會說：做完了</div>
-    <h2 class="page-title sm">「做完了」，不等於<span class="em">做完了</span></h2>
-  </div>
-  <div class="body">
-    <div class="three">
-      <div class="thing"><div class="tn">畫面說成功</div><h3>表單顯示「送出成功」，重新整理後資料不見</h3><p>測試只檢查了畫面，<b>沒檢查資料有沒有存進去</b>。</p><div class="src">WorkOS，AI Engineer 工作坊</div></div>
-      <div class="thing"><div class="tn">回頭算總帳</div><h3>每 10 次交辦，有 4 次出過會造成影響的錯</h3><p>最常見的一種：<b>說做完了，其實沒做</b>。</p><div class="src">Corey Gallon，回顧自己一年的 AI 使用紀錄</div></div>
-      <div class="thing"><div class="tn">怎麼被發現的</div><h3>84 件錯，自動抓到 10 件</h3><p><b>45 件是幾週後碰巧挖到的</b>。測試補再多，比例也沒上升。</p><div class="src">一家小型售票生意 5 個月的失誤紀錄</div></div>
-    </div>
-    <div class="note">狀態要來自<b>紀錄</b>，不是來自 AI 的文字。</div>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
-<!-- ═══════════ ① 為什麼一定要有答案卷 ═══════════ -->
-
-<!-- S9 BCG：長條圖 -->
-<section class="slide">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head">
-    <div class="kicker">一題超出 AI 能力的任務</div>
-    <h2 class="page-title">越相信 AI，<span class="em">錯越多</span></h2>
-  </div>
-  <div class="body">
-    <div class="vchart">
-      <div class="vb"><b>84.5%</b><div class="vt"><div class="vf" style="--h:84.5%"></div></div><span>不用 AI</span></div>
-      <div class="vb"><b>70.6%</b><div class="vt"><div class="vf" style="--h:70.6%"></div></div><span>用 AI</span></div>
-      <div class="vb hot"><b>60%</b><div class="vt"><div class="vf" style="--h:60%"></div></div><span>用 AI＋上過提示詞課</span></div>
-    </div>
-    <div class="note rv" data-rv="1">你們剛上完四堂課。<b>學會「怎麼用」，不等於知道「什麼時候不能信」。</b></div>
-    <div class="fineprint">758 位 BCG 顧問的答對率。Dell'Acqua et al., HBS／BCG 2023</div>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
-<!-- S10 Deloitte × 澳洲就業與勞資關係部 -->
+<!-- S8 Deloitte × 澳洲就業與勞資關係部 -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -646,7 +582,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S11 法院裡的 AI 捏造判例 -->
+<!-- S9 法院裡的 AI 捏造判例 -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -673,7 +609,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S12 紐約市府 AI 客服：互動問答 -->
+<!-- S10 紐約市府 AI 客服：互動問答 -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -696,19 +632,20 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S13 人審不住 -->
+<!-- S11 人審不住 -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
     <div class="kicker">那多請一個人看一遍？</div>
     <h2 class="page-title">人，<span class="em">審不住</span></h2>
+    <div class="page-sub scene">實驗：1,053 位專業測試者照常工作，中途偷偷塞進<b>一個明顯危險的指令</b>——看誰攔得下來</div>
   </div>
   <div class="body">
     <div class="split" style="grid-template-columns:1.25fr .75fr;align-items:center;">
       <div class="hbars big">
-        <div class="hb"><div class="hl">人工按「同意」之前攔下來的</div><div class="ht"><div class="hf" style="--w:13.6%"></div></div><b>13.6%</b></div>
-        <div class="hb hot"><div class="hl">自動檢查攔下來的</div><div class="ht"><div class="hf" style="--w:89%"></div></div><b>89%</b></div>
-        <div class="d" style="font-size:15px;color:var(--muted);margin-top:4px;">對照的是同一批有風險的操作</div>
+        <div class="hb"><div class="hl">人看到確認視窗，按下「拒絕」</div><div class="ht"><div class="hf" style="--w:13.6%"></div></div><b>13.6%</b></div>
+        <div class="hb hot"><div class="hl">自動檢查（另一個 AI）擋下</div><div class="ht"><div class="hf" style="--w:89%"></div></div><b>89%</b></div>
+        <div class="d" style="font-size:15px;color:var(--muted);margin-top:4px;">同一個危險指令：1,053 人裡只有 143 人攔下；自動檢查擋下 937 次</div>
       </div>
       <div class="minicard rv" data-rv="1">
         <div class="mh">而且越審越鈍</div>
@@ -719,7 +656,7 @@
           <text x="60" y="24" text-anchor="middle" class="v">約 17%</text>
           <text x="260" y="112" text-anchor="middle" class="v hot">約 5%</text>
           <text x="60" y="162" text-anchor="middle" class="xl">剛開始</text>
-          <text x="260" y="162" text-anchor="middle" class="xl">審過 50 次</text>
+          <text x="260" y="162" text-anchor="middle" class="xl">按過 50 次</text>
         </svg>
       </div>
     </div>
@@ -728,9 +665,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- ═══════════ ② 答案卷長什麼樣 ═══════════ -->
-
-<!-- S14 唯一要記的概念 -->
+<!-- S12 唯一要記的概念 -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head"><div class="kicker">今天唯一一個要記的概念</div></div>
@@ -749,7 +684,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S15 你們早就有這套制度 -->
+<!-- S13 你們早就有這套制度 -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -773,7 +708,26 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S16 人往上退一格：點陣圖 -->
+<!-- S14 AI 交回來的東西，怎麼處理：互動勾選 -->
+<section class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
+  <div class="head">
+    <div class="kicker">AI 交回來的東西，怎麼處理</div>
+    <h2 class="page-title sm">收下之前，<span class="em">先過這五關</span></h2>
+  </div>
+  <div class="body">
+    <div class="chk">
+      <div class="ck rv-check" data-rv="1"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>先問：這件事有沒有答案卷？</b><em>沒有，就先寫一張</em></div>
+      <div class="ck rv-check" data-rv="2"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>對回原始資料</b><em>每個數字、每條引用都找得到出處｜Deloitte、法院判例</em></div>
+      <div class="ck rv-check" data-rv="3"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>做的和驗的分開</b><em>別叫它檢查自己｜出納不兼會計</em></div>
+      <div class="ck rv-check" data-rv="4"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>看紀錄，不看它說「做完了」</b><em>寫得再專業，也要有憑據｜美軍情報、紐約市府客服</em></div>
+      <div class="ck rv-check" data-rv="5"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>放手要有刻度</b><em>從影子模式開始，留獨立抽樣</em></div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro</div>
+</section>
+
+<!-- S15 人往上退一格：點陣圖 -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -790,35 +744,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S17 答案卷是長出來的：錯題本 -->
-<section class="slide">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head">
-    <div class="kicker">答案卷不是一次寫好的</div>
-    <h2 class="page-title sm">每錯一次，答案卷就<span class="em">多一題</span></h2>
-  </div>
-  <div class="body">
-    <div class="split" style="grid-template-columns:.9fr 1.1fr;align-items:center;">
-      <figure class="aimg"><img src="images/mistake-notebook.jpg" alt=""></figure>
-      <div>
-        <div class="tn-s">AI 公司自己怎麼做</div>
-        <div class="lead-s">Claude Code 團隊把出過的錯整理成考題，審查用的 AI 每天考一遍；<b>分數變好，改動才保留</b>。</div>
-        <div class="cycle">
-          <span>出錯</span><i>→</i><span>寫成考題</span><i>→</i><span>每天考一遍</span><i>→</i><span class="hot">變好才保留</span><i>↺</i>
-        </div>
-        <div class="grow rv" data-rv="1">
-          <div class="gh">你們的錯題本，可以從這裡長出來</div>
-          <div class="chips"><span>退件紀錄</span><span>稽核意見</span><span>陳情案件</span><span>訴願結果</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="note rv" data-rv="2">錯題本會越寫越厚，<b>它是你們單位自己的資產。</b></div>
-    <div class="fineprint">Addy Osmani 等，〈How the Claude Code team does code review〉，2026-10-15</div>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
-<!-- S18 放手要有刻度：同一個情境走四階（數字為示意） -->
+<!-- S16 放手要有刻度：同一個情境走四階（數字為示意） -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -850,9 +776,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- ═══════════ 有答案卷的，交給 AI ═══════════ -->
-
-<!-- S19 越能被檢查的，越早交出去 -->
+<!-- S17 越能被檢查的，越早交出去 -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -864,25 +788,25 @@
       <div class="qcard"><div class="who">經濟學家 Acemoglu</div><div class="what">寫程式最先被 AI 接走，是因為程式<em>「要嘛能跑、要嘛不能跑」</em>。</div></div>
       <div class="qcard"><div class="who">比爾・蓋茲</div><div class="what">公司會先交出<em>「規則清楚、可以被檢查」</em>的工作。</div></div>
     </div>
-    <div class="note rv" data-rv="1" style="margin-top:22px;">二十多年沒人解開的密碼學懸案，AI 半小時找到答案。<b>讓人敢相信的不是它的推理，是任何人都能重算一遍、一字不差。</b></div>
-    <div class="fineprint">Acemoglu、蓋茲：訪談與長文的影片轉述（最佳拍档、Gary Chen 導讀）；密碼學懸案：Anthropic，2026-10-16</div>
+    <div class="note rv" data-rv="1" style="margin-top:22px;">越能被檢查的工作，越早交給 AI。<b>函文引的法條、統計表的加總、核銷單據的日期——這些都對得到答案。</b></div>
+    <div class="fineprint">Acemoglu、蓋茲：訪談與長文的影片轉述（最佳拍档、Gary Chen 導讀）</div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S20 颶風預報 -->
+<!-- S18 颶風預報：行之有年的分工 -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
-    <div class="kicker">政府部門的分工範本</div>
+    <div class="kicker">其實已經行之有年的一種工作模式</div>
     <h2 class="page-title">AI 給預測，<span class="em">預報員發警報</span></h2>
   </div>
   <div class="body">
     <div class="split" style="align-items:center;">
       <figure class="aimg"><img src="images/hurricane.jpg" alt=""></figure>
       <div class="stack2" style="margin-top:0;">
-        <div class="cmp"><div class="when">交給 AI（有答案卷）</div><div class="lead">颶風會往哪裡走</div><div class="sub">事後對得起來。AI 路徑預報平均多給約<b>一天</b>準備時間</div></div>
-        <div class="cmp now rv" data-rv="1"><div class="when">留給人（沒有答案卷）</div><div class="lead">要不要發警報、發給誰</div><div class="sub">發布警報的，仍是美國國家颶風中心的預報員</div></div>
+        <div class="cmp"><div class="when">交給 AI（有答案卷）</div><div class="lead">颶風會往哪裡走</div><div class="sub">有標準答案：颶風走到哪，事後一定對得起來。AI 有足夠的資料預測路徑，平均多給約<b>一天</b>準備時間</div></div>
+        <div class="cmp now rv" data-rv="1"><div class="when">留給人（沒有答案卷）</div><div class="lead">要不要發警報、發給誰</div><div class="sub">這是判斷，沒有標準答案。決定的仍是美國國家颶風中心的預報員</div></div>
       </div>
     </div>
     <div class="fineprint">Google DeepMind 研究員 2026-10-15 公開貼文（自家說法）</div>
@@ -890,7 +814,7 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S21 勞動部四個實例（中性版；口頭帶出處，投影片不寫講者與場合） -->
+<!-- S19 勞動部四個實例（中性版；口頭帶出處，投影片不寫講者與場合） -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -914,11 +838,11 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S22 工作在換形狀 -->
+<!-- S20 工作在換形狀 -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
-    <div class="kicker">這件事跟勞動有關</div>
+    <div class="kicker">AI 年代下，人類的新定位</div>
     <h2 class="page-title sm">工作沒有消失，<span class="em">是換了形狀</span></h2>
   </div>
   <div class="body">
@@ -949,46 +873,97 @@
         <div class="qline">Acemoglu：把 5% 的工作自動化，<b>不如讓所有人生產力提高 5%</b>。</div>
       </div>
     </div>
-    <div class="note rv" data-rv="1">工作沒有消失：從「自己做」，變成「定義合格、檢查 AI」——<b>也就是今天講的答案卷。</b></div>
+    <div class="note rv" data-rv="1">工作沒有消失，換了形狀：AI 接走有答案卷的部分，<b>人留下三件事——驗收、判斷、承擔責任。</b></div>
     <div class="fineprint">Anthropic〈Employment at Anthropic〉2026-10（報告自己提醒：AI 公司的數字不能直接套到一般機關）；Acemoglu 訪談轉述；Brynjolfsson, Li & Raymond, NBER 2023</div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- ═══════════ 沒有答案卷的，是你的位置 ═══════════ -->
-
-<!-- S23 決策 = 預測 + 判斷：拿開場的美軍情報拆給大家看 -->
+<!-- S21 人的價值 ①：驗收 -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
-    <div class="kicker">那沒有答案卷的部分呢？</div>
+    <div class="kicker">人的價值 ①</div>
+    <h2 class="page-title sm">驗收：<span class="em">對回原始資料，才收下</span></h2>
   </div>
   <div class="body">
-    <div class="eq" style="margin-bottom:22px;">
-      <span>決策</span><i>＝</i><span class="ai">預測</span><i>＋</i><span class="me">判斷</span>
-    </div>
-    <div class="dissect">
-      <div class="dc ai">
-        <img src="images/cargo-ship.jpg" alt="">
-        <div><div class="dh">預測｜AI 做了</div><div class="dt">「這艘船載著<b>核武零件</b>。」</div><div class="dd">還寫成軍方信任的標準情報報告</div></div>
-      </div>
-      <div class="dc me" id="judgeCard">
-        <div class="qmark">？</div>
-        <div class="rv" data-rv="1"><div class="dh">判斷｜沒有人做</div><div class="dt">沒人回頭細看，就往上送</div><div class="dd">結果：<b>軍機升空</b></div></div>
+    <div class="split" style="grid-template-columns:.95fr 1.05fr;align-items:stretch;">
+      <figure class="aimg"><img src="images/verify.jpg" alt=""></figure>
+      <div class="vpage">
+        <div class="vdef">知道「怎樣算對」，把 AI 的成果<b>對回原始資料、對答案卷</b></div>
+        <div class="vcase rv" data-rv="1"><div class="vh">真實的例子｜Deloitte × 澳洲就業與勞資關係部</div><p>報告是 AI 幫忙寫的，格式漂亮、引用齊全。<b>抓到錯的不是 AI，是一位學者</b>——他把每一條引用對回原文，發現那些論文根本不存在。</p><small>AP、The Register、Fortune，2025-10</small></div>
+        <div class="vback rv" data-rv="2">今天講過：<b>這件事，有沒有答案卷？</b>收下之前，先過五關。</div>
       </div>
     </div>
-    <div class="quote rv" data-rv="2" style="font-size:32px;margin-top:20px;max-width:none;">AI 越來越會預測。<em>判斷，和判斷之後的後果，還在人身上。</em></div>
-    <div class="roles2 rv" data-rv="3">
-      <div><span>判斷</span><i>→</i><b>回頭驗收</b></div>
-      <div><span>後果</span><i>→</i><b>承擔責任</b></div>
-    </div>
+    <div class="note rv" data-rv="3">AI 交得出成果；<b>對不對，要人來驗。</b></div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- ═══════════ 收尾：收穫 → 怎麼處理 → 你的位置 ═══════════ -->
+<!-- S22 人的價值 ②：判斷 -->
+<section class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
+  <div class="head">
+    <div class="kicker">人的價值 ②</div>
+    <h2 class="page-title sm">判斷：<span class="em">沒有標準答案的事，留給人</span></h2>
+  </div>
+  <div class="body">
+    <div class="split" style="grid-template-columns:.95fr 1.05fr;align-items:stretch;">
+      <figure class="aimg"><img src="images/judge.jpg" alt=""></figure>
+      <div class="vpage">
+        <div class="vdef">要不要做、做給誰、做到哪——<b>這些沒有標準答案</b></div>
+        <div class="vcase rv" data-rv="1"><div class="vh">真實的例子｜美國加州 SB 947</div><p>加州立法規定：<b>懲戒、解僱員工，不得只靠 AI 決定，必須有人審</b>。這是用法律把「判斷」留給人——而且就發生在勞動領域。</p><small>2026-09-30 簽署，2027-07-01 生效</small></div>
+        <div class="vback rv" data-rv="2">今天講過：颶風往哪走 AI 算得出來，<b>要不要發警報，是預報員決定</b>。</div>
+      </div>
+    </div>
+    <div class="note rv" data-rv="3">AI 給建議；<b>決定，留給人。</b></div>
+  </div>
+  <div class="brandmark">CTK Pro</div>
+</section>
 
-<!-- S24 四堂課的收穫 -->
+<!-- S23 人的價值 ③：承擔責任 -->
+<section class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
+  <div class="head">
+    <div class="kicker">人的價值 ③</div>
+    <h2 class="page-title sm">承擔責任：<span class="em">AI 可以替你寫，不能替你簽名</span></h2>
+  </div>
+  <div class="body">
+    <div class="split" style="grid-template-columns:.95fr 1.05fr;align-items:stretch;">
+      <figure class="aimg"><img src="images/position.jpg" alt=""></figure>
+      <div class="vpage">
+        <div class="vdef"><b>簽名的人，就是負責的人</b>——不管是誰打的字</div>
+        <div class="vcase rv" data-rv="1"><div class="vh">真實的例子｜加拿大航空</div><p>客服機器人告訴旅客「喪親優惠可以事後申請退款」，結果是錯的。加航在法庭上主張<b>「聊天機器人是獨立的法律個體，該它自己負責」</b>——被駁回，判加航賠償。</p><small>Moffatt v. Air Canada, 2024 BCCRT 149</small></div>
+        <div class="vback rv" data-rv="2">今天講過：勞動部四個案子，<b>確認的那一步，都留給了人</b>。</div>
+      </div>
+    </div>
+    <div class="note rv" data-rv="3">工具會換、廠商會換，<b>簽名留在你手上。</b></div>
+  </div>
+  <div class="brandmark">CTK Pro</div>
+</section>
+
+<!-- S24 回到中東的現場：驗收 → 判斷 → 承擔責任 -->
+<section class="slide fade-bg">
+  <img class="fade-img" src="images/cargo-ship.jpg" alt="">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
+  <div class="head">
+    <div class="kicker">回到中東的現場：剛剛那三件事</div>
+    <h2 class="page-title sm">如果那位分析師，<span class="em">先做了這三件事</span></h2>
+  </div>
+  <div class="body">
+    <div class="chain">
+      <div class="ch rv" data-rv="1"><i>1</i><b>驗收</b><p>先把 AI 寫的情報，<b>對回原始資料</b></p><small>可能就會發現：公開資料和機密情報被混在一起，貨物認錯了</small></div>
+      <div class="ca rv" data-rv="2">→</div>
+      <div class="ch rv" data-rv="2"><i>2</i><b>判斷</b><p>有了驗收，才能<b>好好判斷</b></p><small>這份情報能不能往上送？該不該據此建議登船？</small></div>
+      <div class="ca rv" data-rv="3">→</div>
+      <div class="ch rv" data-rv="3"><i>3</i><b>承擔責任</b><p>有了判斷，才<b>扛得起</b>這份報告</p><small>而不是讓一份錯的報告，一路送到軍機升空</small></div>
+    </div>
+    <div class="note rv" data-rv="4">先驗收，才有好的判斷；<b>有好的判斷，才扛得起責任。</b></div>
+  </div>
+  <div class="brandmark">CTK Pro</div>
+</section>
+
+<!-- S25 四堂課的收穫 -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head">
@@ -998,81 +973,17 @@
   <div class="body" style="justify-content:flex-start;padding-top:10px;">
     <figure class="aimg band"><img src="images/journey.jpg" alt=""></figure>
     <div class="gain">
-      <div><i>第一堂</i>說得清楚要什麼，給對卷宗</div>
-      <div><i>第二堂</i>規則寫進資料夾，不必每次重講</div>
-      <div><i>第三堂</i>拿工作包跑真實業務</div>
-      <div><i>第四堂・上半場</i>把工作包改成自己的做法</div>
-      <div class="now"><i>今天</i>知道它交回來的東西，怎麼驗</div>
+      <div><i>第一堂</i><b>心法</b><span>Prompt、Context、Harness：怎麼交代、給什麼、發哪些裝備</span></div>
+      <div><i>第二堂</i><b>工作資料夾</b><span>規則寫進 AGENTS.md、交辦單四格、錯題本</span></div>
+      <div><i>第三堂</i><b>用進工作</b><span>用工作包跑兩題真實業務：高溫防護、颱風通勤</span></div>
+      <div><i>第四堂・上半場</i><b>變成你的</b><span>改自己的工作包，裝上 HTML 簡報 Skill</span></div>
+      <div class="now"><i>今天・下半場</i><b>怎麼驗</b><span>驗收、判斷、承擔責任</span></div>
     </div>
   </div>
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S25 AI 交回來的東西，怎麼處理：互動勾選 -->
-<section class="slide">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head">
-    <div class="kicker">AI 交回來的東西，怎麼處理</div>
-    <h2 class="page-title sm">收下之前，<span class="em">先過這五關</span></h2>
-  </div>
-  <div class="body">
-    <div class="chk">
-      <div class="ck rv-check" data-rv="1"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>先問：這件事有沒有答案卷？</b><em>沒有，就先寫一張</em></div>
-      <div class="ck rv-check" data-rv="2"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>對回原始資料</b><em>每個數字、每條引用都找得到出處｜Deloitte、法院判例</em></div>
-      <div class="ck rv-check" data-rv="3"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>做的和驗的分開</b><em>別叫它檢查自己｜出納不兼會計</em></div>
-      <div class="ck rv-check" data-rv="4"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>看紀錄，不看它說「做完了」</b><em>寫得再專業，也要有憑據｜美軍情報、紐約市府客服</em></div>
-      <div class="ck rv-check" data-rv="5"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><b>放手要有刻度</b><em>從影子模式開始，留獨立抽樣</em></div>
-    </div>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
-<!-- S26 你的位置：回頭驗收、承擔責任 -->
-<section class="slide">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head">
-    <div class="kicker">往前看</div>
-    <h2 class="page-title sm">AI 取代不了的位置，<span class="em">有兩個</span></h2>
-  </div>
-  <div class="body">
-    <div class="split" style="grid-template-columns:.78fr 1.22fr;align-items:stretch;">
-      <figure class="aimg"><img src="images/position.jpg" alt=""></figure>
-      <div class="roles">
-        <div class="role rv" data-rv="1"><b>回頭驗收的人</b><p>知道「怎樣算對」，把 AI 的成果對回原始資料</p><small>例：Deloitte 的報告是 AI 幫忙寫的；抓到錯的，是一條一條對回原文的學者</small></div>
-        <div class="role rv" data-rv="2"><b>承擔責任的人</b><p>AI 可以替你寫，不能替你簽名</p><small>例：加拿大航空主張「聊天機器人說錯，該它自己負責」，被法庭駁回、判賠<br>例：美國加州立法，懲戒、解僱不得只靠 AI 決定（2027／7 生效）</small></div>
-      </div>
-    </div>
-    <div class="note rv" data-rv="3">工具會換、廠商會換，<b>判斷和簽名，都留在你手上。</b></div>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
-<!-- S27 兩句話 -->
-<section class="slide">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head"><div class="kicker">明天就能用的兩句話</div></div>
-  <div class="body">
-    <div class="compare2">
-      <div class="cmp now"><div class="when">交辦之前，問自己</div><div class="lead" style="font-size:30px;">「這件事，<br>有沒有答案卷？」</div></div>
-      <div class="cmp now"><div class="when">看不懂的時候，對 AI 說</div><div class="lead" style="font-size:30px;">「先別給答案，<br>出 3 題考我。」</div></div>
-    </div>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
-<!-- S28 那位分析師 -->
-<section class="slide fade-bg">
-  <img class="fade-img" src="images/cargo-ship.jpg" alt="">
-  <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
-  <div class="head"><div class="kicker">回到開場</div></div>
-  <div class="body">
-    <div class="quote">那位分析師不是笨，<br>他只是<em>沒有答案卷</em>。</div>
-    <div class="plain">如果規定情報發出去之前，要先<b>對回原始資料</b>——它在第一步就會被擋下來。</div>
-  </div>
-  <div class="brandmark">CTK Pro</div>
-</section>
-
-<!-- S29 收束（呼應封面） -->
+<!-- S26 收束（呼應封面） -->
 <section class="slide closing-slide">
   <img class="cover-art" src="images/closing-3d.jpg" alt="">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
@@ -1084,24 +995,20 @@
   <div class="brandmark">CTK Pro</div>
 </section>
 
-<!-- S30 出處 -->
+<!-- S27 出處 -->
 <section class="slide">
   <img class="logo-tr" src="images/ctkpro-logo.png" alt="" onerror="this.style.display='none'">
   <div class="head"><div class="kicker">出處</div></div>
   <div class="body" style="justify-content:flex-start;padding-top:18px;">
     <ul class="refs">
       <li><b>美軍 AI 情報</b>　CNN，2026-09-18　cnn.com/2026/09/18/politics/us-military-ai-false-intelligence-china-ship</li>
-      <li><b>BCG 顧問</b>　Dell'Acqua et al., HBS Working Paper 2023</li>
       <li><b>Deloitte 報告</b>　AP、The Register、Fortune，2025-10；澳洲參議院聽證，2025-10</li>
       <li><b>法院 AI 捏造引用</b>　damiencharlotin.com/hallucinations（2026-10-19 更新）；Mata v. Avianca, S.D.N.Y. 2023</li>
       <li><b>紐約市府 AI 客服</b>　The Markup，2024-03-29；Vice、Yahoo News，2026-02</li>
       <li><b>人審 13.6% vs 89%</b>　claude.com/blog/auto-mode-default-in-claude-code（2026-08-07）</li>
       <li><b>三種驗收做法</b>　Corey Gallon〈Three Levels of Review〉，AI Engineer</li>
-      <li><b>「送出成功」</b>　WorkOS〈Teach Your Agent to Prove It's Done〉，AI Engineer</li>
-      <li><b>錯題本</b>　Addy Osmani 等〈How the Claude Code team does code review〉，2026-10-15</li>
       <li><b>放手四階段</b>　Michele Grant，AI Engineer，2026-10</li>
       <li><b>Acemoglu／蓋茲</b>　影片轉述（最佳拍档、Gary Chen 導讀），上台引述以原文為準</li>
-      <li><b>密碼學懸案</b>　Anthropic，2026-10-16</li>
       <li><b>颶風預報</b>　Google DeepMind 研究員公開貼文，2026-10-15</li>
       <li><b>勞動部實例</b>　iThome　ithome.com.tw/news/178524</li>
       <li><b>Anthropic 就業數據</b>　〈Employment at Anthropic〉，2026-10</li>

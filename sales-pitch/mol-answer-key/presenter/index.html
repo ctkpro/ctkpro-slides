@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>講者版 · 做得出來之後，怎麼驗？ · 2026-10-21</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  /* 講者版：暗底，減少台上反光；左＝要講的重點（大字）＋聽眾畫面，右＝完整故事
+     版面沿用 bni-ai-news/2026-10-16/presenter；本版多了台上動作提示（黃字）與控時檢查點 */
+  :root{
+    --bg:#17140f; --panel:#221e18; --line:#3a332a;
+    --ink:#f4efe9; --muted:#a89f94; --soft:#7d746a;
+    --red:#ff4a63; --red-bg:rgba(255,74,99,.12); --amber:#f2b64a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;width:100%;overflow:hidden;background:#0d0b08;}
+  body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+  #stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;background:var(--bg);}
+  .page{position:absolute;inset:0;display:none;}
+  .page.active{display:grid;grid-template-columns:560px 1fr;grid-template-rows:100%;}
+
+  /* ---- 頂列 ---- */
+  .top{position:absolute;left:0;right:0;top:0;height:54px;display:flex;align-items:center;gap:18px;padding:0 32px;
+       border-bottom:1px solid var(--line);font-size:17px;font-weight:700;color:var(--muted);}
+  .top .no{font-size:26px;font-weight:900;color:var(--ink);}
+  .top .no small{font-size:16px;color:var(--soft);font-weight:700;}
+  .top .sec{color:var(--red);letter-spacing:.06em;}
+  .top .cp{font-size:14px;font-weight:900;color:#17140f;background:var(--amber);border-radius:999px;padding:3px 12px;}
+  .top .time{margin-left:auto;color:var(--amber);font-weight:800;}
+
+  /* ---- 左：要講的重點 ---- */
+  .left{padding:78px 34px 40px 36px;display:flex;flex-direction:column;border-right:1px solid var(--line);min-height:0;overflow:hidden;}
+  .left h2{font-size:17px;font-weight:800;letter-spacing:.14em;color:var(--soft);margin-bottom:16px;}
+  .pts{list-style:none;counter-reset:n;display:flex;flex-direction:column;gap:16px;}
+  .pts li{counter-increment:n;display:flex;gap:16px;font-size:29px;font-weight:700;line-height:1.38;}
+  .pts li::before{content:counter(n);flex:none;width:40px;height:40px;border-radius:10px;background:var(--red-bg);
+                  color:var(--red);font-size:22px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-top:2px;}
+  .pts li b{color:var(--red);font-weight:900;}
+  /* 台上動作（按幾下、點哪裡）：黃字、不編號 */
+  .pts li.stage{counter-increment:none;color:var(--amber);font-size:22px;font-weight:700;}
+  .pts li.stage::before{content:"▶";background:#2f2a22;color:var(--amber);font-size:16px;}
+  .pts li.stage b{color:var(--amber);}
+  .preview{width:384px;height:216px;margin-top:auto;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#000;position:relative;flex:none;}
+  .preview iframe{width:1280px;height:720px;border:0;transform:scale(.3);transform-origin:0 0;pointer-events:none;}
+  .preview .lbl{position:absolute;right:8px;top:6px;font-size:12px;font-weight:800;color:#fff;background:rgba(0,0,0,.55);padding:2px 8px;border-radius:6px;letter-spacing:.08em;}
+  .next{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:18px;color:var(--muted);}
+  .next b{color:var(--ink);}
+
+  /* ---- 右：完整故事 ---- */
+  .right{padding:76px 34px 40px 34px;display:flex;flex-direction:column;gap:14px;min-width:0;min-height:0;overflow:hidden;}
+  .detail{font-size:18px;line-height:1.62;color:#d8d0c6;overflow:hidden;flex:1;min-height:0;}
+  .detail p{margin-bottom:7px;}
+  .detail .dh{font-size:14px;font-weight:800;letter-spacing:.14em;color:var(--soft);margin-bottom:6px;}
+  .detail b{color:#fff;}
+  .detail .mu{color:var(--amber);font-size:15.5px;}
+  .detail .ask{color:#9fc3e8;font-size:15.5px;}
+  .detail .src{font-size:14px;color:var(--soft);margin-top:4px;}
+
+  /* ---- 導覽 ---- */
+  .navbar{position:fixed;right:20px;bottom:12px;display:flex;align-items:center;gap:8px;z-index:40;user-select:none;}
+  .navbar button{border:none;background:none;cursor:pointer;font-size:24px;color:var(--soft);padding:2px 9px;border-radius:8px;}
+  .navbar button:hover{color:var(--red);}
+  .progress{position:fixed;left:0;bottom:0;height:3px;background:var(--red);width:0;transition:width .3s;z-index:40;}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div class="navbar"><button id="prevBtn" aria-label="上一頁">‹</button><button id="nextBtn" aria-label="下一頁">›</button></div>
+<div class="progress" id="progress"></div>
+
+<script>
+// 正式版投影片（同資料夾上一層；本機與 GitHub Pages 都適用）。兩邊不同步，各自翻頁。
+const DECK = '../index.html';
+const TOTAL = 27;
+
+// 每頁一筆：sec＝段落、time＝累計目標時間、cp＝控時／司長檢查點（選填）、
+// pts＝左邊重點（「▶」開頭＝台上動作，黃字）、story＝右邊完整故事、src＝出處、next＝下一頁
+const PAGES = [
+  { // P1
+    sec:'0 · 開場', time:'0:00 → 0:40',
+    pts:['上半場 Aron：<b>把工作包變成你的</b>','下半場：<b>怎麼驗</b>','副標：答案卷要在你手上'],
+    story:`<p>「上半場 Aron 帶大家把工作包改成自己的做法。下半場這段，我們來談一件事：<b>它做出來之後，你怎麼知道是對的</b>。」</p>
+      <p>副標「答案卷要在你手上」先不解釋，後面會一路回來。</p>
+      <p class="mu">封面右下標了「本場插圖皆由生成式 AI 繪製」。可以順口說一句：「今天的圖全部是 AI 畫的——所以我們今天也會一直問：<b>它畫的、它寫的，你怎麼驗</b>。」</p>`,
+    src:'',
+    next:'先回頭看一眼：你們已經做得出來了'
+  },
+  { // P2
+    sec:'0 · 開場', time:'0:40 → 1:30',
+    pts:['第一堂 心法 → 第二堂 工作資料夾','第三堂 用進工作 → 第四堂 變成你的','今天：<b>它交回來的，你怎麼知道是對的？</b>','▶ 按 → ×1：底下那句'],
+    story:`<p>五格從左到右點過去，每格一句就好：</p>
+      <p><b>第一堂</b>：怎麼交代（Prompt）、給什麼卷宗（Context）、發哪些裝備（Harness）。<b>第二堂</b>：把規則寫進 AGENTS.md、交辦單四格、錯題本。<b>第三堂</b>：拿工作包跑兩題真實業務，道路作業高溫防護、颱風期間委外勞工通勤。<b>第四堂上半場</b>：改自己的工作包，裝上 HTML 簡報 Skill。</p>
+      <p>停在第五格：「四堂課下來，大家已經<b>做得出來</b>了。接下來的問題不是做不做得出來，是<b>你怎麼知道它做對了</b>。」</p>
+      <p class="mu">上台前跟 Aron 對一下上半場實際講到哪；如果他沒講到 HTML Skill，第四格只說「把工作包改成自己的」。</p>`,
+    src:'Aron 第二～四堂簡報（課程 repo claude/course-videos 分支，10/20）',
+    next:'第一堂的最後一頁'
+  },
+  { // P3
+    sec:'0 · 開場', time:'1:30 → 2:00',
+    pts:['會用 AI，很快就<b>不稀奇</b>','講得清楚「<b>怎樣算做對</b>」，才稀奇','▶ 按 → ×1：今天就講這一句'],
+    story:`<p>「第一堂我講的最後一頁，就是這一句。那時候大家還在學怎麼用；現在大家都會用了，這句話就變得很實際。」</p>
+      <p>「今天，四堂課的最後一段，<b>就講這一句</b>。」</p>
+      <p>這頁是承諾：整場都在回答「怎樣算做對」。講完直接換頁，不要停太久，下一頁要用故事抓注意力。</p>`,
+    src:'',
+    next:'冷開場：今年春天，中東'
+  },
+  { // P4
+    sec:'1 · 錯得很專業', time:'2:00 → 2:50',
+    pts:['春天・中東','美軍要登<b>中國貨船</b>，<b>軍機已經升空</b>','理由：船上有<b>核武計畫零件</b>','只講到軍機升空，<b>換頁才說後來</b>'],
+    story:`<p>今年春天，美國特種作戰司令部一位分析師，用 AI 聊天機器人查一艘中國貨船的資料。</p>
+      <p>AI 把<b>公開資料和政府手上的機密情報混在一起</b>，認錯了船上的貨，說它載著核武計畫的零件。分析師把結果放進一份情報報告發出去。</p>
+      <p>軍方據此規劃攔截：<b>武裝人員準備登船、軍機已經升空</b>。</p>
+      <p>講到這裡停一拍，什麼都不要評論，直接換頁。</p>
+      <p class="mu">⚠️ 只講事件，不談背景戰事。CNN 查不到用的是商用還是政府專用的 AI，也不知道實際貨物是什麼；被問到就照實說「報導沒寫」。畫面是 AI 生成的示意圖，不是現場照片。</p>`,
+    src:'CNN 獨家，2026-09-18（匿名消息來源）',
+    next:'這份情報是 AI 寫的。而且，完全是錯的。'
+  },
+  { // P5
+    sec:'1 · 錯得很專業', time:'2:50 → 3:30',
+    pts:['情報是 <b>AI 寫的</b>','<b>完全是錯的</b>','▶ 按 → ×1：“It almost started a war.”'],
+    story:`<p>「這份情報是 AI 寫的。而且，完全是錯的。」——說完停兩秒。</p>
+      <p>後來：直到行動前，其他人回頭細看報告，才發現是 AI 生成、貨物被認錯，行動取消。</p>
+      <p>按出英文那句。兩句原話都來自 CNN 的消息來源：報告 <b>“entirely false”</b>（完全是錯的），而且 <b>“It almost started a war.”</b>（它差點開啟一場戰爭）。</p>
+      <p class="mu">⚠️ 不要說「因為格式太正式所以沒人質疑」——那是推論，不是報導寫的。報導寫的是「被放進軍方官員信任的那種標準化情報報告」，下一頁會用。</p>`,
+    src:'CNN 獨家，2026-09-18',
+    next:'為什麼沒人攔下來？'
+  },
+  { // P6
+    sec:'1 · 錯得很專業', time:'3:30 → 4:30',
+    pts:['分析師問 AI','AI <b>混在一起、認錯貨</b>','寫成<b>軍方信任的標準報告</b>','軍機升空，<b>才有人回頭細看</b>','▶ 按 → ×3：一步一格'],
+    story:`<p>「一份錯的東西，怎麼一路走到軍機升空？我們一步一步看。」</p>
+      <p>第一格：分析師只是問了一個問題。第二格：AI 把公開資料和機密情報混在一起，認錯了貨物——<b>錯在這裡就發生了</b>。第三格：它被寫成「軍方官員信任的那種標準化情報報告」——格式對了、口吻對了，<b>看起來就像一份真的情報</b>。第四格：一路往上送，直到軍機升空，才有人回頭細看。</p>
+      <p>收這頁：「每一關的人都不笨。問題是，<b>每一關都沒有東西可以對</b>。」（這句話先埋著，到第 24 頁回到中東現場時再收。）</p>
+      <p class="mu">時間緊可以一口氣按完三下，用一句話帶過。</p>`,
+    src:'CNN 獨家，2026-09-18（依匿名消息來源；報導未說明是哪一種 AI）',
+    next:'AI 最危險的不是錯，是錯得很專業'
+  },
+  { // P7
+    sec:'1 · 錯得很專業', time:'4:30 → 5:00',
+    pts:['AI 最危險的不是錯','是<b>錯得很專業</b>','停一拍'],
+    story:`<p>這是全場第一句金句，講慢、講完停一拍，讓大家抄。</p>
+      <p>可以補一句：「錯得很明顯的，大家都會抓。<b>錯得很專業的，格式漂亮、語氣篤定、數字精確，我們就放過去了</b>。」</p>
+      <p>接下來三個真實案例，都是同一個模式：看起來很對，其實是錯的。第一個，是一份交給政府的報告。</p>
+      <p class="ask">口頭選配（想講再講）：哈佛和 BCG 做過實驗，758 位顧問做一題 AI 會答錯的題目，不用 AI 答對 84.5%、用 AI 70.6%、上過提示詞課的只剩 60%。「學會怎麼用，不等於知道什麼時候不能信。」</p>`,
+    src:'',
+    next:'一份交給政府的報告：Deloitte'
+  },
+  { // P8
+    sec:'2 · 越像樣越要驗', time:'5:00 → 7:00',
+    pts:['委託方：<b>澳洲就業與勞資關係部</b>','顧問報告引用了<b>不存在的論文</b>','抓到錯的：<b>一條一條對回原文</b>的學者','<b>只退最後一期款</b> 97,587 澳幣','▶ 按 → ×3：時間軸逐段'],
+    story:`<p>「這份報告的委託方，是<b>澳洲的就業與勞資關係部</b>——就是澳洲的勞動部門。」（這句一出來，台下會抬頭。）</p>
+      <p>Deloitte 受託審查失業給付的「求職義務懲處制度」，交出一份 237 頁的報告，合約約 44 萬澳幣。2025 年 7 月發布。</p>
+      <p>一位雪梨大學研究福利法的學者 Chris Rudge 讀到報告，發現它引用了「他同事寫的論文」——<b>可是那篇論文根本不存在</b>。他一條一條對下去，找到大約 20 處錯誤，還有一段<b>假造的聯邦法官判決引文</b>。</p>
+      <p>9 月 26 日，修訂版才揭露撰寫時用了生成式 AI（Azure OpenAI）。最後 Deloitte 退回<b>最後一期款 97,587 澳幣</b>。</p>
+      <p>收這頁：「抓到錯的方法很樸素：<b>把每一條引用，對回原始文獻</b>。不用懂 AI，只要懂原文。」</p>
+      <p class="mu">⚠️ 不是全額退款，是只退最後一期（不到合約的四分之一）。「8 月學者揭露」是依報導推算，被問到就說「去年夏天」。</p>
+      <p class="ask">被問到：誰抓到的？雪梨大學法律學者 Chris Rudge。用的什麼 AI？修訂版寫 Azure OpenAI。後來呢？修訂版重新發布，錯誤引用拿掉，報告結論據報沒有改。</p>`,
+    src:'AP、The Register、Fortune，2025-10；退款金額據澳洲參議院聽證，2025-10',
+    next:'不只一份報告：法院裡的 AI 捏造引用'
+  },
+  { // P9
+    sec:'2 · 越像樣越要驗', time:'7:00 → 8:00',
+    pts:['全球法院已記錄 <b>2,202 件</b>','最早一件：紐約律師用 ChatGPT','引用 <b>6 件不存在的判例</b>，罰 5,000 美元','▶ 按 → ×1：引用越像樣，越要對回原文'],
+    story:`<p>「Deloitte 不是特例。」數字會自己跳到 2,202：一位法國研究者整理的資料庫，記錄全世界法院裡，<b>書狀出現 AI 捏造引用的案件，到這個月已經超過兩千件</b>，而且還在增加。</p>
+      <p>最早被廣泛報導的一件在 2023 年：紐約一位律師幫客戶告航空公司，用 ChatGPT 查判例，訴狀引用了 <b>6 件根本不存在的判決</b>。對方律師和法官都找不到這些判例。結果律師和事務所被罰 5,000 美元，還被要求寫信給那些被冒名的法官。</p>
+      <p>按出底下那句：「律師、顧問都是靠『引用』吃飯的專業。<b>引用寫得越像樣，越要對回原文</b>。」</p>
+      <p class="mu">台灣也有法院在判決裡提醒當事人別用 AI 寫書狀（2026 年桃園、台北地院），但份量較輕，不主動講。</p>`,
+    src:'Damien Charlotin〈AI Hallucination Cases〉資料庫，2026-10-19 更新；Mata v. Avianca, S.D.N.Y. 2023',
+    next:'🙋 換你們來驗：紐約市政府的 AI 客服'
+  },
+  { // P10
+    sec:'2 · 越像樣越要驗', time:'8:00 → 10:00', cp:'控時：約 10 分講完這頁',
+    pts:['現場互動：<b>AI 說可以，對嗎？</b>','小費抽成／申訴性騷擾就開除／只收電子支付','三題 AI 都說「可以」——<b>三題都違法</b>','市府<b>加註可能不準確，繼續用</b>，兩年後關掉','▶ 先唸題目問台下，再按 → 或點題目揭曉（×3＋1 收尾）'],
+    story:`<p>「這是紐約市政府自己做的 AI 客服，叫 MyCity，給想開店、做生意的人問法規。我們來當答案卷。」</p>
+      <p>唸第一題：「我可以從員工的小費裡抽成嗎？」AI 說：可以。——問台下：「對嗎？」等大家回答，再揭曉：<b>違法</b>，紐約州法禁止雇主拿員工的小費。</p>
+      <p>第二題：「員工申訴性騷擾，我可以開除他嗎？」AI：可以。——<b>違法</b>，不得因員工申訴而報復。第三題：「我的店可以只收電子支付、不收現金嗎？」AI：可以。——<b>違法</b>，紐約市法律要求店家必須收現金。</p>
+      <p>「你們一聽就知道不對，因為<b>你們手上有答案卷</b>——勞動法就在你們腦子裡。可是問它的是想開店的老闆，他手上沒有。」</p>
+      <p>按出最後一句：2024 年 3 月被新聞網站 The Markup 揭露後，當時的市長沒有下架，<b>加註「可能不準確」繼續上線</b>；2026 年 2 月，新市長以「實際上無法使用」為由把它關掉。</p>
+      <p class="ask">被問到：哪一年上線？2023 年 10 月。用誰的技術？據報建在微軟 Azure 的 AI 服務上（不主動點名廠商）。</p>`,
+    src:'The Markup，2024-03-29；市府關閉：Vice、Yahoo News，2026-02',
+    next:'那多請一個人看一遍？'
+  },
+  { // P11
+    sec:'2 · 越像樣越要驗', time:'10:00 → 11:00',
+    pts:['寫程式的 AI，每個動作都問「<b>同意嗎？</b>」','1,053 人，中途<b>偷塞一個危險指令</b>','人攔下 <b>13.6%</b>，自動檢查攔下 <b>89%</b>','越審越鈍：17% → <b>5%</b>','▶ 按 → ×1：右邊折線'],
+    story:`<p><b>背景</b>：Claude Code 是 Anthropic 的寫程式 AI，它會直接在你電腦上動手——刪檔案、改設定、上傳程式。所以以前它每做一個動作，就跳一個視窗問你「允許嗎？」，像公文一層一層核章。可是 Anthropic 發現，使用者 <b>97% 都直接按同意</b>。這一關到底有沒有在保護人？</p>
+      <p><b>實驗</b>：找來 <b>1,053 位付費的專業測試者</b>，在測試環境裡照常工作。中途，偷偷把其中一個確認視窗<b>換成一個明顯危險的指令</b>（按了也不會真的執行），看誰會按「拒絕」。</p>
+      <p><b>結果</b>：1,053 人裡，只有 <b>143 人攔下來，13.6%</b>。同一個危險指令交給「自動檢查」——另一個獨立的 AI，拿著固定的規則逐一審查每個動作，不可逆、會破壞、超出範圍的就擋——<b>擋下 937 次，89%</b>。人放行、機器擋下的有 800 次；機器放行、人擋下的只有 6 次。</p>
+      <p><b>越審越鈍</b>（按 → 出右邊折線）：一開始的幾個視窗，人還攔得下約 17%；<b>按過 50 次同意之後，只剩約 5%</b>。機器從頭到尾差不多。</p>
+      <p><b>後來</b>：Anthropic 把「自動模式」改成預設——不再每個動作都問人，交給那個獨立的檢查 AI，高風險的才找人。</p>
+      <p>收這頁：「不是人不認真。一天按幾十次同意，注意力本來就撐不住。機器攔得住，不是比人聰明，是它<b>拿著事先寫好的清單、不會累</b>。所以人要放在對的位置：不是每一筆都蓋章，是<b>把清單寫在前面</b>——寫清單的，是人。」</p>
+      <p class="mu">⚠️ 不要講成「核章沒用」。測試者知道自己在受測，只是不知道測什麼。Anthropic 自己也說：高風險的變更，還是建議人親自看。</p>
+      <p class="ask">被問到正式使用的數字：需要人工核准的工作階段，6.3% 出現使用者沒要求的有害動作；自動模式是 2.4%。</p>`,
+    src:'Anthropic 官方部落格〈Auto mode is now the default in Claude Code〉，2026-08-07',
+    next:'今天唯一一個要記的概念'
+  },
+  { // P12
+    sec:'3 · 答案卷', time:'11:00 → 12:00',
+    pts:['這件事，有沒有一張<b>答案卷</b>？','有：事先寫好怎樣算對，<b>能逐項對</b>','沒有：只能說「<b>看起來還可以</b>」','▶ 按 → ×1：有／沒有兩張卡'],
+    story:`<p>「前面四個故事，美軍情報、Deloitte、法院、紐約市府，問題都一樣：<b>沒有人手上有一張可以對的答案卷</b>。」</p>
+      <p>「今天只要記一個概念：<b>交辦之前，問自己：這件事，有沒有一張答案卷？</b>」</p>
+      <p>按出兩張卡：<b>有</b>——事先寫好「怎樣算對」，能逐項對照，就可以整段交給 AI；<b>沒有</b>——只能憑感覺說「看起來還可以」，那就只交一半，或者<b>先做一張</b>。</p>
+      <p>可以舉身邊的例子：「新聞稿的數字對不對、函文引的法條條號對不對、統計表加總對不對——這些都有答案卷，對得到。」</p>`,
+    src:'',
+    next:'好消息：答案卷不是新東西'
+  },
+  { // P13
+    sec:'3 · 答案卷', time:'12:00 → 14:00', cp:'司長檢查點：三句話的第 2 句在這頁',
+    pts:['<b>本場轉折</b>：你們早就有這套制度','交辦單・對帳・會稿','出納不兼會計・簽核留痕','不是從零開始，是<b>把內控延伸到 AI</b>','▶ 按 → ×5：逐列翻'],
+    story:`<p>「好消息是：答案卷不是新東西。<b>AI 世界現在流行的驗收做法，你們早就在用了</b>。」逐列翻，每列一句：</p>
+      <p><b>交東西時附上「怎麼檢查它」</b>＝交辦單、驗收紀錄。<b>兩份各自做、再用總數對帳</b>＝會計對帳、核銷——Corey Gallon 把一年份的掃描對帳單交給兩個 AI 各自整理，用每月對帳單上印的餘額當「控制總數」，比出 56 處差異，最後整年對到分毫不差。<b>讓沒看過草稿的人從頭冷讀</b>＝公文會稿——他用兩個沒看過草稿的 AI 冷讀一封催款信，抓到合約三週前已經自動續約，照原信寄出就變成我方違約。<b>做事的和檢查的分開</b>＝出納不兼會計。<b>每一步留紀錄</b>＝簽核流程、公文檔案。</p>
+      <p>收這頁：「<b>不是從零開始，是把既有的內控，延伸到 AI 身上</b>。」</p>
+      <p class="mu">這頁是給司長的第 2 句：「答案卷不是新東西，是機關既有的內控延伸到 AI。」司長若提早離開，前 15 分鐘至少要講到這裡。</p>`,
+    src:'前三項整理自 Corey Gallon〈Three Levels of Review〉，AI Engineer，2026-10',
+    next:'AI 交回來的東西，收下之前先過五關'
+  },
+  { // P14
+    sec:'3 · 答案卷', time:'14:00 → 15:10',
+    pts:['收下之前，<b>先過五關</b>','每關回扣今天一個案例','▶ 按 → ×5（或點）：逐關打勾'],
+    story:`<p>「知道要有答案卷、也知道內控早就有了。那 AI 交回來的東西，<b>收下之前具體怎麼做</b>？先過這五關。」每打一個勾，回扣一個今天講過的故事：</p>
+      <p><b>① 先問：這件事有沒有答案卷？</b>沒有，就先寫一張。<b>② 對回原始資料</b>：每個數字、每條引用都找得到出處——Deloitte、法院判例。<b>③ 做的和驗的分開</b>：別叫它檢查自己——出納不兼會計。<b>④ 看紀錄，不看它說「做完了」</b>：寫得再專業，也要有憑據——美軍情報、紐約市府客服。<b>⑤ 放手要有刻度</b>：從影子模式開始，留獨立抽樣——這一關等一下第 16 頁細講。</p>
+      <p>收這頁：「這五關，就是驗收。可是一天 1,000 件，人怎麼驗得完？」——接下一頁「往上退一格」。</p>`,
+    src:'',
+    next:'人的位置換了：往上退一格'
+  },
+  { // P15
+    sec:'3 · 答案卷', time:'15:10 → 16:00',
+    pts:['以前一天 <b>10 件</b>，每件自己看','AI 之後一天 <b>1,000 件</b>','你的工作變成<b>定義什麼叫合格</b>','▶ 按 → ×1：做的人，不驗證自己'],
+    story:`<p>指著點陣圖：「左邊 10 個點，右邊 1,000 個點。以前一天 10 件，每件都自己看；AI 之後一天 1,000 件，<b>你不可能一件一件看</b>。」</p>
+      <p>「所以人要往上退一格：從『自己做、自己看』，變成『<b>定義什麼叫合格</b>』——也就是寫答案卷。」</p>
+      <p>按出底下那句：「第一堂講過：<b>做的人，不驗證自己</b>。別叫同一個 AI 檢查它自己做的東西。」</p>
+      <p>過橋到下一頁：「往上退一格之後，那要退到哪裡？一次放多少給 AI？——放手，要有刻度。」</p>`,
+    src:'',
+    next:'放手，要有刻度'
+  },
+  { // P16
+    sec:'3 · 答案卷', time:'16:00 → 18:00',
+    pts:['情境：一天 <b>1,000 件</b>補助申請初審','一、二階：人看全部','三階：50 件例外＋<b>隨機抽 20 件</b>','抽查是在<b>量 AI 漏標多少</b>','▶ 可點任一階看說明；按 → ×2：過橋句 → 警語'],
+    story:`<p>「說不出起點，就不要部署。」放手要分四階，用同一個情境走一遍（數字是示意）：</p>
+      <p><b>第一階 影子模式</b>：人照常審全部 1,000 件，AI 在旁邊也審一份、不送出，比兩份差在哪。<b>第二階 逐項審核</b>：AI 先出 1,000 份草稿，人逐件看。<b>第三階 例外＋抽樣</b>：AI 審完，自己標出 50 件「我不確定」，人看這 50 件；剩下 950 件它說沒問題的，人<b>隨機抽 20 件</b>。<b>第四階 只看高風險</b>：例外也交給 AI，人只看 5 件高金額、高後果的。</p>
+      <p>第三階的抽查，<b>不是在查那 20 件，是在量 AI 說「沒問題」的那堆裡藏了多少錯</b>——跟會計師查帳一樣，不逐筆看，但一定要抽。按出過橋句：<b>抽出來的錯夠少，才能走到第四階</b>。</p>
+      <p>再按出警語：第四階最大的風險，是 <b>AI 很有把握、所以沒標出來、但其實是錯的</b>——就是開場那種錯得很專業。所以抽樣要一直留著，因為模型會改版、案件會變、人會越看越鬆。</p>
+      <p>收這頁：「說得出你們現在在第幾階、憑什麼數據往上走，才能部署。」</p>`,
+    src:'Michele Grant，AI Engineer 演講，2026-10（四階段架構）；情境與數字為示意',
+    next:'反過來看：AI 最先接走的工作'
+  },
+  { // P17
+    sec:'4 · 有答案卷的交給 AI', time:'18:00 → 19:00',
+    pts:['程式最先被接走：<b>要嘛能跑、要嘛不能</b>','公司會先交出<b>規則清楚、可以被檢查</b>的工作','你們的：<b>法條・加總・單據日期</b>都對得到','▶ 按 → ×1：扣回你們的工作'],
+    story:`<p>「反過來看：AI 最先接走的，是什麼工作？」</p>
+      <p>經濟學家 Acemoglu 說，寫程式最先被 AI 接走，是因為程式「<b>要嘛能跑、要嘛不能跑</b>」——寫完一跑就知道對不對，<b>天生就有答案卷</b>。比爾・蓋茲也說，公司會先把「<b>規則清楚、可以被檢查</b>」的工作交給 AI。</p>
+      <p>按 →，扣回台下的工作：「放到你們的工作裡，哪些是這種？<b>函文引的法條條號對不對、統計表加總對不對、核銷單據日期有沒有在計畫期間內</b>——這些都對得到答案，就是最先可以交出去的。」</p>
+      <p>可以問台下一句：「你手上哪一件工作，<b>做完一對就知道對不對</b>？」讓大家想五秒，不用回答。</p>
+      <p>收這頁：「<b>越能被檢查的工作，越早交給 AI</b>。接下來看兩個政府部門已經這樣分工的例子。」</p>
+      <p class="mu">⚠️ Acemoglu、蓋茲講成「他說」，是影片轉述，不講成研究結論。蓋茲提到他最擔心初階與中階職位——這裡不講，留給第 19 頁「工作換形狀」。</p>`,
+    src:'Acemoglu、蓋茲：訪談與長文的影片轉述（最佳拍档、Gary Chen 導讀）',
+    next:'行之有年的工作模式：颶風預報'
+  },
+  { // P18
+    sec:'4 · 有答案卷的交給 AI', time:'19:00 → 19:40',
+    pts:['<b>行之有年</b>的工作模式','颶風往哪走：<b>有標準答案</b>，交給 AI','要不要發警報、發給誰：<b>判斷</b>，留給預報員','▶ 按 → ×1：留給人的那張卡'],
+    story:`<p>「跟 AI 合作，其實不是新東西。這是一種<b>已經行之有年</b>的工作模式。」</p>
+      <p>氣象預報幾十年來都是這樣分工：<b>電腦模式算颶風路徑，預報員看完，決定發不發警報</b>。現在只是把電腦模式換成 AI。</p>
+      <p><b>左邊，交給 AI</b>：颶風會往哪裡走，這是<b>有標準答案</b>的工作——颶風走到哪，事後一定對得起來。所以 AI 有足夠的資料和證據把路徑預測出來、交出答案。Google DeepMind 的 AI 天氣模型和美國國家颶風中心的預報員合寫論文，評估 200 多個熱帶氣旋，<b>平均多給約一天的準備時間</b>。</p>
+      <p>按 →，<b>右邊，留給人</b>：可是「<b>要不要發警報？發給誰知道？</b>」——這沒有標準答案。發早了，大家白撤離一趟；發晚了，可能出人命。這是判斷，<b>最後還是預報員決定</b>。模型只是他們的輸入之一。</p>
+      <p>收這頁：「<b>AI 給預測，人發警報</b>。有答案卷的交給 AI，沒有答案卷的，留給人。這個分工，後面會再用一次。」（埋第 22 頁「判斷」。）</p>
+      <p class="mu">不講颶風名字和年份（素材裡的名稱待核）。「多一天」是 DeepMind 研究員自己的說法。</p>`,
+    src:'Google DeepMind 研究員 2026-10-15 公開貼文（自家說法）',
+    next:'勞動部公開分享過的四個實例'
+  },
+  { // P19
+    sec:'4 · 有答案卷的交給 AI', time:'19:40 → 21:10',
+    pts:['四個實例：媒合・個管・財管・工程督導','先看<b>藍色：AI 做的步驟</b>','▶ 按 → ×1：<b>紅色「人」的步驟</b>一起亮','確認的那一步，<b>四個都留給了人</b>','▶ 按 → ×1：收尾句'],
+    story:`<p class="mu">⚠️ 出處只用口頭講，畫面不寫。上台前確認當天是不是丁玉珍司長：是 → 「這四個例子，是司長 8 月底在數位政府高峰會公開分享的」；不是 → 「勞動部在數位政府高峰會分享過」。<b>只講事實，不稱讚。</b></p>
+      <p><b>台灣就業通・語意媒合</b>：民眾搜「土水師傅」，職業分類寫「泥作工作人員」。生成式 AI 先產生職稱與技能資料，<b>經人工校正</b>才成為標準技能清單。</p>
+      <p><b>就業個案管理</b>：個管員七成時間花在行政。AI 整理會談紀錄、擬處遇建議草稿，單案行政從 20 分鐘到 5 分鐘；<b>由個管員依個案實際情況確認</b>。</p>
+      <p><b>財產管理</b>：先把 15 套系統整合成 1 套，還沒用 AI 盤點就從 3 個月變 2 個月；下一步的智能標籤只給候選分類，<b>由財管人員確認才登帳</b>。</p>
+      <p><b>公共工程督導</b>：把督導表拆成小任務，逐項比對 CNS、契約、法規，督導紀錄從數天縮到 8 分鐘；<b>通知承辦與現場人員核對</b>。</p>
+      <p>收這頁：「AI 做的步驟各不相同，<b>確認的那一步，四個案子都留給了人</b>。工程督導能交出去，是因為每一項都有標準可以對——就是有答案卷。」</p>
+      <p class="ask">就業率 38%→73% 沒上畫面；口頭要提就講「上線後」，不要講成「因為 AI」。</p>`,
+    src:'iThome〈從找工作到查工地！勞動部揭4大數位轉型實例〉，2026-09-11',
+    next:'AI 年代下，人類的新定位：工作換了形狀'
+  },
+  { // P20
+    sec:'4 · 有答案卷的交給 AI', time:'21:10 → 22:30',
+    pts:['工作沒有消失，<b>是換了形狀</b>','初階新進 <b>少了三分之二</b>，管 AI 的工作 <b>翻倍</b>','AI 幫最多的，是<b>經驗少的人</b>','▶ 按 → ×1：也就是今天講的答案卷'],
+    story:`<p>「AI 年代下，人的定位在哪裡？」一句話：<b>AI 沒讓工作消失，是把工作往「管 AI、驗 AI」推。</b></p>
+      <p><b>左圖</b>：Anthropic 公布自己公司內部的數據——技術部門新招的人裡，初階的比例從 27% 掉到 9%；員工工作裡，寫指令、檢查產出這類「管 AI」的工作，從 10% 漲到 22%。<b>自己做的變少，管 AI 的變多</b>——就是前面講的「往上退一格」。</p>
+      <p><b>右圖</b>：客服導入 AI 的研究，平均生產力提升 14%，<b>新手提升 34%</b>。Acemoglu 的說法：把 5% 的工作自動化，不如讓所有人生產力提高 5%。</p>
+      <p>按出底下：「工作沒有消失，換了形狀：AI 接走有答案卷的部分，<b>人留下三件事——驗收、判斷、承擔責任</b>。接下來一件一件看。」</p>
+      <p class="mu">⚠️ 不說「省人」。一定要講：報告自己提醒，AI 公司的數字不能直接套到一般機關。</p>
+      <p class="ask">口頭選配（看現場反應）：初階職缺變少，但 AI 最幫新手——那新人要在哪裡練出判斷力？對勞動政策很對題，但會把場子帶向人才政策。</p>`,
+    src:'Anthropic〈Employment at Anthropic〉2026-10；Brynjolfsson, Li & Raymond, NBER 2023；Acemoglu 訪談轉述',
+    next:'人的價值 ①：驗收'
+  },
+  { // P21
+    sec:'5 · 人的價值', time:'22:30 → 23:30', cp:'控時：約 22 分',
+    pts:['① <b>驗收</b>：對回原始資料，才收下','Deloitte：抓到錯的<b>是對回原文的學者</b>','今天講過：<b>有沒有答案卷？先過五關</b>','▶ 按 → ×3：例子 → 回扣 → 收尾句'],
+    story:`<p>接上一頁：「人留下的三件事，我們一件一件看。第一件：<b>驗收</b>。」</p>
+      <p><b>驗收</b>，就是知道「怎樣算對」，把 AI 的成果<b>對回原始資料、對答案卷</b>，對過了才收下。（插圖：公務員拿紅筆，把 AI 的草稿一行一行對回原始卷宗，小機器人在旁邊等。）</p>
+      <p>按 →，<b>真實的例子</b>：還記得 Deloitte 那份交給澳洲就業部的報告嗎？報告是 AI 幫忙寫的，格式漂亮、引用齊全。<b>抓到錯的不是 AI，是一位學者</b>——他把每一條引用對回原文，發現那些論文根本不存在。</p>
+      <p>按 →，<b>回扣今天</b>：「我們前面一直問的那句——<b>這件事，有沒有答案卷？</b>——就是驗收的起點；收下之前先過的五關，就是驗收的做法。」</p>
+      <p>按 →，收這頁：「AI 交得出成果；<b>對不對，要人來驗</b>。」</p>`,
+    src:'AP、The Register、Fortune，2025-10',
+    next:'人的價值 ②：判斷'
+  },
+  { // P22
+    sec:'5 · 人的價值', time:'23:30 → 24:30',
+    pts:['② <b>判斷</b>：沒有標準答案的事，留給人','加州立法：<b>懲戒、解僱不得只靠 AI</b>','今天講過：<b>要不要發颶風警報，預報員決定</b>','▶ 按 → ×3：例子 → 回扣 → 收尾句'],
+    story:`<p>「第二件：<b>判斷</b>。」</p>
+      <p>要不要做、做給誰、做到哪——<b>這些沒有標準答案</b>，AI 算不出「對的那一個」，只能給建議。（插圖：主管看著螢幕上 AI 的建議，手上拿著人事資料，還在想；小機器人遞著建議書在旁邊等。）</p>
+      <p>按 →，<b>真實的例子</b>：美國加州今年 9 月 30 日簽署 SB 947：<b>懲戒、解僱員工，不得只靠 AI 決定，必須有人審</b>，2027 年 7 月生效。這是用法律把「判斷」留給人——<b>而且就發生在勞動領域</b>。可以問台下：「哪些勞動相關的決定，你認為一定要有人簽名？」</p>
+      <p>按 →，<b>回扣今天</b>：「就像颶風往哪走，AI 算得出來；可是<b>要不要發警報、發給誰，是預報員決定</b>。」</p>
+      <p>按 →，收這頁：「AI 給建議；<b>決定，留給人</b>。」</p>
+      <p class="mu">⚠️ 法案內容只講「懲戒、解僱必須有人審」，不延伸細節；被問到條文以原文為準。</p>`,
+    src:'加州 SB 947（No Robo Bosses Act），2026-09-30 簽署，2027-07-01 生效',
+    next:'人的價值 ③：承擔責任'
+  },
+  { // P23
+    sec:'5 · 人的價值', time:'24:30 → 25:30',
+    pts:['③ <b>承擔責任</b>：AI 能替你寫，<b>不能替你簽名</b>','加航：「機器人該自己負責」——<b>被駁回</b>','今天講過：<b>確認的那一步，都留給了人</b>','▶ 按 → ×3：例子 → 回扣 → 收尾句'],
+    story:`<p>「第三件：<b>承擔責任</b>。」</p>
+      <p><b>簽名的人，就是負責的人</b>——不管字是誰打的。AI 可以替你寫，不能替你簽名。（插圖：一排小機器人把文件送過來，最後拿起印章的，是人。）</p>
+      <p>按 →，<b>真實的例子</b>：加拿大航空的客服機器人，告訴一位剛失去親人的旅客「喪親優惠可以事後再申請退款」，結果是錯的。加航在法庭上主張：<b>「聊天機器人是獨立的法律個體，說錯該它自己負責。」</b>法庭駁回，判加航賠錢。<b>AI 說的話，算公司的。</b></p>
+      <p>按 →，<b>回扣今天</b>：「勞動部那四個案子，AI 做的步驟各不相同，可是<b>確認的那一步，都留給了人</b>——確認，就是簽名，就是負責。」</p>
+      <p>按 →，收這頁：「工具會換、廠商會換，<b>簽名留在你手上</b>。」</p>
+      <p class="mu">這頁是給司長的第 3 句：「AI 可以替你寫，不能替你簽名：判斷和責任，留在機關。」</p>
+      <p class="ask">被問到加航：2024 年加拿大卑詩省民事審裁處判決，賠償含利息與規費約 812 加幣；金額小，重點是「AI 說的話算公司的」。</p>`,
+    src:'Moffatt v. Air Canada, 2024 BCCRT 149',
+    next:'回到中東的現場'
+  },
+  { // P24
+    sec:'6 · 收尾', time:'25:30 → 26:30',
+    pts:['回到<b>中東的現場</b>','① 先<b>驗收</b>：對回原始資料','② 才能好好<b>判斷</b>：能不能往上送','③ 才<b>扛得起責任</b>','▶ 按 → ×4：三格接力 → 收尾句'],
+    story:`<p>「最後，我們回到中東的現場。」（背景是淡化的貨船圖。）</p>
+      <p>「如果那位分析師，先做了剛剛那三件事——驗收、判斷、承擔責任——」</p>
+      <p>按 →，<b>① 驗收</b>：如果他先把 AI 寫的情報<b>對回原始資料</b>，可能就會發現：公開資料和機密情報被混在一起，貨物認錯了。</p>
+      <p>按 →，<b>② 判斷</b>：有了驗收，他才能好好判斷：<b>這份情報能不能往上送？該不該據此建議登船？</b></p>
+      <p>按 →，<b>③ 承擔責任</b>：有了判斷，他才扛得起這份報告的責任——而不是讓一份錯的報告，<b>一路送到軍機升空</b>。</p>
+      <p>按 →，收這頁：「<b>先驗收，才有好的判斷；有好的判斷，才扛得起責任。</b>」</p>
+      <p class="mu">⚠️ 用「如果」「可能」的語氣講，這是回頭推演，不是報導寫的事實。不評論那位分析師本人（不說笨、不說疏失），重點放在三件事的順序。</p>`,
+    src:'CNN，2026-09-18（開場案例）',
+    next:'最後，回頭看這四堂'
+  },
+  { // P25
+    sec:'6 · 收尾', time:'26:30 → 27:20',
+    pts:['最後，<b>回頭看這四堂</b>','心法 → 工作資料夾 → 用進工作 → 變成你的','今天：<b>驗收、判斷、承擔責任</b>','你們帶走的，<b>不只是工具</b>'],
+    story:`<p>講完中東的現場：「最後，我們回頭看這四堂。」五張卡會自己依序浮出——<b>跟開場第 2 頁是同一張地圖</b>，這次從「學了什麼」換成「帶走什麼」：</p>
+      <p><b>第一堂・心法</b>：Prompt、Context、Harness——怎麼交代、給什麼、發哪些裝備。<b>第二堂・工作資料夾</b>：規則寫進 AGENTS.md、交辦單四格、錯題本，不必每次重講。<b>第三堂・用進工作</b>：用工作包跑兩題真實業務，高溫防護、颱風通勤。<b>第四堂上半場・變成你的</b>：改自己的工作包，裝上 HTML 簡報 Skill。</p>
+      <p>停在最後一張：<b>今天・下半場：怎麼驗——驗收、判斷、承擔責任</b>。「開場那一格是個問號，現在它有答案了。」</p>
+      <p>收這頁：「你們帶走的，<b>不只是工具</b>。工具明年就會換；會交代、會驗收、會判斷、敢簽名，這些留在你身上。」</p>
+      <p class="mu">上方旅程插圖是 AI 畫的：一群公務員和小機器人走在台灣的田間小路上，最後一個里程碑是放大鏡加紅勾。</p>`,
+    src:'',
+    next:'收束：沒有答案卷的地方，就是你的位置'
+  },
+  { // P26
+    sec:'6 · 收尾', time:'27:20 → 27:50',
+    pts:['有答案卷的，<b>交給 AI</b>','沒有答案卷的地方，<b>就是你的位置</b>','講完，停'],
+    story:`<p>全場最後一句，慢慢講：</p>
+      <p>「<b>有答案卷的，交給 AI；沒有答案卷的地方，就是你的位置。</b>」</p>
+      <p>講完停兩秒，再說「謝謝大家」。插圖呼應封面的公仔，這次是蓋章——判斷和簽名，留在人手上。</p>`,
+    src:'',
+    next:'出處（停在這頁接 QA）'
+  },
+  { // P27
+    sec:'6 · 收尾', time:'27:50 → QA',
+    pts:['出處頁','停在這頁<b>接 QA</b>','想拍的可以拍'],
+    story:`<p>不講，停在這頁接提問。按 <b>Q</b> 可以開正式版的備答層（會直接顯示在投影上，看場合）。</p>
+      <p class="ask">常見追問：Deloitte 退多少？只退最後一期 97,587 澳幣。紐約客服後來呢？2026 年 2 月關掉。人真的審不住嗎？13.6% 對 89%，重點是人放在對的位置。政府有 AI 內控規範嗎？AI 基本法要求各主管機關訂風險分級；數發部預告 10 月公布機關 AI 內控範本，<b>上台前一天查有沒有公布</b>。哪家模型最準？不比型號，拿你們自己的答案卷去考。</p>`,
+    src:'',
+    next:'（最後一頁）'
+  },
+
+];
+
+const stage=document.getElementById('stage');
+stage.innerHTML = Array.from({length:TOTAL},(_,i)=>{
+  const p=PAGES[i];
+  const li=x=>x.startsWith('▶')?`<li class="stage"><span>${x.slice(1).trim()}</span></li>`:`<li><span>${x}</span></li>`;
+  return `<section class="page">
+    <div class="top"><span class="no">${i+1} <small>/ ${TOTAL}</small></span><span class="sec">${p.sec}</span>${p.cp?`<span class="cp">${p.cp}</span>`:''}<span class="time">⏱ ${p.time}</span></div>
+    <div class="left"><h2>本頁重點</h2>
+      <ol class="pts">${p.pts.map(li).join('')}</ol>
+      <div class="preview"><span class="lbl">聽眾畫面</span><iframe data-n="${i+1}" title="聽眾畫面"></iframe></div>
+      <p class="next">下一頁 → <b>${p.next}</b></p></div>
+    <div class="right">
+      <div class="detail"><p class="dh">完整故事</p>${p.story}${p.src?`<p class="src">出處：${p.src}</p>`:''}</div></div></section>`;
+}).join('');
+
+const pages=[...document.querySelectorAll('.page')];
+let cur=0;
+function show(i){
+  cur=Math.max(0,Math.min(TOTAL-1,i));
+  pages.forEach((s,k)=>s.classList.toggle('active',k===cur));
+  // 只載入目前這頁的聽眾畫面（查詢參數強制重新載入，hash 指定頁碼）
+  const f=pages[cur].querySelector('iframe');
+  const want=`${DECK}?p=${cur+1}#${cur+1}`;
+  if(f && f.getAttribute('src')!==want) f.setAttribute('src',want);
+  fitPage(pages[cur]);
+  document.getElementById('progress').style.width=(cur/(TOTAL-1))*100+'%';
+  history.replaceState(null,'','#'+(cur+1));
+}
+// 放不下就縮字：左邊重點不能壓到聽眾畫面，右邊故事不能超出底部
+function fitPage(pg){
+  const pts=pg.querySelector('.pts'), pv=pg.querySelector('.preview'), d=pg.querySelector('.detail');
+  if(pts&&pv){ let f=29;
+    pts.querySelectorAll('li').forEach(li=>li.style.fontSize='');
+    const gap=()=>pv.getBoundingClientRect().top-pts.getBoundingClientRect().bottom;
+    const sc=stage.getBoundingClientRect().width/1280;
+    while(gap()<16*sc && f>18){ f-=1; pts.querySelectorAll('li').forEach(li=>li.style.fontSize=(li.classList.contains('stage')?f-5:f)+'px'); } }
+  if(d){ let f=18; d.style.fontSize=f+'px';
+    while(d.scrollHeight>d.clientHeight+1 && f>13){ f-=0.5; d.style.fontSize=f+'px'; } }
+}
+function fit(){const s=Math.min(innerWidth/1280,innerHeight/720);stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+addEventListener('resize',()=>{fit();fitPage(pages[cur]);});
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){show(cur+1);e.preventDefault();}
+  if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){show(cur-1);e.preventDefault();}
+  if(e.key==='Home')show(0); if(e.key==='End')show(TOTAL-1);
+});
+document.getElementById('prevBtn').onclick=()=>show(cur-1);
+document.getElementById('nextBtn').onclick=()=>show(cur+1);
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)dx<0?show(cur+1):show(cur-1);},{passive:true});
+const h=parseInt(location.hash.slice(1),10);
+fit(); show(h>=1&&h<=TOTAL?h-1:0);
+</script>
+</body>
+</html>
