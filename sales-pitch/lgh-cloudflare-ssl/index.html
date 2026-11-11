@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>李綜合醫院對外網域導入 Cloudflare｜同步解決內網 SSL 憑證規劃｜CTK Pro 竑盛科技</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d1b; --muted:#6b6b6b; --soft:#9a9a9a;
+    --line:#e6e6e6; --line2:#efefef;
+    /* 本案（醫療）主色＝深青 Teal；變數名沿用 --blue 以相容元件樣式 */
+    --blue:#0E7490; --blue-700:#0B5A70; --blue-300:#5EAEC4; --blue-50:#EAF6F9;
+    /* 輔助色＝靛藍（院內相關），白字達 AA */
+    --indigo:#3B4E8C; --indigo-700:#2C3B6B; --indigo-50:#EEF1F8;
+    --bg:#FBFAF7; --paper:#F2F7F9; --warn:#9A6700; --danger:#B42318;
+    /* CTK Pro 企業紅（標示 CTK 負責的區塊） */
+    --ctk:#e11f27; --ctk-700:#B5161D; --ctk-50:#FDEDEE;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;width:100%;overflow:hidden;background:#eceef2;}
+  body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+       color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+  #stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;background:var(--bg);}
+
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg);padding:46px 148px 58px 70px;}
+  .slide.active{display:flex;}
+  .body{flex:1;display:flex;flex-direction:column;justify-content:center;}
+
+  /* ---- 共用文字元件 ---- */
+  .kicker{display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:700;
+          letter-spacing:3px;color:var(--blue);text-transform:uppercase;}
+  .kicker::before{content:"";width:28px;height:3px;border-radius:2px;background:var(--blue);}
+  .kicker.in{color:var(--indigo);} .kicker.in::before{background:var(--indigo);}
+  .page-title{font-size:40px;font-weight:900;line-height:1.2;color:var(--ink);margin:10px 0 4px;letter-spacing:-.5px;}
+  .page-title .em{color:var(--blue);}
+  .page-title .em.in{color:var(--indigo);}
+  .page-sub{font-size:18px;line-height:1.55;color:var(--muted);max-width:1000px;}
+
+  .tag{display:inline-block;font-size:14px;font-weight:700;padding:5px 13px;border-radius:999px;
+       background:var(--blue-50);color:var(--blue);}
+  .tag.in{background:var(--indigo-50);color:var(--indigo);}
+  .tag.warn{background:#FDF6E7;color:var(--warn);}
+  .tag.ok{background:#EAF6EF;color:#1B7A4B;}
+
+  /* ---- 頁首 logo / 頁尾標記 ---- */
+  .logo-tr{position:absolute;top:40px;right:148px;height:28px;opacity:.92;}
+  .brandmark{position:absolute;left:70px;bottom:20px;font-size:12.5px;font-weight:500;letter-spacing:.5px;color:var(--soft);}
+
+  /* ---- 卡片 ---- */
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:15px;padding:20px 22px;
+        box-shadow:0 6px 18px rgba(30,40,80,.05);display:flex;flex-direction:column;}
+  .card h3{font-size:21px;font-weight:800;color:var(--ink);margin-bottom:7px;display:flex;align-items:center;gap:10px;}
+  .card p{font-size:16.5px;line-height:1.58;color:var(--muted);}
+  .card p b{color:var(--ink);font-weight:700;}
+  .card.soft{background:var(--paper);border-color:var(--line2);}
+  .card.edge{border-left:5px solid var(--blue);}
+  .card.edge-in{border-left:5px solid var(--indigo);}
+  .card.edge-warn{border-left:5px solid var(--warn);}
+  .num-chip{flex:none;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;
+            justify-content:center;font-size:18px;font-weight:900;color:#fff;background:var(--blue);}
+  .num-chip.in{background:var(--indigo);}
+  .card-foot{margin-top:auto;padding-top:10px;border-top:1px dashed var(--line);
+             font-size:14px;font-weight:700;color:var(--blue);}
+  .card-foot::before{content:"▸ ";}
+  .card-foot.in{color:var(--indigo);}
+
+  /* ---- 封面 ---- */
+  .cover{justify-content:center;}
+  .cover .eyebrow{font-size:17px;font-weight:700;letter-spacing:4px;color:var(--blue);margin-bottom:20px;}
+  .cover h1{font-size:52px;font-weight:900;line-height:1.22;letter-spacing:-1px;}
+  .cover h1 .em{color:var(--blue);}
+  .cover .sub{font-size:20px;color:var(--muted);margin-top:20px;line-height:1.65;}
+  .cover .meta{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap;}
+  .cover .bigmark{position:absolute;right:110px;bottom:64px;font-size:140px;font-weight:900;
+                  color:var(--blue);opacity:.05;letter-spacing:-5px;line-height:1;}
+
+  /* ---- 圖 ---- */
+  .fig{width:100%;}
+  .fig svg{width:100%;height:auto;display:block;}
+
+  /* ---- 表格 ---- */
+  table.t{width:100%;border-collapse:collapse;font-size:15.5px;}
+  table.t th{background:var(--paper);color:var(--ink);font-weight:800;text-align:left;
+             padding:9px 12px;border-bottom:2px solid var(--blue-300);font-size:15px;}
+  table.t td{padding:9px 12px;border-bottom:1px solid var(--line);color:var(--muted);vertical-align:top;line-height:1.5;}
+  table.t td b{color:var(--ink);font-weight:700;}
+  table.t tr:last-child td{border-bottom:none;}
+  table.t th.hl{background:var(--blue);color:#fff;border-bottom-color:var(--blue);}
+  table.t td.hl{background:var(--blue-50);}
+  table.t th.who{width:38%;}
+
+  /* ---- 條列 ---- */
+  ul.bul{list-style:none;}
+  ul.bul li{position:relative;padding-left:19px;font-size:16.5px;line-height:1.62;color:var(--muted);margin-bottom:6px;}
+  ul.bul li::before{content:"";position:absolute;left:0;top:10px;width:7px;height:7px;border-radius:50%;background:var(--blue);}
+  ul.bul li b{color:var(--ink);font-weight:700;}
+  ul.bul.tight li{margin-bottom:3px;font-size:15.5px;}
+  ul.bul.in li::before{background:var(--indigo);}
+
+  /* ---- 欄位 ---- */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+
+  /* ---- 結論三格 ---- */
+  .result{display:flex;flex-direction:column;gap:10px;padding:22px 22px 20px;border-radius:15px;
+          background:var(--bg);border:1px solid var(--line);border-top:5px solid var(--blue);box-shadow:0 6px 18px rgba(30,40,80,.05);}
+  .result.in{border-top-color:var(--indigo);}
+  .result .ttl{font-size:23px;font-weight:900;line-height:1.3;}
+  .result .ds{font-size:16px;line-height:1.6;color:var(--muted);}
+  .result .ds b{color:var(--ink);}
+  .ask{display:flex;align-items:center;gap:18px;background:var(--blue);color:#fff;border-radius:15px;padding:20px 26px;margin-bottom:22px;}
+  .ask .k{font-size:15px;font-weight:700;letter-spacing:2px;opacity:.85;flex:none;}
+  .ask .v{font-size:26px;font-weight:900;line-height:1.3;}
+
+  /* ---- 階段 ---- */
+  .stages{display:grid;gap:12px;}
+  .stage{background:var(--bg);border:1px solid var(--line);border-top:4px solid var(--blue);border-radius:12px;
+         padding:14px 15px 14px;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(30,40,80,.05);}
+  .stage.in{border-top-color:var(--indigo);}
+  .stage .no{font-size:13px;font-weight:800;letter-spacing:2px;color:var(--soft);}
+  .stage .nm{font-size:19px;font-weight:900;color:var(--ink);margin:3px 0 8px;line-height:1.3;}
+  .stage .ds{font-size:14.5px;line-height:1.6;color:var(--muted);}
+  .stage .ds b{color:var(--ink);font-weight:700;}
+  .stage .who{margin-top:auto;padding-top:10px;display:flex;gap:6px;flex-wrap:wrap;}
+  .stage .who .tag{font-size:12.5px;padding:3px 10px;}
+
+  .principle{display:flex;align-items:center;gap:16px;margin-top:20px;background:var(--paper);border-radius:13px;padding:15px 20px;}
+  .principle .ic{flex:none;width:40px;height:40px;border-radius:50%;background:var(--blue);color:#fff;
+                 display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;}
+  .principle p{font-size:16.5px;line-height:1.55;color:var(--muted);}
+  .principle p b{color:var(--ink);}
+  .note{margin-top:12px;font-size:13px;line-height:1.6;color:var(--soft);}
+
+  .flow{display:flex;align-items:center;gap:12px;font-size:16px;color:var(--muted);flex-wrap:wrap;}
+  .flow b{color:var(--ink);}
+  .flow .ar{color:var(--blue);font-weight:900;}
+
+  /* ---- 常見疑問 ---- */
+  .faq{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;}
+  .faq .it{padding:16px 0 15px;border-bottom:1px solid var(--line);}
+  .faq .it:last-child{border-bottom:none;}
+  .faq .it.wide{grid-column:1 / -1;}
+  .faq .who-row{display:flex;gap:10px;align-items:baseline;margin-bottom:6px;line-height:1.6;}
+  .faq .who-row .tag{flex:none;font-size:12.5px;padding:2px 10px;min-width:176px;text-align:center;}
+  .faq .src{font-size:13.5px;color:var(--soft);margin-top:6px;}
+  .faq .q{font-size:20px;font-weight:900;color:var(--ink);display:flex;gap:10px;line-height:1.4;}
+  .faq .q span{color:var(--blue);flex:none;}
+  .faq .a{font-size:16px;line-height:1.62;color:var(--muted);margin-top:6px;padding-left:34px;}
+  .faq .a b{color:var(--ink);}
+
+  /* ---- 建置項目 ---- */
+  .build{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 14px;}
+  .build .bi{display:flex;gap:11px;align-items:flex-start;background:var(--ctk-50);border:1px solid #F6C9CB;
+             border-left:4px solid var(--ctk);border-radius:11px;padding:10px 13px;}
+  .build .bi .n{flex:none;width:24px;height:24px;border-radius:7px;background:var(--ctk);color:#fff;
+                font-size:13.5px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+  .build .bi b{font-size:15.5px;font-weight:800;color:var(--ink);}
+  .build .bi p{font-size:13.5px;line-height:1.5;color:var(--muted);margin-top:2px;}
+
+  /* ---- 建置項目（大卡） ---- */
+  .build2{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .build2 .bc{background:var(--ctk-50);border:1px solid #F6C9CB;border-left:5px solid var(--ctk);border-radius:14px;padding:18px 20px;}
+  .build2 .bc h3{display:flex;align-items:center;gap:10px;font-size:19.5px;font-weight:900;color:var(--ink);margin-bottom:8px;}
+  .build2 .bc h3 .n{flex:none;width:30px;height:30px;border-radius:9px;background:var(--ctk);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;}
+  .build2 .bc p{font-size:15.5px;line-height:1.62;color:var(--muted);}
+  .build2 .bc p b{color:var(--ink);}
+
+  /* ---- 右下角導覽 + 進度 ---- */
+  .navbar{position:fixed;right:24px;bottom:16px;display:flex;align-items:center;gap:10px;z-index:40;color:var(--muted);user-select:none;}
+  .navbar .nav-arrow{border:none;background:none;cursor:pointer;line-height:1;font-size:26px;color:var(--soft);
+                     padding:2px 9px;border-radius:8px;transition:color .2s,background .2s;}
+  .navbar .nav-arrow:hover{color:var(--blue);background:var(--blue-50);}
+  .navbar .nav-count{font-size:15px;font-weight:700;letter-spacing:.12em;min-width:64px;text-align:center;color:var(--muted);}
+  .navbar .nav-count b{color:var(--ink);}
+  .progress{position:fixed;left:0;bottom:0;height:3px;background:var(--blue);width:0;transition:width .35s ease;z-index:40;}
+  #help{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;background:rgba(11,90,112,.94);
+        color:#fff;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .6s;}
+
+  /* ---- 補充議題層（按 Q） ---- */
+  #qa{position:fixed;inset:0;z-index:80;background:rgba(251,250,247,.985);display:none;padding:40px 54px;overflow:auto;}
+  #qa.show{display:block;}
+  #qa h2{font-size:29px;font-weight:900;margin-bottom:4px;}
+  #qa .hint{font-size:14px;color:var(--soft);margin-bottom:18px;}
+  #qa .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px 26px;}
+  #qa .qa-item{border-bottom:1px solid var(--line);padding-bottom:9px;}
+  #qa .q{font-size:16px;font-weight:800;color:var(--ink);display:flex;gap:8px;line-height:1.45;}
+  #qa .q span{color:var(--blue);flex:none;}
+  #qa .a{font-size:14.5px;color:var(--muted);margin-top:3px;padding-left:26px;line-height:1.55;display:flex;gap:8px;}
+  #qa .a span{color:var(--blue-300);flex:none;font-weight:800;}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ============ P1 封面 ============ -->
+<div class="slide active cover">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="bigmark">HTTPS</div>
+  <div class="body">
+    <div class="eyebrow">李綜合醫院 × CTK PRO 竑盛科技</div>
+    <h1>李綜合醫院對外網域導入 Cloudflare<br><span class="em">同步解決內網 SSL 憑證規劃</span></h1>
+    <p class="sub">
+      把 leehospital.com.tw 的 DNS 託管轉到 Cloudflare：<br>
+      官網與分院網站獲得防護與加速，內網服務也能取得自動更新的 SSL 憑證
+    </p>
+    <div class="meta">
+      <span class="tag">資訊安全</span>
+      <span class="tag">網站效能</span>
+      <span class="tag">DNS 高可用</span>
+      <span class="tag in">內網 SSL 憑證</span>
+      <span class="tag">導入步驟與分工</span>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P2 結論先講 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">整體規劃</div>
+  <div class="page-title">調整一項設定，<span class="em">換來三個成果</span></div>
+  <div class="body">
+    <div class="ask">
+      <div class="k">貴院只需要</div>
+      <div class="v">把 leehospital.com.tw 的 DNS 託管轉到 Cloudflare</div>
+    </div>
+    <div class="three">
+      <div class="result">
+        <div class="ttl">對外更安全、更快</div>
+        <div class="ds">官網與大甲、苑裡分院網站，由 Cloudflare 擋下<b>漏洞攻擊、DDoS 與惡意機器人</b>，靜態內容由就近節點提供。</div>
+      </div>
+      <div class="result in">
+        <div class="ttl">內外網 SSL 憑證自動更新</div>
+        <div class="ds">對外網站憑證由 Cloudflare 自動續期；內網透過 DNS 驗證申請 <b>*.leehospital.com.tw</b> 憑證。<b>不必另購，到期前自動更新。</b></div>
+      </div>
+      <div class="result">
+        <div class="ttl">DNS 架構更穩固</div>
+        <div class="ds">DNS 由 Cloudflare 全球節點同時回應，<b>網站與 email 的可用性一起提升</b>。</div>
+      </div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P3 Cloudflare 是什麼 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">Cloudflare 是什麼</div>
+  <div class="page-title">架在官網前面的<span class="em">一道防護與加速層</span></div>
+  <div class="page-sub">民眾連到官網時，先經過 Cloudflare 的全球網路，再到貴院的官網主機。</div>
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1062 230" role="img" aria-label="架構圖：民眾連線先經過 Cloudflare（全球 DNS、CDN 快取、WAF 規則、DDoS 緩解、機器人防護、自動 HTTPS），再到院內的官網主機">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5EAEC4"/></marker></defs>
+        <rect x="6" y="60" width="176" height="110" rx="14" fill="#F2F7F9" stroke="#e6e6e6"/>
+        <text x="94" y="106" text-anchor="middle" font-size="20" font-weight="900" fill="#211d1b">民眾・病患</text>
+        <text x="94" y="134" text-anchor="middle" font-size="14.5" fill="#6b6b6b">瀏覽官網・線上掛號</text>
+        <line x1="188" y1="115" x2="252" y2="115" stroke="#5EAEC4" stroke-width="3" marker-end="url(#ah)"/>
+        <rect x="262" y="14" width="404" height="202" rx="16" fill="#0E7490"/>
+        <text x="464" y="52" text-anchor="middle" font-size="24" font-weight="900" fill="#fff">Cloudflare</text>
+        <g font-size="15.5" font-weight="700" fill="#fff" text-anchor="middle">
+          <rect x="282" y="72" width="118" height="38" rx="9" fill="#fff" fill-opacity=".16"/><text x="341" y="97">全球 DNS</text>
+          <rect x="405" y="72" width="118" height="38" rx="9" fill="#fff" fill-opacity=".16"/><text x="464" y="97">CDN 快取</text>
+          <rect x="528" y="72" width="118" height="38" rx="9" fill="#fff" fill-opacity=".16"/><text x="587" y="97">WAF 規則</text>
+          <rect x="282" y="118" width="118" height="38" rx="9" fill="#fff" fill-opacity=".16"/><text x="341" y="143">DDoS 緩解</text>
+          <rect x="405" y="118" width="118" height="38" rx="9" fill="#fff" fill-opacity=".16"/><text x="464" y="143">機器人防護</text>
+          <rect x="528" y="118" width="118" height="38" rx="9" fill="#fff" fill-opacity=".16"/><text x="587" y="143">自動 HTTPS</text>
+        </g>
+        <text x="464" y="192" text-anchor="middle" font-size="14.5" fill="#fff" fill-opacity=".85">攻擊流量在這裡被擋下，只放行正常的連線</text>
+        <line x1="672" y1="115" x2="736" y2="115" stroke="#5EAEC4" stroke-width="3" marker-end="url(#ah)"/>
+        <rect x="746" y="60" width="310" height="110" rx="14" fill="#F2F7F9" stroke="#e6e6e6"/>
+        <text x="901" y="106" text-anchor="middle" font-size="20" font-weight="900" fill="#211d1b">官網主機（院內 Ubuntu）</text>
+        <text x="901" y="134" text-anchor="middle" font-size="14.5" fill="#6b6b6b">www・dajia・yuanli</text>
+      </svg>
+    </div>
+    <div class="three" style="margin-top:18px;">
+      <div class="card soft"><h3 style="font-size:18.5px;">全球網路</h3>
+        <p style="font-size:15.5px;">節點分布在全球<b>300 多個城市</b>，台灣在<b>台北、高雄</b>都有節點。</p></div>
+      <div class="card soft"><h3 style="font-size:18.5px;">一次到位</h3>
+        <p style="font-size:15.5px;">DNS、加速、防護、憑證<b>由同一個平台管理</b>，不需要另外採購設備。</p></div>
+      <div class="card soft"><h3 style="font-size:18.5px;">Email 照常運作</h3>
+        <p style="font-size:15.5px;">郵件記錄只由 Cloudflare 回答位址，<b>郵件不經過代理</b>，仍直接送到貴院郵件伺服器。</p></div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P4 資安①：PHP2Shell ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">資訊安全｜新漏洞的緩衝期</div>
+  <div class="page-title">漏洞公開之前，<span class="em">Cloudflare 已經開始阻擋</span></div>
+  <div class="page-sub">以 2026 年 10 月的 PHP 重大漏洞 php2shell（CVE-2026-109618、CVE-2026-109619）為例，時間皆為台灣時間。</div>
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1062 250" role="img" aria-label="時間軸：10/21 11:02 Cloudflare 開始阻擋；約 9 小時後漏洞公開揭露；10/21 22:00 PHP 官方釋出修補版；之後各主機陸續完成更新。從 Cloudflare 開始阻擋到主機完成更新的期間，網站已受保護">
+        <line x1="40" y1="120" x2="1030" y2="120" stroke="#e6e6e6" stroke-width="4" stroke-linecap="round"/>
+        <rect x="120" y="148" width="800" height="40" rx="10" fill="#EAF6F9"/>
+        <line x1="120" y1="120" x2="920" y2="120" stroke="#0E7490" stroke-width="4"/>
+        <text x="520" y="174" text-anchor="middle" font-size="16" font-weight="800" fill="#0E7490">這段期間，經過 Cloudflare 的網站已受到保護</text>
+
+        <circle cx="120" cy="120" r="13" fill="#0E7490"/>
+        <text x="120" y="56" text-anchor="middle" font-size="18" font-weight="900" fill="#211d1b">Cloudflare 開始阻擋</text>
+        <text x="120" y="82" text-anchor="middle" font-size="14.5" font-weight="700" fill="#0E7490">10/21 11:02</text>
+
+        <circle cx="387" cy="120" r="11" fill="#fff" stroke="#9A6700" stroke-width="4"/>
+        <text x="387" y="56" text-anchor="middle" font-size="18" font-weight="900" fill="#211d1b">漏洞公開揭露</text>
+        <text x="387" y="82" text-anchor="middle" font-size="14.5" font-weight="700" fill="#9A6700">約 9 小時後</text>
+
+        <circle cx="653" cy="120" r="11" fill="#fff" stroke="#6b6b6b" stroke-width="4"/>
+        <text x="653" y="56" text-anchor="middle" font-size="18" font-weight="900" fill="#211d1b">PHP 官方釋出修補版</text>
+        <text x="653" y="82" text-anchor="middle" font-size="14.5" font-weight="700" fill="#6b6b6b">10/21 22:00</text>
+
+        <circle cx="920" cy="120" r="11" fill="#fff" stroke="#6b6b6b" stroke-width="4"/>
+        <text x="920" y="56" text-anchor="middle" font-size="18" font-weight="900" fill="#211d1b">主機完成更新</text>
+        <text x="920" y="82" text-anchor="middle" font-size="14.5" font-weight="700" fill="#6b6b6b">等系統套件、排維護時段</text>
+
+        <text x="40" y="228" font-size="13.5" fill="#9a9a9a">Free 方案也涵蓋：防護規則自動部署到所有啟用 WAF 的網站，不需要額外設定。</text>
+      </svg>
+    </div>
+    <div class="two" style="margin-top:16px;">
+      <div class="card edge"><h3 style="font-size:19px;">爭取修補時間</h3>
+        <p style="font-size:15.5px;">修補版出來、作業系統套件更新、排定維護時段，都需要時間。<b>Cloudflare 先擋住攻擊，主機可以照計畫完成更新。</b></p></div>
+      <div class="card edge"><h3 style="font-size:19px;">修補仍然要做</h3>
+        <p style="font-size:15.5px;">防護規則是第一道防線，<b>不取代主機更新</b>。10/23 又揭露一個連已修補版本都受影響的相關漏洞，持續更新仍是基本功。</p></div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P5 資安②：DDoS、機器人、隱藏主機 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">資訊安全｜日常防護</div>
+  <div class="page-title">流量攻擊、惡意機器人，<span class="em">在到達主機前就被擋下</span></div>
+  <div class="body">
+    <div class="three" style="align-items:stretch;">
+      <div class="card edge">
+        <h3><span class="num-chip">1</span>DDoS 緩解</h3>
+        <p>所有方案都包含<b>不限流量的 DDoS 防護</b>。大量灌爆的流量由 Cloudflare 全球網路吸收，官網主機與院內網路頻寬不受衝擊。</p>
+        <div style="height:14px;flex:none;"></div><div class="card-foot">所有方案皆包含</div>
+      </div>
+      <div class="card edge">
+        <h3><span class="num-chip">2</span>機器人防護</h3>
+        <p>自動辨識並阻擋惡意的自動化流量。網路掛號頁另外加上 <b>Turnstile 驗證</b>，擋下大量灌單、搶號的機器人，一般民眾不需要點選圖片。</p>
+        <div style="height:14px;flex:none;"></div><div class="card-foot">掛號頁加上 Turnstile</div>
+      </div>
+      <div class="card edge">
+        <h3><span class="num-chip">3</span>隱藏主機位址</h3>
+        <p>外界查到的是 Cloudflare 的位址，<b>看不到官網主機的實際 IP</b>。主機防火牆再設定為只接受 Cloudflare 與院內網段的連線，攻擊者無法繞道直攻。</p>
+        <div style="height:14px;flex:none;"></div><div class="card-foot">搭配主機防火牆設定</div>
+      </div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P6 效能 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">網站效能</div>
+  <div class="page-title">靜態內容就近提供，<span class="em">主機專心處理掛號</span></div>
+  <div class="body">
+    <div class="two" style="grid-template-columns:1.05fr 1fr;gap:28px;align-items:center;">
+      <div class="fig">
+        <svg viewBox="0 0 520 300" role="img" aria-label="示意圖：圖片、CSS、JavaScript 等靜態檔由 Cloudflare 節點直接回應；掛號、查詢等動態請求才送到官網主機">
+          <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5EAEC4"/></marker></defs>
+          <rect x="4" y="110" width="120" height="80" rx="12" fill="#F2F7F9" stroke="#e6e6e6"/>
+          <text x="64" y="156" text-anchor="middle" font-size="17" font-weight="900" fill="#211d1b">民眾</text>
+          <line x1="128" y1="150" x2="184" y2="150" stroke="#5EAEC4" stroke-width="3" marker-end="url(#ah2)"/>
+          <rect x="192" y="40" width="150" height="220" rx="14" fill="#0E7490"/>
+          <text x="267" y="76" text-anchor="middle" font-size="17" font-weight="900" fill="#fff">Cloudflare 節點</text>
+          <rect x="208" y="96" width="118" height="70" rx="9" fill="#fff" fill-opacity=".16"/>
+          <text x="267" y="124" text-anchor="middle" font-size="14.5" font-weight="700" fill="#fff">圖片・CSS・JS</text>
+          <text x="267" y="148" text-anchor="middle" font-size="13" fill="#fff" fill-opacity=".85">直接回應</text>
+          <text x="267" y="210" text-anchor="middle" font-size="13.5" fill="#fff" fill-opacity=".85">動態請求才往後送</text>
+          <line x1="346" y1="200" x2="400" y2="200" stroke="#5EAEC4" stroke-width="3" marker-end="url(#ah2)"/>
+          <rect x="408" y="160" width="108" height="80" rx="12" fill="#F2F7F9" stroke="#e6e6e6"/>
+          <text x="462" y="196" text-anchor="middle" font-size="16" font-weight="900" fill="#211d1b">官網主機</text>
+          <text x="462" y="220" text-anchor="middle" font-size="13" fill="#6b6b6b">掛號・查詢</text>
+        </svg>
+      </div>
+      <div>
+        <ul class="bul">
+          <li><b>就近回應</b>　圖片、樣式、程式檔由離民眾最近的節點提供，頁面開得更快</li>
+          <li><b>降低主機負載</b>　大部分流量不必回到官網主機，開放掛號等尖峰時段更從容</li>
+          <li><b>新一代傳輸協定</b>　自動支援 HTTP/3 與壓縮，手機網路下也順暢</li>
+          <li><b>分院共用設定</b>　官網、大甲、苑裡在同一個網域下，一套快取與防護規則一起套用</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P7 對外 HTTPS 全自動 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">對外 HTTPS</div>
+  <div class="page-title">官網與分院網站的憑證，<span class="em">自動取得、自動續期</span></div>
+  <div class="body">
+    <div class="two" style="grid-template-columns:1fr 1fr;gap:22px;align-items:stretch;">
+      <div class="card soft">
+        <h3 style="font-size:19.5px;">涵蓋的網址</h3>
+        <table class="t" style="margin-top:4px;">
+          <tr><th>網址</th><th>用途</th></tr>
+          <tr><td><b>leehospital.com.tw</b></td><td>主網域</td></tr>
+          <tr><td><b>www.leehospital.com.tw</b></td><td>醫院官網</td></tr>
+          <tr><td><b>dajia.leehospital.com.tw</b></td><td>大甲分院</td></tr>
+          <tr><td><b>yuanli.leehospital.com.tw</b></td><td>苑裡分院</td></tr>
+        </table>
+        <p style="font-size:14px;margin-top:10px;">主網域下第一層的子網域都涵蓋在內，日後新增分院網站也一樣。</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="card edge"><h3 style="font-size:19px;">不用再記到期日</h3>
+          <p style="font-size:15.5px;">憑證由 Cloudflare <b>到期前自動續期</b>，不需要人工更換，也不會因為忘記續約而跳出安全警告。</p></div>
+        <div class="card edge"><h3 style="font-size:19px;">新網站上線即有 HTTPS</h3>
+          <p style="font-size:15.5px;">新增分院子網域時，只要加一筆 DNS 記錄，<b>幾分鐘內就具備 HTTPS</b>。</p></div>
+        <div class="card edge"><h3 style="font-size:19px;">全程加密</h3>
+          <p style="font-size:15.5px;">民眾到 Cloudflare、Cloudflare 到官網主機，<b>兩段連線都加密並驗證憑證</b>。</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P8 DNS 高可用 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">DNS 高可用</div>
+  <div class="page-title">DNS 是所有對外服務的入口，<span class="em">值得放在更穩固的架構上</span></div>
+  <div class="page-sub">官網、分院網站、email 都要先查 DNS 才找得到。業界的做法是把 DNS 分散在多個地點，任何一處異常都不影響解析。</div>
+  <div class="body">
+    <div class="three" style="align-items:stretch;">
+      <div class="card edge">
+        <h3><span class="num-chip">1</span>全球同時回應</h3>
+        <p>Cloudflare 的 DNS 由全球 300 多個城市的節點<b>同時回應</b>，民眾查詢時由最近的節點回答。</p>
+      </div>
+      <div class="card edge">
+        <h3><span class="num-chip">2</span>單點異常不影響</h3>
+        <p>某個節點或機房出狀況時，查詢自動由其他節點接手，<b>網址解析不中斷</b>。</p>
+      </div>
+      <div class="card edge">
+        <h3><span class="num-chip">3</span>抵禦 DNS 攻擊</h3>
+        <p>針對 DNS 的大量查詢攻擊，由 Cloudflare 的網路吸收，<b>不佔用院內的網路與設備</b>。</p>
+      </div>
+    </div>
+    <div class="principle">
+      <div class="ic">✓</div>
+      <p>DNS 託管到 Cloudflare 後，<b>網站與 email 的可用性同時提升</b>；貴院仍可隨時在 Cloudflare 後台查看與管理所有記錄。</p>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P9 憑證效期縮短 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker in">內網 SSL 憑證｜大環境變化</div>
+  <div class="page-title">憑證效期一路縮短，<span class="em in">自動更新成為必要</span></div>
+  <div class="page-sub">CA/Browser Forum 規定所有公開 SSL 憑證的最長效期，購買的商業憑證也一樣適用。</div>
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1062 250" role="img" aria-label="長條圖：SSL 憑證最長效期 2026/3/14 前為 398 天；2026/3/15 起 200 天；2027/3/15 起 100 天；2029/3/15 起 47 天">
+        <g font-size="16" font-weight="800" fill="#211d1b">
+          <text x="0" y="40">2026/3/14 前</text>
+          <text x="0" y="100">2026/3/15 起</text>
+          <text x="0" y="160">2027/3/15 起</text>
+          <text x="0" y="220">2029/3/15 起</text>
+        </g>
+        <rect x="150" y="16" width="640" height="34" rx="8" fill="#d9d9d9"/>
+        <rect x="150" y="76" width="322" height="34" rx="8" fill="#3B4E8C"/>
+        <rect x="150" y="136" width="161" height="34" rx="8" fill="#3B4E8C" fill-opacity=".75"/>
+        <rect x="150" y="196" width="76" height="34" rx="8" fill="#3B4E8C" fill-opacity=".55"/>
+        <g font-size="18" font-weight="900">
+          <text x="802" y="40" fill="#9a9a9a">398 天</text>
+          <text x="484" y="100" fill="#3B4E8C">200 天</text>
+          <text x="323" y="160" fill="#3B4E8C">100 天</text>
+          <text x="238" y="220" fill="#3B4E8C">47 天</text>
+        </g>
+        <g font-size="14.5" font-weight="700" fill="#6b6b6b">
+          <text x="900" y="40">約每年換 1 次</text>
+          <text x="900" y="100">每年至少 2 次</text>
+          <text x="900" y="160">每年約 4 次</text>
+          <text x="900" y="220">每年約 8 次</text>
+        </g>
+        <rect x="560" y="80" width="56" height="26" rx="13" fill="#211d1b"/>
+        <text x="588" y="98" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">目前</text>
+      </svg>
+    </div>
+    <div class="two" style="margin-top:14px;">
+      <div class="card soft"><h3 style="font-size:19px;">商業憑證</h3>
+        <p style="font-size:15.5px;">同樣受效期限制，<b>每次更換都要人工安裝</b>，次數會越來越頻繁。</p></div>
+      <div class="card soft"><h3 style="font-size:19px;">Let's Encrypt＋Cloudflare</h3>
+        <p style="font-size:15.5px;">瀏覽器普遍信任的憑證機構，<b>不另收憑證費用</b>，搭配 Cloudflare DNS 可<b>全自動申請與更新</b>。</p></div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P10 內網憑證原理 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker in">內網 SSL 憑證｜原理</div>
+  <div class="page-title">用 DNS 驗證取得 <span class="em in">*.leehospital.com.tw</span> 憑證</div>
+  <div class="page-sub">Let's Encrypt 只要確認 DNS 上的驗證記錄，就能發出<b style="color:var(--ctk-700);">涵蓋所有子網域的 wildcard 憑證</b>，所有以子網域連線的內網服務都可以使用這張憑證。</div>
+  <div class="body">
+    <div class="stages" style="grid-template-columns:repeat(4,1fr);">
+      <div class="stage in"><div class="no">STEP 1</div><div class="nm">提出申請</div>
+        <div class="ds">向 Let's Encrypt 申請 <b>*.leehospital.com.tw</b> 憑證</div></div>
+      <div class="stage in"><div class="no">STEP 2</div><div class="nm">驗證網域</div>
+        <div class="ds">Let's Encrypt 要求在 DNS 放一筆<b>驗證用記錄</b>，證明網域屬於貴院</div></div>
+      <div class="stage in" style="background:var(--indigo-50);border-color:#dde2ef;border-top-color:var(--indigo);"><div class="no">STEP 3</div><div class="nm">自動完成</div>
+        <div class="ds">透過 Cloudflare API <b>自動新增記錄</b>，驗證完成後自動移除</div></div>
+      <div class="stage in"><div class="no">STEP 4</div><div class="nm">取得憑證</div>
+        <div class="ds">確認記錄後發出憑證，<b>瀏覽器普遍信任</b>，目前效期 90 天</div></div>
+    </div>
+    <div class="principle" style="margin-top:24px;">
+      <div class="ic" style="background:var(--indigo);">✓</div>
+      <p>驗證只透過網際網路上的 DNS 完成：<b>內網服務不必對外開放、也不需要連上網際網路</b>，就能使用瀏覽器信任的憑證。</p>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P11 CTK Pro 建置的自動化流程 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker in">內網 SSL 憑證｜CTK Pro 建置</div>
+  <div class="page-title">CTK Pro 建置的<span class="em" style="color:var(--ctk);">憑證自動化流程</span></div>
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1062 440" role="img" aria-label="架構圖：CTK Pro 在官網主機建置排程與到期偵測、憑證申請程式、Cloudflare API 金鑰、轉檔交付與失敗 email 通知；程式向 Let's Encrypt 申請，透過 Cloudflare API 寫入 TXT 驗證記錄，Let's Encrypt 查驗後發證；新憑證放到固定資料夾，由資訊室部署到 his、crm 等院內 Windows 主機">
+        <defs>
+          <marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e11f27"/></marker>
+          <marker id="aI" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3B4E8C"/></marker>
+          <marker id="aG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9a9a9a"/></marker>
+        </defs>
+
+        <!-- 官網主機（CTK 建置） -->
+        <rect x="1.5" y="1.5" width="592" height="252" rx="18" fill="#FDEDEE" stroke="#e11f27" stroke-width="2.5"/>
+        <text x="22" y="42" font-size="21" font-weight="900" fill="#211d1b">官網主機（院內 Ubuntu）</text>
+        <rect x="446" y="18" width="130" height="34" rx="17" fill="#e11f27"/>
+        <text x="511" y="41" text-anchor="middle" font-size="15.5" font-weight="800" fill="#fff">CTK Pro 建置</text>
+        <g font-size="17" font-weight="800" fill="#B5161D" text-anchor="middle">
+          <rect x="22" y="70" width="176" height="62" rx="11" fill="#fff" stroke="#F3A9AC" stroke-width="1.5"/><text x="110" y="107">① 排程・到期偵測</text>
+          <rect x="210" y="70" width="176" height="62" rx="11" fill="#fff" stroke="#F3A9AC" stroke-width="1.5"/><text x="298" y="107">憑證申請程式</text>
+          <rect x="398" y="70" width="176" height="62" rx="11" fill="#fff" stroke="#F3A9AC" stroke-width="1.5"/><text x="486" y="97">Cloudflare API 金鑰</text>
+          <text x="486" y="120" font-size="13.5" font-weight="700">僅 DNS・限定此主機 IP</text>
+          <rect x="22" y="144" width="176" height="62" rx="11" fill="#fff" stroke="#F3A9AC" stroke-width="1.5"/><text x="110" y="181">轉檔交付 PFX／PEM</text>
+          <rect x="210" y="144" width="176" height="62" rx="11" fill="#fff" stroke="#F3A9AC" stroke-width="1.5"/><text x="298" y="181">失敗 email 通知</text>
+          <rect x="398" y="144" width="176" height="62" rx="11" fill="none" stroke="#F3A9AC" stroke-width="1.5" stroke-dasharray="5 4"/><text x="486" y="171" font-size="15">每日自動執行</text>
+          <text x="486" y="193" font-size="13.5" font-weight="700">不需人工介入</text>
+        </g>
+        <text x="22" y="236" font-size="15" font-weight="700" fill="#B5161D">由 CTK Pro 撰寫程式、設定權限與排程</text>
+
+        <!-- 外部服務 -->
+        <rect x="716" y="1" width="345" height="98" rx="16" fill="#F4F4F2" stroke="#e0e0e0"/>
+        <text x="888" y="42" text-anchor="middle" font-size="21" font-weight="900" fill="#211d1b">Let's Encrypt</text>
+        <text x="888" y="72" text-anchor="middle" font-size="15.5" fill="#6b6b6b">查驗 DNS 記錄、發出憑證</text>
+        <rect x="716" y="155" width="345" height="98" rx="16" fill="#F4F4F2" stroke="#e0e0e0"/>
+        <text x="888" y="196" text-anchor="middle" font-size="21" font-weight="900" fill="#211d1b">Cloudflare DNS</text>
+        <text x="888" y="226" text-anchor="middle" font-size="15.5" fill="#6b6b6b">_acme-challenge 驗證記錄</text>
+
+        <!-- 箭頭：主機 ↔ 外部 -->
+        <line x1="599" y1="30" x2="710" y2="30" stroke="#e11f27" stroke-width="3" marker-end="url(#aR)"/>
+        <text x="654" y="21" text-anchor="middle" font-size="15" font-weight="800" fill="#B5161D">② 申請憑證</text>
+        <line x1="710" y1="76" x2="599" y2="76" stroke="#e11f27" stroke-width="3" marker-end="url(#aR)"/>
+        <text x="654" y="67" text-anchor="middle" font-size="15" font-weight="800" fill="#B5161D">⑤ 取回憑證</text>
+        <line x1="599" y1="204" x2="710" y2="204" stroke="#e11f27" stroke-width="3" marker-end="url(#aR)"/>
+        <text x="654" y="195" text-anchor="middle" font-size="15" font-weight="800" fill="#B5161D">③ 寫入／移除</text>
+        <text x="654" y="228" text-anchor="middle" font-size="13.5" fill="#B5161D">TXT 驗證記錄</text>
+        <line x1="888" y1="103" x2="888" y2="150" stroke="#9a9a9a" stroke-width="3" marker-end="url(#aG)"/>
+        <text x="902" y="132" font-size="15" font-weight="800" fill="#6b6b6b">④ 查驗</text>
+
+        <!-- 往下交付 -->
+        <line x1="110" y1="256" x2="110" y2="318" stroke="#3B4E8C" stroke-width="3" stroke-dasharray="6 5" marker-end="url(#aI)"/>
+        <text x="128" y="294" font-size="16" font-weight="800" fill="#3B4E8C">⑥ 新憑證放到固定資料夾，資訊室自行選擇取用方式</text>
+
+        <!-- 院內 Windows 主機（資訊室部署） -->
+        <rect x="1.5" y="324" width="1059" height="114" rx="18" fill="#EEF1F8" stroke="#3B4E8C" stroke-width="2.5"/>
+        <rect x="22" y="346" width="124" height="34" rx="17" fill="#3B4E8C"/>
+        <text x="84" y="369" text-anchor="middle" font-size="15.5" font-weight="800" fill="#fff">資訊室部署</text>
+        <text x="162" y="371" font-size="20" font-weight="900" fill="#211d1b">院內 Windows 主機</text>
+        <text x="22" y="414" font-size="15" fill="#6b6b6b">共用同一張 *.leehospital.com.tw 憑證</text>
+        <g font-size="16.5" font-weight="800" fill="#3B4E8C" text-anchor="middle">
+          <rect x="420" y="356" width="222" height="52" rx="11" fill="#fff" stroke="#dde2ef"/><text x="531" y="388">his.leehospital.com.tw</text>
+          <rect x="654" y="356" width="222" height="52" rx="11" fill="#fff" stroke="#dde2ef"/><text x="765" y="388">crm.leehospital.com.tw</text>
+          <rect x="888" y="356" width="154" height="52" rx="11" fill="#fff" stroke="#dde2ef"/><text x="965" y="388">其他院內服務</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P12 CTK Pro 的建置項目 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker in">內網 SSL 憑證｜CTK Pro 建置</div>
+  <div class="page-title">CTK Pro 協助的<span class="em" style="color:var(--ctk);">六項建置工作</span></div>
+  <div class="body">
+    <div class="build2">
+      <div class="bc"><h3><span class="n">1</span>API 金鑰與權限</h3><p>建立<b>只能管理 DNS 記錄</b>的 Cloudflare API 金鑰，限定官網主機 IP 才能使用，並加密保存。</p></div>
+      <div class="bc"><h3><span class="n">2</span>憑證申請程式</h3><p>在官網主機安裝並設定申請程式，以 DNS 驗證向 Let's Encrypt 申請 <b>*.leehospital.com.tw</b>。</p></div>
+      <div class="bc"><h3><span class="n">3</span>到期偵測與排程</h3><p>每日自動檢查到期日，<b>剩約 1/3 效期時自動更新</b>，不需要人工介入。</p></div>
+      <div class="bc"><h3><span class="n">4</span>轉檔與交付</h3><p>每次更新自動產生 <b>PFX／PEM</b>，放到固定資料夾並保留前一版，方便取用與回復。</p></div>
+      <div class="bc"><h3><span class="n">5</span>失敗 email 通知</h3><p>更新失敗時<b>立即寄信通知資訊室與 CTK Pro</b>，在到期之前就能處理。</p></div>
+      <div class="bc"><h3><span class="n">6</span>首張憑證與操作說明</h3><p>手動申請首張憑證並協助驗證，提供 <b>Windows／IIS</b> 等常見服務的匯入說明。</p></div>
+    </div>
+    <div class="principle" style="margin-top:22px;background:var(--ctk-50);">
+      <div class="ic" style="background:var(--ctk);">✓</div>
+      <p>建置完成後，資訊室只需要<b>從固定資料夾取得新憑證，匯入院內主機</b>；申請、驗證、更新與通知都由程式自動完成。</p>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P11 院內 DNS 配置 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker in">內網 SSL 憑證｜院內 DNS</div>
+  <div class="page-title">院外查 Cloudflare，<span class="em in">院內查自己的 DNS</span></div>
+  <div class="page-sub">內外分離（split-horizon）的 DNS 配置：對外記錄放在 Cloudflare，內網記錄只留在院內。</div>
+  <div class="body">
+    <div class="fig">
+      <svg viewBox="0 0 1062 270" role="img" aria-label="示意圖：院外民眾查詢 Cloudflare DNS，連到經 Cloudflare 防護的官網；院內電腦查詢院內 DNS，內網服務指向內網 IP，www 指向官網主機的內網 IP">
+        <defs><marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b9c3cc"/></marker></defs>
+        <!-- 院外 -->
+        <text x="0" y="68" font-size="16" font-weight="900" fill="#0E7490">院外</text>
+        <rect x="60" y="28" width="160" height="70" rx="12" fill="#F2F7F9" stroke="#e6e6e6"/>
+        <text x="140" y="70" text-anchor="middle" font-size="17" font-weight="800" fill="#211d1b">民眾的電腦</text>
+        <line x1="224" y1="63" x2="282" y2="63" stroke="#b9c3cc" stroke-width="3" marker-end="url(#ah3)"/>
+        <rect x="290" y="28" width="210" height="70" rx="12" fill="#0E7490"/>
+        <text x="395" y="70" text-anchor="middle" font-size="17" font-weight="800" fill="#fff">Cloudflare DNS</text>
+        <line x1="504" y1="63" x2="562" y2="63" stroke="#b9c3cc" stroke-width="3" marker-end="url(#ah3)"/>
+        <rect x="570" y="28" width="488" height="70" rx="12" fill="#EAF6F9" stroke="#cfe6ec"/>
+        <text x="814" y="58" text-anchor="middle" font-size="16" font-weight="800" fill="#211d1b">www・dajia・yuanli</text>
+        <text x="814" y="82" text-anchor="middle" font-size="14" fill="#6b6b6b">經過 Cloudflare 防護 → 官網主機</text>
+        <!-- 分隔 -->
+        <line x1="0" y1="134" x2="1058" y2="134" stroke="#e6e6e6" stroke-width="1.5" stroke-dasharray="6 5"/>
+        <!-- 院內 -->
+        <text x="0" y="208" font-size="16" font-weight="900" fill="#3B4E8C">院內</text>
+        <rect x="60" y="168" width="160" height="70" rx="12" fill="#F2F7F9" stroke="#e6e6e6"/>
+        <text x="140" y="210" text-anchor="middle" font-size="17" font-weight="800" fill="#211d1b">院內電腦</text>
+        <line x1="224" y1="203" x2="282" y2="203" stroke="#b9c3cc" stroke-width="3" marker-end="url(#ah3)"/>
+        <rect x="290" y="168" width="210" height="70" rx="12" fill="#3B4E8C"/>
+        <text x="395" y="210" text-anchor="middle" font-size="17" font-weight="800" fill="#fff">院內 DNS</text>
+        <line x1="504" y1="203" x2="562" y2="203" stroke="#b9c3cc" stroke-width="3" marker-end="url(#ah3)"/>
+        <rect x="570" y="160" width="238" height="86" rx="12" fill="#EEF1F8" stroke="#dde2ef"/>
+        <text x="689" y="196" text-anchor="middle" font-size="16" font-weight="800" fill="#211d1b">his・crm 等內網服務</text>
+        <text x="689" y="221" text-anchor="middle" font-size="14" fill="#6b6b6b">→ 內網 IP</text>
+        <rect x="820" y="160" width="238" height="86" rx="12" fill="#EEF1F8" stroke="#dde2ef"/>
+        <text x="939" y="196" text-anchor="middle" font-size="16" font-weight="800" fill="#211d1b">www・dajia・yuanli</text>
+        <text x="939" y="221" text-anchor="middle" font-size="14" fill="#6b6b6b">→ 官網主機內網 IP</text>
+      </svg>
+    </div>
+    <div class="three" style="margin-top:14px;">
+      <div class="card soft"><h3 style="font-size:17.5px;">一次性建立</h3>
+        <p style="font-size:15px;">對外記錄<b>複製一份到院內 DNS</b>。官網主機 IP 固定，之後幾乎不需要再改。</p></div>
+      <div class="card soft"><h3 style="font-size:17.5px;">內網記錄不外流</h3>
+        <p style="font-size:15px;">his、crm 等記錄<b>只存在院內 DNS</b>，外界查不到內網架構。</p></div>
+      <div class="card soft"><h3 style="font-size:17.5px;">同一張憑證</h3>
+        <p style="font-size:15px;">院內同仁直連官網主機，與內網服務一樣使用 <b>*.leehospital.com.tw</b> 憑證。</p></div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P12 內網使用的前提 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker in">內網 SSL 憑證｜使用前提</div>
+  <div class="page-title">內網服務使用憑證，<span class="em in">需要配合的四件事</span></div>
+  <div class="body">
+    <div class="two" style="gap:16px;">
+        <div class="card edge-in" style="padding:20px 22px;"><h3 style="font-size:20px;"><span class="num-chip in" style="width:32px;height:32px;font-size:17px;">1</span>以網域名稱連線</h3>
+          <p style="font-size:16px;">內網服務改用 <b>his.leehospital.com.tw</b> 這類名稱連線。憑證只對網域名稱有效，<b>不適用於 IP</b>。</p></div>
+        <div class="card edge-in" style="padding:20px 22px;"><h3 style="font-size:20px;"><span class="num-chip in" style="width:32px;height:32px;font-size:17px;">2</span>院內電腦的信任設定</h3>
+          <p style="font-size:16px;">Windows 平常會自動下載 Let's Encrypt 的根憑證；<b>不能上網的院內電腦</b>請以 GPO 統一派發，避免出現安全警告。</p></div>
+        <div class="card edge-in" style="padding:20px 22px;"><h3 style="font-size:20px;"><span class="num-chip in" style="width:32px;height:32px;font-size:17px;">3</span>各服務匯入 PFX</h3>
+          <p style="font-size:16px;">IIS、遠端桌面、SQL Server 等各有匯入方式。<b>廠商提供的系統</b>請依廠商說明，也可另外提供 PEM 格式。</p></div>
+        <div class="card edge-in" style="padding:20px 22px;"><h3 style="font-size:20px;"><span class="num-chip in" style="width:32px;height:32px;font-size:17px;">4</span>定期匯入新憑證</h3>
+          <p style="font-size:16px;">憑證更新後要匯入各台主機。建議以<b>排程腳本自動匯入</b>，減少人工作業。</p></div>
+    </div>
+    <p class="note" style="margin-top:14px;">註：Let's Encrypt 憑證效期目前為 90 天，之後將逐步縮短；憑證的申請與更新由程式自動完成。</p>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P13 導入步驟 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">導入步驟</div>
+  <div class="page-title">記錄先備妥再切換，<span class="em">網站與 email 不中斷</span></div>
+  <div class="body">
+    <div class="stages" style="grid-template-columns:repeat(6,1fr);gap:10px;">
+      <div class="stage"><div class="no">STEP 1</div><div class="nm">準備</div>
+        <div class="ds">建立 Cloudflare 帳號並授權我們；提供現有 DNS 記錄；<b>調低現行記錄的快取時間（TTL）</b></div>
+        <div class="who"><span class="tag in">貴院</span></div></div>
+      <div class="stage"><div class="no">STEP 2</div><div class="nm">建置與比對</div>
+        <div class="ds">在 Cloudflare 匯入全部記錄，<b>逐筆比對</b>；設定防護、快取與 HTTPS</div>
+        <div class="who"><span class="tag">CTK</span></div></div>
+      <div class="stage"><div class="no">STEP 3</div><div class="nm">切換 NS</div>
+        <div class="ds">於 TWNIC 改為 Cloudflare 的名稱伺服器；<b>同時備妥院內 DNS</b>（對外記錄副本＋內網記錄），院內查詢不中斷</div>
+        <div class="who"><span class="tag in">貴院</span><span class="tag">CTK 陪同</span></div></div>
+      <div class="stage"><div class="no">STEP 4</div><div class="nm">驗證</div>
+        <div class="ds">官網、分院網站、<b>email 收發</b>、院內連線逐項確認；原 DNS 設定保留作為退回方案</div>
+        <div class="who"><span class="tag">CTK</span></div></div>
+      <div class="stage in"><div class="no">STEP 5</div><div class="nm">首張內網憑證</div>
+        <div class="ds">先以<b>手動方式申請</b>首張憑證，交付 PFX 與操作說明，資訊室匯入測試</div>
+        <div class="who"><span class="tag">CTK</span><span class="tag in">貴院</span></div></div>
+      <div class="stage in"><div class="no">STEP 6</div><div class="nm">自動化</div>
+        <div class="ds">官網主機就緒後，建立<b>自動申請與更新</b>流程，之後到期前自動換新</div>
+        <div class="who"><span class="tag">CTK</span></div></div>
+    </div>
+    <div class="principle">
+      <div class="ic">✓</div>
+      <p>切換前，所有記錄已在 Cloudflare 備妥並比對完成，<b>切換期間新舊 DNS 回答一致</b>，網站與 email 不中斷。若需要退回，把名稱伺服器改回原設定即可。</p>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P14 分工 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">分工</div>
+  <div class="page-title">貴院負責幾個關鍵動作，<span class="em">其餘由我們處理</span></div>
+  <div class="body">
+    <table class="t" style="font-size:16px;">
+      <tr><th style="width:20%;">項目</th><th class="who">貴院</th><th class="who">CTK Pro</th></tr>
+      <tr><td><b>Cloudflare 帳號</b></td><td>建立帳號（帳號屬於李綜合醫院），授權我們以成員身分操作</td><td>帳號與網域的初始設定</td></tr>
+      <tr><td><b>DNS 記錄</b></td><td>提供現有 DNS 記錄（zone 檔）</td><td>匯入、逐筆比對，設定代理與防護</td></tr>
+      <tr><td><b>名稱伺服器切換</b></td><td>於 TWNIC 修改名稱伺服器</td><td>提供設定值，切換時陪同驗證</td></tr>
+      <tr><td><b>對外網站</b></td><td>—</td><td>HTTPS、快取、防護規則、Turnstile 的設定與日後調整</td></tr>
+      <tr><td><b>內網憑證</b></td><td>匯入 PFX 到內網各台主機；以 GPO 派發根憑證</td><td>官網主機上自動申請與更新，提供 PFX 與操作說明</td></tr>
+      <tr><td><b>院內 DNS</b></td><td>建立對外記錄的副本與內網記錄</td><td>提供需要複製的記錄清單</td></tr>
+    </table>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P15 費用 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">費用</div>
+  <div class="page-title">以 Free 方案起步，<span class="em">需要時再升級</span></div>
+  <div class="page-sub">Cloudflare 以網域計費：leehospital.com.tw 一個網域，就涵蓋官網與大甲、苑裡分院網站。</div>
+  <div class="body">
+    <table class="t" style="font-size:15.5px;">
+      <tr><th style="width:22%;">項目</th><th class="hl" style="width:26%;">Free</th><th style="width:26%;">Pro</th><th>Business</th></tr>
+      <tr><td><b>月費</b></td><td class="hl"><b>US$0</b></td><td><b>US$20</b>（年繳）／US$25（月繳）</td><td><b>US$200</b>（年繳）／US$250（月繳）</td></tr>
+      <tr><td><b>自訂 WAF 規則</b></td><td class="hl">5 條</td><td>20 條</td><td>100 條</td></tr>
+      <tr><td><b>速率限制規則</b></td><td class="hl">1 條</td><td>2 條</td><td>5 條</td></tr>
+      <tr><td><b>託管防護規則</b></td><td class="hl">重大漏洞規則集（含 php2shell）</td><td>完整託管規則集＋OWASP 規則集</td><td>同 Pro</td></tr>
+      <tr><td><b>機器人防護</b></td><td class="hl">簡易機器人</td><td>容易辨識的自動化流量</td><td>進階機器人＋分析</td></tr>
+      <tr><td><b>DDoS 防護・SSL 憑證</b></td><td class="hl" colspan="3" style="text-align:center;">所有方案皆包含，DDoS 防護不限流量</td></tr>
+    </table>
+    <div class="principle" style="margin-top:16px;">
+      <div class="ic">$</div>
+      <p>以我們過去 <b>九成以上的客戶</b>來說，<b>Free 方案</b>就足以應付；只有流量極高、需要更細緻防護規則的網站，才會升級到 <b>Pro（約新台幣 650–800 元／月）</b>。方案可隨時調整。</p>
+    </div>
+    <p class="note">價格依 Cloudflare 官網 2026/11 公告，未稅，以美元計價；新台幣為概估。</p>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P16 常見疑問 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">常見疑問</div>
+  <div class="page-title">導入前最常被問到的<span class="em">五個問題</span></div>
+  <div class="body">
+    <div class="faq">
+      <div class="it"><div class="q"><span>Q</span>Email 會受影響嗎？</div>
+        <div class="a">不會。MX、SPF 等郵件記錄<b>原樣搬移</b>並設為「僅 DNS」，郵件仍直接送到貴院郵件伺服器。</div></div>
+      <div class="it"><div class="q"><span>Q</span>Cloudflare 帳號屬於誰？</div>
+        <div class="a"><b>屬於李綜合醫院。</b>由貴院建立帳號，再以成員身分授權我們操作，權限可隨時調整或收回。</div></div>
+      <div class="it"><div class="q"><span>Q</span>之後想退回可以嗎？</div>
+        <div class="a">可以。在 TWNIC 把名稱伺服器改回原設定即可，Cloudflare 上的記錄也能<b>匯出備份</b>。</div></div>
+      <div class="it"><div class="q"><span>Q</span>內網資料會經過 Cloudflare 嗎？</div>
+        <div class="a">不會。Cloudflare 只負責對外網域；院內連線走院內 DNS 與內網，<b>HIS 等系統的資料不經過 Cloudflare</b>。</div></div>
+      <div class="it wide"><div class="q"><span>Q</span>還有其他單位使用 Cloudflare 嗎？</div>
+        <div class="a">
+          <div>有。<b>榮總（台北、台中、高雄）、三軍總醫院、義大醫院、澄清醫院、台安醫院、東元醫院</b>，公部門如<b>健保署、臺北市政府</b>，以及<b>台積電、104 人力銀行、博客來、天下雜誌、Dcard、KKday、誠品、7-ELEVEN</b> 等知名企業。</div>
+          <div class="src">CTK Pro 協助導入：西園醫院、永越健檢</div>
+        </div></div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P17 下一步 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">下一步</div>
+  <div class="page-title"><span class="em">啟用 Cloudflare</span> 的服務</div>
+  <div class="body">
+    <div class="three" style="align-items:stretch;margin-bottom:22px;">
+      <div class="card edge">
+        <h3><span class="num-chip">1</span>建立 Cloudflare 帳號</h3>
+        <ul class="bul tight">
+          <li>由貴院建立 <b>Cloudflare 帳號</b></li>
+          <li>將帳號<b>授權給 CTK Pro 的帳號</b>，以成員身分協助設定</li>
+        </ul>
+      </div>
+      <div class="card edge">
+        <h3><span class="num-chip">2</span>提供現有 DNS 記錄</h3>
+        <ul class="bul tight">
+          <li>從現行 DNS 主機匯出 <b>leehospital.com.tw 的 zone 檔</b></li>
+          <li>標示仍在使用、可以停用的記錄</li>
+        </ul>
+      </div>
+      <div class="card edge-in">
+        <h3><span class="num-chip in">3</span>彙整內網主機環境</h3>
+        <ul class="bul tight in">
+          <li>各主機的<b>作業系統</b>與<b>伺服器類型</b>（IIS、廠商系統等）</li>
+          <li>各服務需要的<b>憑證格式</b>（PFX、PEM 等）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="flow">
+      <b>① 提供資料</b><span class="ar">→</span>
+      <b>② 建置與比對</b><span class="ar">→</span>
+      <b>③ 切換名稱伺服器</b><span class="ar">→</span>
+      <b>④ 驗證網站與 email</b><span class="ar">→</span>
+      <b>⑤ 首張內網憑證</b><span class="ar">→</span>
+      <b>⑥ 自動化</b>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+</div><!-- /#stage -->
+
+<!-- 補充議題（按 Q） -->
+<div id="qa">
+  <h2>補充議題與備詢</h2>
+  <div class="hint">此區不在簡報主流程，按 Q 或 Esc 關閉。</div>
+  <div class="qgrid">
+    <div class="qa-item"><div class="q"><span>Q1</span>*.leehospital.com.tw 涵蓋哪些名稱？</div><div class="a"><span>A</span>主網域下第一層的所有名稱，例如 his.leehospital.com.tw、dajia.leehospital.com.tw；兩層以上（如 a.his.leehospital.com.tw）不涵蓋。申請時會一併加入 leehospital.com.tw 本身。</div></div>
+    <div class="qa-item"><div class="q"><span>Q2</span>Cloudflare 的 API 金鑰外流怎麼辦？</div><div class="a"><span>A</span>金鑰只能管理 DNS 記錄，而且限定官網主機的 IP 才能使用，在其他地方拿到也無法操作。貴院可隨時在 Cloudflare 後台撤銷並重新發行。</div></div>
+    <div class="qa-item"><div class="q"><span>Q3</span>院內電腦會信任 Let's Encrypt 的憑證嗎？</div><div class="a"><span>A</span>主流瀏覽器與 Windows 都信任 Let's Encrypt。無法連外自動更新根憑證的電腦，以 GPO 派發 ISRG Root X1（及 ISRG Root YR、YE）即可。</div></div>
+    <div class="qa-item"><div class="q"><span>Q4</span>較舊的 Windows Server 能用嗎？</div><div class="a"><span>A</span>我們會產生相容舊版 Windows 的 PFX 格式，並使用相容性最好的 RSA 2048 金鑰。作業系統過舊、已停止支援的主機，需個別確認是否能使用。</div></div>
+    <div class="qa-item"><div class="q"><span>Q5</span>廠商提供的系統（例如 HIS）怎麼換憑證？</div><div class="a"><span>A</span>依各廠商的說明匯入。除了 PFX，我們也能提供 PEM 格式（憑證、中繼憑證、私鑰分開的檔案），供 Java 等系統使用。</div></div>
+    <div class="qa-item"><div class="q"><span>Q6</span>院內 DNS 的副本多久要同步一次？</div><div class="a"><span>A</span>只有對外記錄變更時才需要同步，例如官網主機更換 IP。官網主機 IP 固定，平時不需要調整。</div></div>
+    <div class="qa-item"><div class="q"><span>Q7</span>Cloudflare 本身故障怎麼辦？</div><div class="a"><span>A</span>Cloudflare 的網路分散在全球 300 多個城市，單一地點異常會由其他節點接手。真有大範圍異常時，可暫時把官網改為不經代理、直接連到官網主機，主機本身也具備有效憑證。</div></div>
+    <div class="qa-item"><div class="q"><span>Q8</span>為什麼不直接購買 wildcard 憑證？</div><div class="a"><span>A</span>購買的憑證同樣受最長效期限制（目前 200 天，2027/3/15 起 100 天），每次到期都要人工更換。自動化申請可以省下這些作業，也不需要採購費用。</div></div>
+    <div class="qa-item"><div class="q"><span>Q9</span>切換名稱伺服器要多久生效？</div><div class="a"><span>A</span>通常數小時內陸續生效，最長約 48 小時。因為新舊 DNS 回答一致，這段期間網站與 email 都正常運作。</div></div>
+    <div class="qa-item"><div class="q"><span>Q11</span>其他單位使用 Cloudflare 是怎麼確認的？</div><div class="a"><span>A</span>查詢各網站公開的名稱伺服器（*.ns.cloudflare.com）與網站回應標頭（server: cloudflare、cf-ray）。例如台北榮總、健保署的回應標頭顯示由 Cloudflare 台北節點（TPE）提供服務。查詢時間 2026/11。</div></div>
+    <div class="qa-item"><div class="q"><span>Q10</span>原本的 DNS 主機還要保留嗎？</div><div class="a"><span>A</span>切換後建議保留一段時間作為退回方案；確認穩定後，可以繼續作為院內 DNS 使用。</div></div>
+  </div>
+</div>
+
+<div class="navbar" id="navbar">
+  <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">19</span></span>
+  <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
+</div>
+<div class="progress" id="progress"></div>
+<div id="help">← → / 點兩側 / 右下箭頭 翻頁　·　F 全螢幕　·　Q 補充議題　·　Home／End 首尾</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let cur=0;
+  const stage=document.getElementById('stage');
+  const progress=document.getElementById('progress');
+  const curNo=document.getElementById('curNo');
+  const totNo=document.getElementById('totNo');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  const qa=document.getElementById('qa');
+  totNo.textContent=total;
+
+  function clampHash(){const h=parseInt(location.hash.replace('#',''),10);return (h>=1&&h<=total)?h-1:0;}
+  function show(i){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    curNo.textContent=cur+1;
+    progress.style.width=(cur/(total-1))*100+'%';
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  const next=()=>show(cur+1), prev=()=>show(cur-1);
+
+  function fit(){const s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+  window.addEventListener('resize',fit);
+
+  document.addEventListener('keydown',e=>{
+    if(qa.classList.contains('show')){
+      if(['q','Q','Escape'].includes(e.key)){qa.classList.remove('show');e.preventDefault();}
+      return;
+    }
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': next();e.preventDefault();break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': prev();e.preventDefault();break;
+      case 'Home': show(0);e.preventDefault();break;
+      case 'End': show(total-1);e.preventDefault();break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.(); e.preventDefault();break;
+      case 'q': case 'Q': qa.classList.add('show');e.preventDefault();break;
+    }
+  });
+
+  prevBtn.addEventListener('click',e=>{e.stopPropagation();prev();});
+  nextBtn.addEventListener('click',e=>{e.stopPropagation();next();});
+
+  // 點畫面左右各 1/6 才翻頁；中間 2/3 留給選字／點按
+  document.addEventListener('click',e=>{
+    if(qa.classList.contains('show'))return;
+    if(e.target.closest('#navbar')||e.target.closest('a')||e.target.closest('button'))return;
+    const w=window.innerWidth;
+    if(e.clientX < w/6) prev();
+    else if(e.clientX > w*5/6) next();
+  });
+
+  let tx=0,ty=0;
+  document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(qa.classList.contains('show'))return;
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev();}
+  },{passive:true});
+
+  fit(); show(clampHash());
+  setTimeout(()=>{document.getElementById('help').style.opacity='0';},5000);
+</script>
+</body>
+</html>

@@ -17,6 +17,8 @@ CTK Pro（竑盛科技）的標案、對外與對內簡報集合。暖白底極�
 - 網站上線，只是開始（良艮設計）：`sales-pitch/liangen-talk/index.html`
 - 做得出來之後，怎麼驗？（勞動部 AI 協作課程第四堂下半場，約 30 分鐘）：`sales-pitch/mol-answer-key/index.html`
 - 李綜合醫院網路掛號系統改版：`sales-pitch/lgh-reg-meeting/index.html`
+- 李綜合醫院對外網域導入 Cloudflare，同步解決內網 SSL 憑證規劃：`sales-pitch/lgh-cloudflare-ssl/index.html`
+- 李綜合醫院網路掛號 API 盤點與待補項目：`sales-pitch/lgh-his-api-gap/index.html`
 - 2026 Q3 全員發表：`internal-talks/2026q3-all-hands/index.html`
 - Prompt · Context · Harness 深化版：`internal-talks/prompt-context-harness-engineering/index.html`
 - 別把「判斷」也外包出去（認知外包 Retro 分享）：`internal-talks/2026q3-cognitive-offloading/index.html`

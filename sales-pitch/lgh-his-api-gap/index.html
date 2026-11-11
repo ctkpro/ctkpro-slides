@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>李綜合醫院網路掛號 API 盤點與待補項目｜CTK Pro 竑盛科技</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d1b; --muted:#6b6b6b; --soft:#9a9a9a;
+    --line:#e6e6e6; --line2:#efefef;
+    /* 本案（醫療）主色＝深青 Teal；變數名沿用 --blue 以相容元件樣式 */
+    --blue:#0E7490; --blue-700:#0B5A70; --blue-300:#5EAEC4; --blue-50:#EAF6F9;
+    /* 輔助色＝靛藍（院內相關），白字達 AA */
+    --indigo:#3B4E8C; --indigo-700:#2C3B6B; --indigo-50:#EEF1F8;
+    --bg:#FBFAF7; --paper:#F2F7F9; --warn:#9A6700; --danger:#B42318;
+    /* CTK Pro 企業紅（標示 CTK 負責的區塊） */
+    --ctk:#e11f27; --ctk-700:#B5161D; --ctk-50:#FDEDEE;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;width:100%;overflow:hidden;background:#eceef2;}
+  body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+       color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+  #stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;background:var(--bg);}
+
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg);padding:46px 148px 58px 70px;}
+  .slide.active{display:flex;}
+  .body{flex:1;display:flex;flex-direction:column;justify-content:center;}
+
+  /* ---- 共用文字元件 ---- */
+  .kicker{display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:700;
+          letter-spacing:3px;color:var(--blue);text-transform:uppercase;}
+  .kicker::before{content:"";width:28px;height:3px;border-radius:2px;background:var(--blue);}
+  .kicker.in{color:var(--indigo);} .kicker.in::before{background:var(--indigo);}
+  .page-title{font-size:40px;font-weight:900;line-height:1.2;color:var(--ink);margin:10px 0 4px;letter-spacing:-.5px;}
+  .page-title .em{color:var(--blue);}
+  .page-title .em.in{color:var(--indigo);}
+  .page-sub{font-size:18px;line-height:1.55;color:var(--muted);max-width:1000px;}
+
+  .tag{display:inline-block;font-size:14px;font-weight:700;padding:5px 13px;border-radius:999px;
+       background:var(--blue-50);color:var(--blue);}
+  .tag.in{background:var(--indigo-50);color:var(--indigo);}
+  .tag.warn{background:#FDF6E7;color:var(--warn);}
+  .tag.ok{background:#EAF6EF;color:#1B7A4B;}
+
+  /* ---- 頁首 logo / 頁尾標記 ---- */
+  .logo-tr{position:absolute;top:40px;right:148px;height:28px;opacity:.92;}
+  .brandmark{position:absolute;left:70px;bottom:20px;font-size:12.5px;font-weight:500;letter-spacing:.5px;color:var(--soft);}
+
+  /* ---- 卡片 ---- */
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:15px;padding:20px 22px;
+        box-shadow:0 6px 18px rgba(30,40,80,.05);display:flex;flex-direction:column;}
+  .card h3{font-size:21px;font-weight:800;color:var(--ink);margin-bottom:7px;display:flex;align-items:center;gap:10px;}
+  .card p{font-size:16.5px;line-height:1.58;color:var(--muted);}
+  .card p b{color:var(--ink);font-weight:700;}
+  .card.soft{background:var(--paper);border-color:var(--line2);}
+  .card.edge{border-left:5px solid var(--blue);}
+  .card.edge-in{border-left:5px solid var(--indigo);}
+  .card.edge-warn{border-left:5px solid var(--warn);}
+  .num-chip{flex:none;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;
+            justify-content:center;font-size:18px;font-weight:900;color:#fff;background:var(--blue);}
+  .num-chip.in{background:var(--indigo);}
+  .card-foot{margin-top:auto;padding-top:10px;border-top:1px dashed var(--line);
+             font-size:14px;font-weight:700;color:var(--blue);}
+  .card-foot::before{content:"▸ ";}
+  .card-foot.in{color:var(--indigo);}
+
+  /* ---- 封面 ---- */
+  .cover{justify-content:center;}
+  .cover .eyebrow{font-size:17px;font-weight:700;letter-spacing:4px;color:var(--blue);margin-bottom:20px;}
+  .cover h1{font-size:52px;font-weight:900;line-height:1.22;letter-spacing:-1px;}
+  .cover h1 .em{color:var(--blue);}
+  .cover .sub{font-size:20px;color:var(--muted);margin-top:20px;line-height:1.65;}
+  .cover .meta{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap;}
+  .cover .bigmark{position:absolute;right:110px;bottom:64px;font-size:140px;font-weight:900;
+                  color:var(--blue);opacity:.05;letter-spacing:-5px;line-height:1;}
+
+  /* ---- 圖 ---- */
+  .fig{width:100%;}
+  .fig svg{width:100%;height:auto;display:block;}
+
+  /* ---- 表格 ---- */
+  table.t{width:100%;border-collapse:collapse;font-size:15.5px;}
+  table.t th{background:var(--paper);color:var(--ink);font-weight:800;text-align:left;
+             padding:9px 12px;border-bottom:2px solid var(--blue-300);font-size:15px;}
+  table.t td{padding:9px 12px;border-bottom:1px solid var(--line);color:var(--muted);vertical-align:top;line-height:1.5;}
+  table.t td b{color:var(--ink);font-weight:700;}
+  table.t tr:last-child td{border-bottom:none;}
+  table.t th.hl{background:var(--blue);color:#fff;border-bottom-color:var(--blue);}
+  table.t td.hl{background:var(--blue-50);}
+  table.t th.who{width:38%;}
+
+  /* ---- 條列 ---- */
+  ul.bul{list-style:none;}
+  ul.bul li{position:relative;padding-left:19px;font-size:16.5px;line-height:1.62;color:var(--muted);margin-bottom:6px;}
+  ul.bul li::before{content:"";position:absolute;left:0;top:10px;width:7px;height:7px;border-radius:50%;background:var(--blue);}
+  ul.bul li b{color:var(--ink);font-weight:700;}
+  ul.bul.tight li{margin-bottom:3px;font-size:15.5px;}
+  ul.bul.in li::before{background:var(--indigo);}
+
+  /* ---- 欄位 ---- */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+
+  /* ---- 結論三格 ---- */
+  .result{display:flex;flex-direction:column;gap:10px;padding:22px 22px 20px;border-radius:15px;
+          background:var(--bg);border:1px solid var(--line);border-top:5px solid var(--blue);box-shadow:0 6px 18px rgba(30,40,80,.05);}
+  .result.in{border-top-color:var(--indigo);}
+  .result .ttl{font-size:23px;font-weight:900;line-height:1.3;}
+  .result .ds{font-size:16px;line-height:1.6;color:var(--muted);}
+  .result .ds b{color:var(--ink);}
+  .ask{display:flex;align-items:center;gap:18px;background:var(--blue);color:#fff;border-radius:15px;padding:20px 26px;margin-bottom:22px;}
+  .ask .k{font-size:15px;font-weight:700;letter-spacing:2px;opacity:.85;flex:none;}
+  .ask .v{font-size:26px;font-weight:900;line-height:1.3;}
+
+  /* ---- 階段 ---- */
+  .stages{display:grid;gap:12px;}
+  .stage{background:var(--bg);border:1px solid var(--line);border-top:4px solid var(--blue);border-radius:12px;
+         padding:14px 15px 14px;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(30,40,80,.05);}
+  .stage.in{border-top-color:var(--indigo);}
+  .stage .no{font-size:13px;font-weight:800;letter-spacing:2px;color:var(--soft);}
+  .stage .nm{font-size:19px;font-weight:900;color:var(--ink);margin:3px 0 8px;line-height:1.3;}
+  .stage .ds{font-size:14.5px;line-height:1.6;color:var(--muted);}
+  .stage .ds b{color:var(--ink);font-weight:700;}
+  .stage .who{margin-top:auto;padding-top:10px;display:flex;gap:6px;flex-wrap:wrap;}
+  .stage .who .tag{font-size:12.5px;padding:3px 10px;}
+
+  .principle{display:flex;align-items:center;gap:16px;margin-top:20px;background:var(--paper);border-radius:13px;padding:15px 20px;}
+  .principle .ic{flex:none;width:40px;height:40px;border-radius:50%;background:var(--blue);color:#fff;
+                 display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;}
+  .principle p{font-size:16.5px;line-height:1.55;color:var(--muted);}
+  .principle p b{color:var(--ink);}
+  .note{margin-top:12px;font-size:13px;line-height:1.6;color:var(--soft);}
+
+  .flow{display:flex;align-items:center;gap:12px;font-size:16px;color:var(--muted);flex-wrap:wrap;}
+  .flow b{color:var(--ink);}
+  .flow .ar{color:var(--blue);font-weight:900;}
+
+  /* ---- 常見疑問 ---- */
+  .faq{display:grid;grid-template-columns:1fr 1fr;gap:0 34px;}
+  .faq .it{padding:16px 0 15px;border-bottom:1px solid var(--line);}
+  .faq .it:last-child{border-bottom:none;}
+  .faq .it.wide{grid-column:1 / -1;}
+  .faq .who-row{display:flex;gap:10px;align-items:baseline;margin-bottom:6px;line-height:1.6;}
+  .faq .who-row .tag{flex:none;font-size:12.5px;padding:2px 10px;min-width:176px;text-align:center;}
+  .faq .src{font-size:13.5px;color:var(--soft);margin-top:6px;}
+  .faq .q{font-size:20px;font-weight:900;color:var(--ink);display:flex;gap:10px;line-height:1.4;}
+  .faq .q span{color:var(--blue);flex:none;}
+  .faq .a{font-size:16px;line-height:1.62;color:var(--muted);margin-top:6px;padding-left:34px;}
+  .faq .a b{color:var(--ink);}
+
+  /* ---- 建置項目 ---- */
+  .build{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 14px;}
+  .build .bi{display:flex;gap:11px;align-items:flex-start;background:var(--ctk-50);border:1px solid #F6C9CB;
+             border-left:4px solid var(--ctk);border-radius:11px;padding:10px 13px;}
+  .build .bi .n{flex:none;width:24px;height:24px;border-radius:7px;background:var(--ctk);color:#fff;
+                font-size:13.5px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+  .build .bi b{font-size:15.5px;font-weight:800;color:var(--ink);}
+  .build .bi p{font-size:13.5px;line-height:1.5;color:var(--muted);margin-top:2px;}
+
+  /* ---- 建置項目（大卡） ---- */
+  .build2{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .build2 .bc{background:var(--ctk-50);border:1px solid #F6C9CB;border-left:5px solid var(--ctk);border-radius:14px;padding:18px 20px;}
+  .build2 .bc h3{display:flex;align-items:center;gap:10px;font-size:19.5px;font-weight:900;color:var(--ink);margin-bottom:8px;}
+  .build2 .bc h3 .n{flex:none;width:30px;height:30px;border-radius:9px;background:var(--ctk);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;}
+  .build2 .bc p{font-size:15.5px;line-height:1.62;color:var(--muted);}
+  .build2 .bc p b{color:var(--ink);}
+
+  /* ---- 狀態標籤 ---- */
+  .st{display:inline-block;font-size:13px;font-weight:800;padding:2px 10px;border-radius:999px;white-space:nowrap;}
+  .st.ok{background:#EAF6EF;color:#1B7A4B;}
+  .st.wait{background:#FDF6E7;color:var(--warn);}
+  .st.no{background:#FDEEEC;color:var(--danger);}
+  table.t.gap td{padding:11px 12px;font-size:15.5px;}
+  table.t.gap td .st{margin-bottom:4px;}
+  table.t td.fill{background:repeating-linear-gradient(0deg,transparent 0 31px,var(--line) 31px 32px);}
+  .sumbox{background:var(--blue);color:#fff;border-radius:14px;padding:20px 22px;display:flex;flex-direction:column;gap:14px;justify-content:center;}
+  .sumbox .row .k{font-size:14px;font-weight:700;opacity:.85;}
+  .sumbox .row .v{font-size:24px;font-weight:900;line-height:1.3;}
+  .sumbox .row.total{border-top:1px solid rgba(255,255,255,.35);padding-top:14px;}
+
+  /* ---- 截圖 ---- */
+  .shots{display:grid;grid-template-columns:1.05fr .95fr;gap:20px;align-items:start;}
+  .shot-col{display:flex;flex-direction:column;gap:12px;}
+  .shot{margin:0;}
+  .shot .frame{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 8px 22px rgba(30,40,80,.08);}
+  .shot .frame img{display:block;width:100%;height:auto;}
+  .shot .frame.crop{height:420px;}
+  .shot .frame.crop img{height:100%;object-fit:cover;object-position:top;}
+  .shot.tall .frame{max-height:400px;}
+  .shot figcaption{font-size:14px;color:var(--muted);margin-top:7px;display:flex;align-items:center;gap:8px;}
+  .shot figcaption b{color:var(--ink);}
+  .shot .api{font-size:12px;font-weight:800;color:var(--blue);background:var(--blue-50);padding:2px 8px;border-radius:6px;font-family:ui-monospace,Menlo,monospace;}
+  /* ---- 狀態表新增列、程式碼 ---- */
+  table.t tr.new td{background:#EAF6EF;}
+  table.t .nw{font-size:11.5px;font-weight:800;color:#1B7A4B;background:#fff;border:1px solid #BFE3CD;border-radius:6px;padding:0 6px;margin-left:6px;}
+  pre.code{font-family:ui-monospace,Menlo,monospace;font-size:14px;line-height:1.55;background:#1f2a30;color:#e7eef2;border-radius:10px;padding:12px 16px;margin-top:4px;}
+  pre.code b{color:#8fe3b0;font-weight:700;}
+  /* ---- 統整卡 ---- */
+  .card.sum h3{font-size:20px;}
+  .card.sum p{font-size:16px;}
+  .card.sum .due{margin-top:12px;padding-top:8px;border-top:1px dashed var(--line);font-size:14px;font-weight:700;color:var(--soft);}
+
+  /* ---- 右下角導覽 + 進度 ---- */
+  .navbar{position:fixed;right:24px;bottom:16px;display:flex;align-items:center;gap:10px;z-index:40;color:var(--muted);user-select:none;}
+  .navbar .nav-arrow{border:none;background:none;cursor:pointer;line-height:1;font-size:26px;color:var(--soft);
+                     padding:2px 9px;border-radius:8px;transition:color .2s,background .2s;}
+  .navbar .nav-arrow:hover{color:var(--blue);background:var(--blue-50);}
+  .navbar .nav-count{font-size:15px;font-weight:700;letter-spacing:.12em;min-width:64px;text-align:center;color:var(--muted);}
+  .navbar .nav-count b{color:var(--ink);}
+  .progress{position:fixed;left:0;bottom:0;height:3px;background:var(--blue);width:0;transition:width .35s ease;z-index:40;}
+  #help{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;background:rgba(11,90,112,.94);
+        color:#fff;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .6s;}
+
+  /* ---- 補充議題層（按 Q） ---- */
+  #qa{position:fixed;inset:0;z-index:80;background:rgba(251,250,247,.985);display:none;padding:40px 54px;overflow:auto;}
+  #qa.show{display:block;}
+  #qa h2{font-size:29px;font-weight:900;margin-bottom:4px;}
+  #qa .hint{font-size:14px;color:var(--soft);margin-bottom:18px;}
+  #qa .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px 26px;}
+  #qa .qa-item{border-bottom:1px solid var(--line);padding-bottom:9px;}
+  #qa .q{font-size:16px;font-weight:800;color:var(--ink);display:flex;gap:8px;line-height:1.45;}
+  #qa .q span{color:var(--blue);flex:none;}
+  #qa .a{font-size:14.5px;color:var(--muted);margin-top:3px;padding-left:26px;line-height:1.55;display:flex;gap:8px;}
+  #qa .a span{color:var(--blue-300);flex:none;font-weight:800;}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ============ P1 封面 ============ -->
+<div class="slide active cover">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="bigmark">API</div>
+  <div class="body">
+    <div class="eyebrow">李綜合醫院 × CTK PRO 竑盛科技</div>
+    <h1>網路掛號 API 盤點<br><span class="em">與待補項目</span></h1>
+    <p class="sub">
+      已完成串接的院方 API、目前還缺的資料，<br>
+      以及需要貴院確認的規則與時程
+    </p>
+    <div class="meta">
+      <span class="tag">串接現況</span>
+      <span class="tag">實際畫面</span>
+      <span class="tag">看診進度</span>
+      <span class="tag">初診預約</span>
+      <span class="tag">額滿與停代診</span>
+      <span class="tag">規則確認</span>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P2 串接現況 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">串接現況</div>
+  <div class="page-title">院方提供的 8 支 API，<span class="em">都已完成串接</span></div>
+  <div class="page-sub">網站透過轉接層連到院方掛號 API，已在院方測試環境完成查詢、掛號、取消的實測。</div>
+  <div class="body">
+    <div class="two" style="grid-template-columns:1.35fr 1fr;gap:24px;align-items:stretch;">
+      <table class="t">
+        <tr><th style="width:30%;">類別</th><th>院方 API</th><th style="width:20%;">狀態</th></tr>
+        <tr><td><b>院區與科別</b></td><td>campuses、departments</td><td><span class="st ok">已串接</span></td></tr>
+        <tr><td><b>醫師</b></td><td>doctors</td><td><span class="st ok">已串接</span></td></tr>
+        <tr><td><b>門診時段</b></td><td>slots、schedule</td><td><span class="st ok">已串接</span></td></tr>
+        <tr><td><b>掛號</b></td><td>book</td><td><span class="st ok">已串接</span></td></tr>
+        <tr><td><b>查詢、取消</b></td><td>bookings/query、bookings/cancel</td><td><span class="st ok">已串接</span></td></tr>
+      </table>
+      <div class="sumbox">
+        <div class="row"><div class="k">大甲院區門診資料</div><div class="v">22 科・59 位醫師</div><div class="k" style="margin-top:2px;">563 個診次全部轉換無誤</div></div>
+        <div class="row"><div class="k">實測回應時間</div><div class="v">查詢 0.7 秒</div><div class="k" style="margin-top:2px;">掛號約 4.5 秒・取消約 10.5 秒</div></div>
+        <div class="row total"><div class="k">機器人防護</div><div class="v">Cloudflare Turnstile</div><div class="k" style="margin-top:2px;">掛號、查詢、取消送出前驗證</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P3 實際畫面 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">串接成果</div>
+  <div class="page-title">網站畫面上的門診資料，<span class="em">都來自院方 API</span></div>
+  <div class="body">
+    <div class="shots">
+      <figure class="shot"><div class="frame crop"><img src="images/shot-departments.png" alt="選擇院區與科別：科別與分組由院方回傳"></div>
+        <figcaption><span class="api">departments</span>科別清單：科別與分組由院方回傳</figcaption></figure>
+      <div class="shot-col">
+        <figure class="shot"><div class="frame"><img src="images/shot-schedule.png" alt="醫師門診表：整科 5 週門診彙整成週一到週日"></div>
+          <figcaption><span class="api">schedule</span>醫師門診表：整科 5 週門診彙整</figcaption></figure>
+        <figure class="shot"><div class="frame"><img src="images/shot-timeslots.png" alt="選擇看診日期：依院方門診資料顯示可預約、已截止等狀態"></div>
+          <figcaption><span class="api">slots</span>選擇時段：顯示可預約、<b>已截止</b>等即時狀態</figcaption></figure>
+      </div>
+    </div>
+    <p class="note">測試站畫面，連接院方測試 API，2026/11/11 擷取。掛號、查詢、取消已使用院方指定的測試病患完成實測。</p>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P3b 掛號實測 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">串接成果</div>
+  <div class="page-title">掛號、查詢、取消，<span class="em">實際操作都成功</span></div>
+  <div class="body">
+    <div class="shots" style="grid-template-columns:340px 1fr;gap:24px;">
+      <figure class="shot"><div class="frame"><img src="images/shot-book.png" alt="門診掛號成功畫面：院方回傳看診號 28 號"></div>
+        <figcaption><span class="api">book</span>掛號成功：院方即時回傳<b>看診號 28</b></figcaption></figure>
+      <div class="shot-col" style="gap:16px;">
+        <figure class="shot"><div class="frame"><img src="images/shot-query.png" alt="查詢掛號：用身分證查到剛才的掛號"></div>
+          <figcaption><span class="api">bookings/query</span>用<b>身分證</b>查詢，查到剛才的掛號</figcaption></figure>
+        <figure class="shot"><div class="frame"><img src="images/shot-cancel.png" alt="取消掛號成功畫面"></div>
+          <figcaption><span class="api">bookings/cancel</span>取消成功，重新查詢後該筆已移除</figcaption></figure>
+      </div>
+    </div>
+    <p class="note">2026/11/11 實測。本機測試環境，連接院方測試 API，使用院方提供的測試病患資料；測試掛號均已取消。</p>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P4 缺口總表 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">缺口總表</div>
+  <div class="page-title">目前缺少的<span class="em">四項資料</span></div>
+  <div class="body">
+    <table class="t gap">
+      <tr><th style="width:15%;">項目</th><th style="width:30%;">目前狀況</th><th style="width:37%;">需要院方提供</th><th>預計補上時間</th></tr>
+      <tr><td><b>看診進度</b></td><td><span class="st no">尚無 API</span><br>網站頁面已完成</td><td>各診間目前號碼、等候人數的資料</td><td class="fill"></td></tr>
+      <tr><td><b>初診預約</b></td><td><span class="st no">尚無 API</span><br>查無病患時只回「查無資料」</td><td>初診建檔與掛號 API，並區分新病患與資料不符</td><td class="fill"></td></tr>
+      <tr><td><b>額滿狀態</b></td><td><span class="st wait">部分可用</span><br>停診可辨識，未出現過額滿的狀態值</td><td>門診資料加上「額滿」狀態</td><td class="fill"></td></tr>
+      <tr><td><b>停代診</b></td><td><span class="st wait">部分可用</span><br>停診可辨識，缺代診資訊</td><td>門診資料加上「代診」狀態與代診醫師</td><td class="fill"></td></tr>
+    </table>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P5 看診進度 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">議題 1｜看診進度</div>
+  <div class="page-title">網站頁面已完成，<span class="em">等候院方的資料來源</span></div>
+  <div class="body">
+    <div class="two" style="grid-template-columns:1.1fr 1fr;gap:24px;align-items:start;">
+      <div class="card soft">
+        <h3 style="font-size:19.5px;">頁面需要的欄位</h3>
+        <table class="t" style="margin-top:4px;">
+          <tr><th style="width:36%;">欄位</th><th>說明</th></tr>
+          <tr><td><b>院區、時段</b></td><td>上午、下午、晚上</td></tr>
+          <tr><td><b>科別、醫師</b></td><td>沿用門診資料的代碼</td></tr>
+          <tr><td><b>診間</b></td><td>例如 2 診</td></tr>
+          <tr><td><b>目前號碼</b></td><td>正在看診的號碼</td></tr>
+          <tr><td><b>等候人數</b></td><td>尚未看診的人數</td></tr>
+          <tr><td><b>更新時間</b></td><td>資料最後更新的時間</td></tr>
+        </table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="card edge"><h3 style="font-size:19px;">請院方確認</h3>
+          <ul class="bul tight">
+            <li>叫號系統<b>能否提供</b>上述資料</li>
+            <li>資料<b>多久更新一次</b></li>
+            <li>可承受的查詢頻率</li>
+          </ul></div>
+        <div class="card edge"><h3 style="font-size:19px;">提供方式</h3>
+          <p style="font-size:15.5px;">依院方系統<b>最方便的方式</b>提供即可，<b>網站端配合調整</b>。</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P6 初診預約 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">議題 2｜初診預約</div>
+  <div class="page-title">初診線上填完資料，<span class="em">直接完成掛號</span></div>
+  <div class="page-sub">第一次就診的病患在線上填寫初診資料，院方直接建立病歷並完成掛號，不增加櫃檯作業。</div>
+  <div class="body">
+    <div class="stages" style="grid-template-columns:repeat(3,1fr);">
+      <div class="stage"><div class="no">STEP 1</div><div class="nm">確認身分</div>
+        <div class="ds">填寫<b>身分證、生日</b>，院方比對後回傳是否為新病患</div></div>
+      <div class="stage"><div class="no">STEP 2</div><div class="nm">填寫初診資料</div>
+        <div class="ds"><b>姓名、地址、緊急聯絡人</b>、吸菸飲酒檳榔習慣、個資同意（欄位依院方初診單）</div></div>
+      <div class="stage"><div class="no">STEP 3</div><div class="nm">建立病歷並掛號</div>
+        <div class="ds">院方<b>建立病歷、完成掛號</b>，回傳看診號；當天查驗證件即可報到</div></div>
+    </div>
+    <p style="font-size:14.5px;color:var(--blue);font-weight:700;margin-top:10px;">▸ 院方需要：初診建檔與掛號 API、初診單欄位對照、個資告知條款</p>
+    <div class="two" style="grid-template-columns:1.35fr 1fr;gap:16px;margin-top:14px;align-items:stretch;">
+      <div class="card edge-warn" style="padding:14px 18px;">
+        <h3 style="font-size:18px;margin-bottom:6px;">關鍵：院方回傳要分辨三種結果</h3>
+        <table class="t" style="font-size:14.5px;">
+          <tr><th style="width:36%;">院方比對身分證</th><th style="width:28%;">建議回傳</th><th>網站引導</th></tr>
+          <tr><td><b>從未出現過</b></td><td>NEW_PATIENT</td><td>確認是第一次就診 → 初診</td></tr>
+          <tr><td><b>存在，生日不符</b></td><td>IDENTITY_MISMATCH</td><td>請檢查生日或洽櫃檯</td></tr>
+          <tr><td><b>存在，生日相符</b></td><td>（正常掛號）</td><td>一般掛號流程</td></tr>
+        </table>
+      </div>
+      <div class="card edge" style="padding:14px 18px;">
+        <h3 style="font-size:18px;margin-bottom:6px;">網站端的防呆</h3>
+        <ul class="bul tight">
+          <li>送出前檢查<b>身分證檢查碼</b>，打錯號碼先擋下</li>
+          <li><b>病歷號查無</b>不當作初診，請病患檢查</li>
+          <li>搭配 <b>Turnstile 與限流</b>，避免被大量嘗試</li>
+          <li>居留證、無身分證兒童的預約方式另行確認</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P7 額滿與停代診 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">議題 3｜額滿與停代診</div>
+  <div class="page-title">門診資料多兩種狀態，<span class="em">停代診頁面就能自動產生</span></div>
+  <div class="page-sub">在現有門診資料的狀態中加上「額滿」與「代診」，不必另開停代診 API。</div>
+  <div class="body">
+    <div class="two" style="grid-template-columns:1.15fr 1fr;gap:22px;align-items:stretch;">
+      <div class="card soft">
+        <h3 style="font-size:19px;">建議的狀態值</h3>
+        <table class="t" style="margin-top:4px;">
+          <tr><th style="width:37%;">狀態值</th><th style="width:17%;">意義</th><th>網站顯示</th></tr>
+          <tr><td><b>available</b></td><td>可掛號</td><td>可以點選掛號</td></tr>
+          <tr><td><b>stopped</b></td><td>停診</td><td>停代診頁列為停診</td></tr>
+          <tr><td><b>closed</b></td><td>已截止</td><td>灰色、不能點</td></tr>
+          <tr class="new"><td><b>full</b><span class="nw">新增</span></td><td>額滿</td><td>標示額滿、不能點</td></tr>
+          <tr class="new"><td><b>substitute</b><span class="nw">新增</span></td><td>代診</td><td>停代診頁列為「某某醫師代診」</td></tr>
+        </table>
+        <p style="font-size:13.5px;margin-top:8px;">狀態名稱可依院方系統習慣調整；請假且無人代診時，以「停診」表示即可。</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="card edge"><h3 style="font-size:19px;">代診時多帶一個欄位</h3>
+          <pre class="code">{
+  "date": "1151120",
+  "session": "1",
+  "doctorId": "A123",
+  "status": "substitute",
+  <b>"substituteDoctorId": "A456"</b>
+}</pre></div>
+        <div class="card edge"><h3 style="font-size:19px;">這樣做的好處</h3>
+          <ul class="bul tight">
+            <li>選時段時直接標示<b>額滿</b>，不必送出才知道</li>
+            <li>停代診頁面<b>由門診資料自動彙整</b>，院方不用另外維護</li>
+          </ul></div>
+      </div>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P8 規則確認 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">規則確認</div>
+  <div class="page-title">掛號規則與<span class="em">實測發現</span></div>
+  <div class="page-sub">現行官網的掛號說明與院方 API 的行為不一致，請貴院確認新網站以哪一個為準。</div>
+  <div class="body">
+    <table class="t" style="font-size:16.5px;">
+      <tr><th style="width:18%;">項目</th><th style="width:27%;">現行官網說明</th><th style="width:30%;">院方 API／新網站目前</th><th>請確認</th></tr>
+      <tr><td><b>可預約天數</b></td><td>28 天內的門診</td><td>API 固定回傳今天起 <b>35 天</b></td><td>開放 28 天或 35 天</td></tr>
+      <tr><td><b>網路掛號時間</b></td><td>早上 07:00 至晚上 22:00</td><td>新網站 <b>24 小時</b>可掛號</td><td>API 是否限制時間、網站是否比照</td></tr>
+      <tr><td><b>取消期限</b></td><td>看診前一天</td><td>看診當天仍可按取消</td><td>當天的掛號能不能取消</td></tr>
+    </table>
+    <div class="card edge" style="margin-top:18px;padding:16px 22px;">
+      <h3 style="font-size:19px;margin-bottom:6px;">實測時發現，想一併確認</h3>
+      <ul class="bul tight">
+        <li><b>診間顯示「0223 診」</b>：是代表二樓的 23 診嗎？網站是否直接這樣顯示給病患？</li>
+        <li><b>不送手機號碼</b>，掛號 API 是否也能完成掛號？（網站規劃不再要求病患填寫手機）</li>
+      </ul>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+<!-- ============ P9 統整 ============ -->
+<div class="slide">
+  <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro" onerror="this.style.display='none'">
+  <div class="kicker">統整</div>
+  <div class="page-title">請院方回覆的<span class="em">四大項目</span></div>
+  <div class="body">
+    <div class="two" style="gap:14px;">
+      <div class="card edge sum"><h3><span class="num-chip">1</span>看診進度</h3>
+        <p>能否提供各診間<b>目前號碼、等候人數</b>；提供方式與更新頻率</p><div class="due">預計提供：</div></div>
+      <div class="card edge sum"><h3><span class="num-chip">2</span>初診預約</h3>
+        <p><b>初診建檔 API</b> 的欄位與規格；回傳時區分新病患與身分資料不符</p><div class="due">預計提供：</div></div>
+      <div class="card edge sum"><h3><span class="num-chip">3</span>額滿狀態</h3>
+        <p>門診資料加上<b>額滿</b>狀態</p><div class="due">預計提供：</div></div>
+      <div class="card edge sum"><h3><span class="num-chip">4</span>停代診</h3>
+        <p>門診資料加上<b>代診</b>狀態與代診醫師代碼</p><div class="due">預計提供：</div></div>
+    </div>
+    <div class="principle" style="margin-top:16px;">
+      <div class="ic">?</div>
+      <p><b>另請確認：</b>可預約 28 天或 35 天｜網路掛號是否限制 07:00–22:00｜看診當天能否取消｜「0223 診」的意義｜不送手機能否掛號</p>
+    </div>
+  </div>
+  <div class="brandmark">CTK Pro 竑盛科技</div>
+</div>
+
+</div><!-- /#stage -->
+
+<!-- 補充議題（按 Q） -->
+<div id="qa">
+  <h2>補充議題與備詢</h2>
+  <div class="hint">此區不在簡報主流程，按 Q 或 Esc 關閉。</div>
+  <div class="qgrid">
+    <div class="qa-item"><div class="q"><span>Q1</span>為什麼網站要經過轉接層，不直接呼叫院方 API？</div><div class="a"><span>A</span>院方 API 只有 http、沒有驗證。病患的瀏覽器不能直接呼叫，也不應該知道院方主機的位址；轉接層負責加密連線、格式轉換、機器人驗證與錯誤處理。</div></div>
+    <div class="qa-item"><div class="q"><span>Q2</span>轉接層會留下病患資料嗎？</div><div class="a"><span>A</span>不會。紀錄只寫錯誤代碼、路徑與時間，不記錄身分證、生日等請求內容，也不把掛號編號放進網址。</div></div>
+    <div class="qa-item"><div class="q"><span>Q3</span>測試時怎麼避免動到真實病患？</div><div class="a"><span>A</span>只使用院方指定的測試病患；每次測試的掛號都會取消。「開放掛號」開關預設關閉，關閉時不會有任何掛號送到院方。</div></div>
+    <div class="qa-item"><div class="q"><span>Q4</span>同一位病患連按兩次送出會怎樣？</div><div class="a"><span>A</span>網站有三層防護：送出後按鈕鎖定、轉接層擋下處理中的重複請求、逾時時請病患先查詢不要重送。院方端的重複檢查規則確認後，會轉成清楚的提示。</div></div>
+    <div class="qa-item"><div class="q"><span>Q5</span>院方 API 連不上時，病患會看到什麼？</div><div class="a"><span>A</span>顯示「掛號系統暫時無法連線，請稍後再試」，不會顯示技術錯誤；掛號結果無法確認時，會請病患先查詢再決定是否重新掛號。</div></div>
+    <div class="qa-item"><div class="q"><span>Q6</span>醫師資料怎麼和網站的醫師頁對應？</div><div class="a"><span>A</span>用院方的醫師代碼對應，不用姓名，避免同名或用字不同（例如「峯」與「峰」）造成錯誤。大甲 57 位醫師已完成對應。</div></div>
+  </div>
+</div>
+
+<div class="navbar" id="navbar">
+  <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
+  <span class="nav-count"><b id="curNo">1</b> / <span id="totNo">10</span></span>
+  <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
+</div>
+<div class="progress" id="progress"></div>
+<div id="help">← → / 點兩側 / 右下箭頭 翻頁　·　F 全螢幕　·　Q 補充議題　·　Home／End 首尾</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let cur=0;
+  const stage=document.getElementById('stage');
+  const progress=document.getElementById('progress');
+  const curNo=document.getElementById('curNo');
+  const totNo=document.getElementById('totNo');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  const qa=document.getElementById('qa');
+  totNo.textContent=total;
+
+  function clampHash(){const h=parseInt(location.hash.replace('#',''),10);return (h>=1&&h<=total)?h-1:0;}
+  function show(i){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    curNo.textContent=cur+1;
+    progress.style.width=(cur/(total-1))*100+'%';
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  const next=()=>show(cur+1), prev=()=>show(cur-1);
+
+  function fit(){const s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+  window.addEventListener('resize',fit);
+
+  document.addEventListener('keydown',e=>{
+    if(qa.classList.contains('show')){
+      if(['q','Q','Escape'].includes(e.key)){qa.classList.remove('show');e.preventDefault();}
+      return;
+    }
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': next();e.preventDefault();break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': prev();e.preventDefault();break;
+      case 'Home': show(0);e.preventDefault();break;
+      case 'End': show(total-1);e.preventDefault();break;
+      case 'f': case 'F':
+        if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.(); e.preventDefault();break;
+      case 'q': case 'Q': qa.classList.add('show');e.preventDefault();break;
+    }
+  });
+
+  prevBtn.addEventListener('click',e=>{e.stopPropagation();prev();});
+  nextBtn.addEventListener('click',e=>{e.stopPropagation();next();});
+
+  // 點畫面左右各 1/6 才翻頁；中間 2/3 留給選字／點按
+  document.addEventListener('click',e=>{
+    if(qa.classList.contains('show'))return;
+    if(e.target.closest('#navbar')||e.target.closest('a')||e.target.closest('button'))return;
+    const w=window.innerWidth;
+    if(e.clientX < w/6) prev();
+    else if(e.clientX > w*5/6) next();
+  });
+
+  let tx=0,ty=0;
+  document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX;ty=e.changedTouches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(qa.classList.contains('show'))return;
+    const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)){dx<0?next():prev();}
+  },{passive:true});
+
+  fit(); show(clampHash());
+  setTimeout(()=>{document.getElementById('help').style.opacity='0';},5000);
+</script>
+</body>
+</html>
