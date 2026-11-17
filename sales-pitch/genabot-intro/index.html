@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="CTK Pro × GENABOT｜合作交流。設計、開發、資安與長期維運。">
+<title>Good to connect.｜CTK Pro × GENABOT</title>
+<style>
+:root{--paper:#faf9f6;--ink:#192b23;--muted:#5d6b64;--line:#d8dfd7;--mint:#b0f7d8;--purple:#6740dc;--pale:#eee8fc;--red:#e51e2a;--font:'Noto Sans TC','Microsoft JhengHei','PingFang TC',Arial,sans-serif}
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{background:#e7e8e2;font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit}a{color:inherit}button:focus-visible,a:focus-visible{outline:3px solid var(--purple);outline-offset:5px}
+#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center;overflow:hidden;background:var(--paper)}.slide{position:absolute;inset:0;padding:42px 148px 56px 76px;display:none;background:var(--paper)}.slide.active{display:block;animation:arrive .28s ease-out}@keyframes arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.topline{height:34px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:500;letter-spacing:.025em}.ctk-logo{width:86px;height:auto;display:block}.meeting-label{display:flex;align-items:center;gap:15px}.meeting-label .cross{color:#7d8c82;font-size:18px;font-weight:400}.genabot{letter-spacing:.08em;font-size:15px;font-weight:700}.section-label{color:var(--muted);font-size:13px;letter-spacing:.06em}.heading{font-family:Arial,var(--font);font-size:52px;line-height:1.08;letter-spacing:-1.7px;font-weight:500;margin:39px 0 12px}.subheading{font-size:22px;line-height:1.6;font-weight:500;margin:0;color:var(--muted)}.footer{position:absolute;left:76px;right:148px;bottom:27px;display:flex;align-items:center;justify-content:space-between;font-size:12px;letter-spacing:.04em;color:var(--muted)}.footer a{text-decoration:none}.footer a:hover{text-decoration:underline}.purple{color:var(--purple)}
+.genabot{display:inline-flex;align-items:center;gap:7px;font-family:Arial,sans-serif;font-size:22px;font-weight:500;letter-spacing:-.8px;line-height:1}.genabot img{display:block;width:33px;height:33px}.cover .genabot img{filter:brightness(0);opacity:.85}
+/* 01 — a spacious greeting, with original vector artwork */
+.cover{background:var(--mint)}.cover-title{font-family:Arial,var(--font);font-weight:500;font-size:110px;letter-spacing:-6px;line-height:.96;margin:94px 0 25px;position:relative;z-index:2}.cover-sub{font-size:29px;line-height:1.5;margin:0;font-weight:500;position:relative;z-index:2}.cover-meta{position:absolute;left:76px;bottom:109px;display:flex;align-items:center;gap:18px;font-size:15px}.cover-meta i{width:34px;height:1px;background:var(--ink)}.orb{position:absolute;left:756px;top:190px;width:356px;height:356px;border-radius:47% 47% 46% 22%;overflow:hidden;background:linear-gradient(135deg,#7f56ed,#422192);transform:rotate(-9deg);box-shadow:13px 19px 0 rgba(25,43,35,.08)}.orb svg{width:100%;height:100%}.orb-star{position:absolute;left:1058px;top:145px;font:400 79px/1 Arial;color:var(--purple);transform:rotate(10deg)}.cover .footer{border-top:1px solid rgba(25,43,35,.23);padding-top:16px;bottom:31px}.cover .section-label{color:var(--ink)}
+/* 03 — one shared table: a need and the concrete work behind it */
+.services .heading{margin-top:38px}.service-table{width:100%;border-collapse:collapse;margin-top:31px;table-layout:fixed}.service-table col:nth-child(1){width:32%}.service-table col:nth-child(2){width:23%}.service-table col:nth-child(3){width:45%}.service-table th{text-align:left;font-size:13px;color:var(--muted);font-weight:500;padding:0 0 13px}.service-table th:last-child{padding-left:18px}.service-table td{border-top:1px solid var(--line);height:108px;vertical-align:middle}.service-table td:first-child{font-size:23px;font-weight:700;line-height:1.5}.service-table td:nth-child(2){font:500 23px/1.3 Arial,var(--font);color:var(--purple)}.service-table td:last-child{font-size:18px;line-height:1.65;padding-left:18px;color:var(--muted)}.service-table tr:last-child td{border-bottom:1px solid var(--line)}.service-note{font-size:17px;margin:22px 0 0;color:var(--muted)}
+/* 02 — the team, its experience and the actual certificate */
+.about-layout{display:grid;grid-template-columns:370px 1fr;gap:41px;margin-top:38px}.since{padding-top:18px}.since small{font:500 16px/1 Arial;letter-spacing:.15em;color:var(--purple)}.since strong{font:500 104px/1.03 Arial;letter-spacing:-6px;display:block;margin:12px 0 19px}.since h3{font-size:27px;font-weight:500;line-height:1.55;margin:0 0 12px}.since p{font-size:18px;line-height:1.75;color:var(--muted);margin:0}.team-facts{border-top:1px solid var(--line);padding-top:4px}.team-fact{padding:16px 0 18px;border-bottom:1px solid var(--line)}.team-fact h3{font-size:21px;font-weight:700;margin:0 0 6px}.team-fact p{font-size:17px;line-height:1.65;color:var(--muted);margin:0}.cert-band{display:flex;gap:21px;align-items:center;background:var(--pale);border-radius:18px;margin-top:20px;padding:17px 20px}.cert-band>a{flex:none;width:91px;height:128px;display:block;background:white;box-shadow:0 5px 15px #27203914}.cert-band img{width:100%;height:100%;object-fit:contain;display:block}.cert-copy h3{font:500 25px/1.2 Arial;margin:0 0 8px;letter-spacing:-.3px}.cert-copy p{font-size:16px;line-height:1.65;margin:0;color:#51466f}.cert-copy small{font-size:13px;color:#665985;display:block;margin-top:8px}
+/* 04 — just the two established semiconductor website projects */
+.cases .heading{font-size:48px}.case-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px}.case{margin:0}.case-image{height:216px;display:block;overflow:hidden;border-radius:16px;background:#eceee9;border:1px solid var(--line);position:relative}.case-image img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .25s}.case-image:hover img{transform:scale(1.025)}.case-image.inpsy img{object-position:center}.case-image.puf img{object-position:center}.case figcaption{padding-top:16px}.case h3{font:500 29px/1.2 Arial;margin:0 0 10px;letter-spacing:-.7px}.case h3 a{text-decoration:none;display:flex;justify-content:space-between;align-items:center}.case h3 a span{font-size:22px;color:var(--purple)}.case p{font-size:18px;line-height:1.65;margin:0;color:var(--muted)}.case-note{font-size:12px;color:var(--muted);margin:20px 0 0;line-height:1.5}
+/* 05 — open questions, with an intentionally informal composition */
+.conversation{background:var(--pale)}.conversation .heading{font-size:66px;line-height:1.02;margin-top:49px;letter-spacing:-2.7px}.conversation .subheading{font-size:24px;color:var(--ink)}.question-mark{position:absolute;right:177px;top:130px;font:400 250px/.9 Arial;color:var(--purple);transform:rotate(10deg);opacity:.16;pointer-events:none}.questions{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:48px;position:relative;z-index:1}.question{padding:25px 28px 27px;border-radius:22px;min-height:176px}.question:first-child{background:var(--mint);transform:rotate(-2deg)}.question:nth-child(2){background:var(--ink);color:#fff;transform:rotate(2deg);margin-top:14px}.question small{font:500 13px Arial;letter-spacing:.12em;display:block;margin-bottom:15px}.question h3{font-size:26px;font-weight:500;line-height:1.55;margin:0}.question-last{display:flex;align-items:baseline;gap:22px;margin:33px 0 0 18px;font-size:23px}.question-last span{font:500 13px Arial;letter-spacing:.1em;color:var(--purple)}.question-last p{margin:0;line-height:1.5}.conversation .footer{color:#6a6180}
+/* 06 — a calm screen to leave up while talking */
+.thanks{background:var(--ink);color:var(--mint)}.thanks .section-label{color:#bdd4c8}.thanks .genabot{color:#d9eee1}.thanks .cross{color:#8da399}.thanks .heading{position:relative;z-index:2;font:400 112px/.98 Arial;letter-spacing:-5px;margin-top:120px}.thanks-sub{font-size:29px;margin:27px 0 0;position:relative;z-index:2;color:#ecf8f0;font-weight:400}.thanks-loop{position:absolute;left:817px;top:183px;width:285px;height:285px;border:58px solid #8457ed;border-radius:50%;transform:rotate(19deg);box-shadow:0 0 0 24px #6740dc3d,0 0 0 48px #6740dc20}.thanks-loop:after{content:'';position:absolute;inset:24px;border:1px solid #b49bf0;border-radius:50%}.thanks .footer{color:#b7cdc0;border-top:1px solid #557063;padding-top:17px;bottom:31px}.thanks .footer a{color:#e3f3e9}
+/* Navigation is deliberately small and outside the slide content. */
+.nav{position:fixed;right:22px;bottom:13px;display:flex;align-items:center;gap:8px;z-index:20;color:#526058;user-select:none}.nav button{background:#faf9f6eb;border:1px solid #d8dfd7;border-radius:50%;width:30px;height:30px;color:#43554a;font-size:22px;line-height:1;cursor:pointer}.nav button:hover{background:var(--mint);border-color:#97cdb4}.nav button:disabled{opacity:.3;cursor:default}.count{font:500 12px Arial;letter-spacing:.08em;min-width:48px;text-align:center}.progress{position:fixed;bottom:0;left:0;height:3px;width:0;background:var(--purple);z-index:20;transition:width .25s}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.nav button{display:grid;place-items:center;padding:0;flex-shrink:0}.nav button svg{display:block;width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+@media print{@page{size:1280px 720px;margin:0}html,body{overflow:visible;width:auto;height:auto;background:var(--paper)}#stage{position:static;width:1280px;height:auto;transform:none!important;overflow:visible}.slide,.slide.active{position:relative;display:block!important;width:1280px;height:720px;break-after:page;animation:none!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}.slide:last-child{break-after:auto}.nav,.progress{display:none}}
+</style>
+</head>
+<body>
+<main id="stage" aria-label="CTK Pro 與 GENABOT 合作交流簡報">
+  <section class="slide cover active" aria-label="封面">
+    <header class="topline"><div class="meeting-label"><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"><span class="cross">×</span><span class="genabot"><img src="images/genabot-mark.svg" alt=""><span>GENABOT</span></span></div><span class="section-label">2026.11.05</span></header>
+    <h1 class="cover-title">Good to<br>connect.</h1>
+    <p class="cover-sub">聊聊需求</p>
+    <div class="orb" aria-hidden="true"><svg viewBox="0 0 356 356" fill="none"><defs><linearGradient id="arc" x1="0" y1="0" x2="340" y2="300" gradientUnits="userSpaceOnUse"><stop stop-color="#d2c1ff"/><stop offset=".45" stop-color="#9974ff"/><stop offset="1" stop-color="#3c117e"/></linearGradient></defs><g stroke="url(#arc)" stroke-width="16"><ellipse cx="63" cy="313" rx="321" ry="374"/><ellipse cx="63" cy="313" rx="287" ry="338"/><ellipse cx="63" cy="313" rx="253" ry="302"/><ellipse cx="63" cy="313" rx="219" ry="266"/><ellipse cx="63" cy="313" rx="185" ry="230"/><ellipse cx="63" cy="313" rx="151" ry="194"/><ellipse cx="63" cy="313" rx="117" ry="158"/><ellipse cx="63" cy="313" rx="83" ry="122"/><ellipse cx="63" cy="313" rx="49" ry="86"/></g></svg></div><span class="orb-star" aria-hidden="true">✳</span>
+    <div class="cover-meta"><i></i><span>Design · Development · Maintenance &amp; Support</span></div>
+    <footer class="footer"><span>CTK Pro｜竑盛科技股份有限公司</span><a href="https://ctkpro.com/" target="_blank" rel="noopener">ctkpro.com ↗</a></footer>
+  </section>
+
+  <section class="slide about" aria-label="CTK 簡介、AI Agent 實踐與資安認證">
+    <header class="topline"><span class="section-label">Our team</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+    <h2 class="heading">About CTK Pro.</h2>
+    <div class="about-layout">
+      <div class="since"><small>SINCE</small><strong>2011.</strong><h3>從手機 App 出發，<br>一路做到網站與長期維運。</h3><p>把 UI/UX 的經驗，帶進企業網站、<br>後台操作與日常維護。</p></div>
+      <div class="team-facts">
+        <div class="team-fact"><h3>AI Agent 工作流程的早期實踐者</h3><p>將 AI Agent 納入規劃、開發與日常工作，<br>重要判斷與交付品質由團隊把關。</p></div>
+        <div class="team-fact"><h3>上線後，持續合作</h3><p>企業、品牌與公共服務網站的多年維運經驗，<br>持續處理內容、版本與技術問題。</p></div>
+        <div class="cert-band"><a href="images/iso-27001-certificate.png" target="_blank" rel="noopener" aria-label="開啟 CTK Pro ISO 27001 證書"><img src="images/iso-27001-certificate.png" alt="竑盛科技 ISO/IEC 27001:2022 資訊安全管理系統證書"></a><div class="cert-copy"><h3>ISO 27001:2022</h3><p>資訊安全管理系統認證<br>把風險、檢查與處理紀錄納入日常。</p><small>網頁設計、開發及主機代管維護等資訊處理作業</small></div></div>
+      </div>
+    </div>
+    <footer class="footer"><span>CTK Pro｜竑盛科技股份有限公司</span></footer>
+  </section>
+
+  <section class="slide services" aria-label="常見需求與 CTK 的工作">
+    <header class="topline"><span class="section-label">What we do</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+    <h2 class="heading">A few ways we help.</h2>
+    <p class="subheading">從介面設計到上線維運，我們能協助的幾個環節。</p>
+    <table class="service-table"><colgroup><col><col><col></colgroup><thead><tr><th>常見的需求</th><th>CTK 的工作</th><th>實際會做什麼</th></tr></thead><tbody>
+      <tr><td>資訊很多，<br>怎麼讓人看得懂？</td><td>UI / UX</td><td>整理資訊架構與操作流程，<br>完成介面設計與前端開發。</td></tr>
+      <tr><td>網站與後台，<br>怎麼配合日常工作？</td><td>Web / Systems</td><td>建置企業官網、內容管理後台，<br>處理權限與 API 串接。</td></tr>
+      <tr><td>上線之後，<br>誰來持續照顧？</td><td>Maintenance<br>&amp; Support</td><td>主機代管與網站維運，<br>執行版本更新、弱點掃描與修補，<br>並持續提供技術支援。</td></tr>
+    </tbody></table>
+    <p class="service-note">從設計、開發到維運，依實際需要一起安排。</p>
+    <footer class="footer"><span>CTK Pro × GENABOT</span></footer>
+  </section>
+
+  <section class="slide cases" aria-label="半導體與晶片資安品牌網站經驗">
+    <header class="topline"><span class="section-label">Semiconductor &amp; chip security</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+    <h2 class="heading">Technical stories, clearly told.</h2>
+    <p class="subheading">我們協助半導體與晶片資安品牌，整理技術、產品與企業資訊。</p>
+    <div class="case-grid">
+      <figure class="case"><a class="case-image inpsy" href="https://www.inpsy.com/zh-hant/" target="_blank" rel="noopener" aria-label="INPSY 公開網站"><img src="images/inpsy-home-reference.png" alt="INPSY 公開網站首頁畫面"></a><figcaption><h3><a href="https://www.inpsy.com/zh-hant/investors/" target="_blank" rel="noopener">INPSY<span aria-hidden="true">↗</span></a></h3><p>中英雙語官網與投資人專區。<br>整合技術、產品與企業資訊的查找入口。</p></figcaption></figure>
+      <figure class="case"><a class="case-image puf" href="https://www.pufsecurity.com/zh-hant/" target="_blank" rel="noopener" aria-label="PUFsecurity 公開網站"><img src="images/pufsecurity-hero.jpg" alt="PUFsecurity 公開官網使用的晶片資安主視覺素材"></a><figcaption><h3><a href="https://www.pufsecurity.com/zh-hant/" target="_blank" rel="noopener">PUFsecurity<span aria-hidden="true">↗</span></a></h3><p>繁中、簡中與英文官網。<br>以動態首頁與內容架構呈現技術品牌。</p></figcaption></figure>
+    </div>
+    <p class="case-note">左：INPSY 官網畫面。右：PUFsecurity 官網主視覺素材。服務內容為企業網站設計與開發。</p>
+    <footer class="footer"><span>CTK Pro × GENABOT</span></footer>
+  </section>
+
+  <section class="slide conversation" aria-label="這次想一起聊的事">
+    <header class="topline"><span class="section-label">Let's talk</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+    <h2 class="heading">What's on<br>your mind?</h2>
+    <p class="subheading">這次，最想一起聊的是什麼？</p>
+    <span class="question-mark" aria-hidden="true">?</span>
+    <div class="questions">
+      <div class="question"><small>01 / THE GOAL</small><h3>最近在推進什麼？<br>最想先解決哪一件事？</h3></div>
+      <div class="question"><small>02 / THE PEOPLE</small><h3>主要想服務<br>或溝通的對象是誰？</h3></div>
+    </div>
+    <div class="question-last"><span>03 / THE SUPPORT</span><p>希望我們從哪一段一起幫忙？</p></div>
+    <footer class="footer"><span>CTK Pro × GENABOT</span></footer>
+  </section>
+
+  <section class="slide thanks" aria-label="Thank you">
+    <header class="topline"><div class="meeting-label"><img class="ctk-logo" src="images/ctkpro-logo-white.png" alt="CTK Pro"><span class="cross">×</span><span class="genabot"><img src="images/genabot-mark.svg" alt=""><span>GENABOT</span></span></div><span class="section-label">2026.11.05</span></header>
+    <h2 class="heading">Thank you.</h2>
+    <div class="thanks-loop" aria-hidden="true"></div>
+    <footer class="footer"><span>CTK Pro</span><a href="https://ctkpro.com/" target="_blank" rel="noopener">ctkpro.com ↗</a></footer>
+  </section>
+</main>
+<nav class="nav" aria-label="投影片導覽"><button id="prev" type="button" aria-label="上一頁"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M10.5 3 5.5 8l5 5"/></svg></button><span class="count"><span id="current">1</span> / <span id="total">6</span></span><button id="next" type="button" aria-label="下一頁"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m5.5 3 5 5-5 5"/></svg></button></nav>
+<div class="progress" id="progress" aria-hidden="true"></div><p id="announcement" class="sr-only" aria-live="polite"></p>
+<script>
+// Meeting brief: a six-slide conversation aid. PLAN (1).md is reference material.
+// Verified content: company/profile.md, shantai-amc deck, actual ISO certificate.
+// AI Agent workflow positioning and copy confirmed by the user, 2026-11-04.
+// Visual reference: https://www.genabot.ai/ (2026-11-04): mint, violet, dark green.
+// No assumptions about GENABOT's requested scope, users, budget or deployment.
+const slides=[...document.querySelectorAll('.slide')];
+const stage=document.getElementById('stage');
+const prev=document.getElementById('prev'),next=document.getElementById('next');
+let current=0;
+document.getElementById('total').textContent=slides.length;
+function fit(){stage.style.transform=`translate(-50%,-50%) scale(${Math.min(innerWidth/1280,innerHeight/720)})`;}
+function show(index,updateHash=true){
+  current=Math.max(0,Math.min(slides.length-1,index));
+  slides.forEach((slide,i)=>{const active=i===current;slide.classList.toggle('active',active);slide.setAttribute('aria-hidden',String(!active));slide.inert=!active;});
+  document.getElementById('current').textContent=current+1;
+  document.getElementById('progress').style.width=`${current/(slides.length-1)*100}%`;
+  document.getElementById('announcement').textContent=`第 ${current+1} 頁，共 ${slides.length} 頁：${slides[current].getAttribute('aria-label')}`;
+  prev.disabled=current===0;next.disabled=current===slides.length-1;
+  if(updateHash)history.replaceState(null,'',`#${current+1}`);
+}
+function readHash(){const n=Number(location.hash.slice(1));show(Number.isInteger(n)&&n>=1&&n<=slides.length?n-1:0,false);}
+prev.addEventListener('click',()=>show(current-1));next.addEventListener('click',()=>show(current+1));
+addEventListener('keydown',e=>{
+  if(e.altKey||e.ctrlKey||e.metaKey||e.target.closest('input,textarea,select,[contenteditable="true"]'))return;
+  if(e.target.closest('button,a')&&(e.key===' '||e.key==='Enter'))return;
+  if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();show(current+1);}
+  else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();show(current-1);}
+  else if(e.key==='Home'){e.preventDefault();show(0);}
+  else if(e.key==='End'){e.preventDefault();show(slides.length-1);}
+  else if(e.key.toLowerCase()==='f'){e.preventDefault();const task=document.fullscreenElement?document.exitFullscreen?.():document.documentElement.requestFullscreen?.();task?.catch(()=>{});}
+});
+stage.addEventListener('click',e=>{if(e.target.closest('a,button')||getSelection()?.toString())return;const bounds=stage.getBoundingClientRect(),x=(e.clientX-bounds.left)/bounds.width;if(x<1/6)show(current-1);else if(x>5/6)show(current+1);});
+let touchStart=null;
+stage.addEventListener('touchstart',e=>{touchStart=e.touches.length===1?{x:e.touches[0].clientX,y:e.touches[0].clientY}:null;},{passive:true});
+stage.addEventListener('touchend',e=>{if(!touchStart||e.target.closest('a,button'))return;const dx=e.changedTouches[0].clientX-touchStart.x,dy=e.changedTouches[0].clientY-touchStart.y;touchStart=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)show(current+(dx<0?1:-1));},{passive:true});
+addEventListener('resize',fit);addEventListener('hashchange',readHash);fit();readHash();
+</script>
+</body>
+</html>

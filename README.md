@@ -12,6 +12,8 @@ CTK Pro（竑盛科技）的標案、對外與對內簡報集合。暖白底極�
 - 宜蘭縣育兒資源網 2.0 服務建議書：`bids/yilan-bids/index.html`
 - 桃園市原住民族發展基金會品牌網站：`bids/桃原基會-bids/index.html`
 - CTK Pro 公司介紹：`sales-pitch/ctkpro-intro/index.html`
+- GENABOT 合作交流：`sales-pitch/genabot-intro/index.html`（6 頁，2026-11-05 線上會議）
+- 聚睿電子網站託管與維護交流：`sales-pitch/gearradio-maintenance/index.html`（6 頁，2026-11-06 三方會議）
 - 山太士企業官網重建：`sales-pitch/shantai-amc/index.html`
 - 給設計公司的合作提案：`sales-pitch/for-design-company/index-claude-v2.html`（A 版，現場可點示範）／`index-v2.html`（B 版，靜態排版）
 - 網站上線，只是開始（良艮設計）：`sales-pitch/liangen-talk/index.html`

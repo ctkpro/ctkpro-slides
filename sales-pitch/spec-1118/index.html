@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>計畫網站・中心官網・會議服務｜CTK Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#FBFAF7;--ink:#1d2433;--muted:#5d6574;--soft:#8b93a1;--line:#dfe2e8;--blue:#2f4fb0;--blue-700:#223a86;--blue-300:#8fa3e3;--blue-50:#eef1fb;--mint:#d6efe4;--warm:#f4efe6;--warn:#b25b00;
+--phy:#2f4fb0;--chem:#0e7490;--geo:#7a5a1c;--math:#8b3a8f;--font:'Noto Sans TC','Microsoft JhengHei','PingFang TC',Arial,sans-serif}
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{background:#e6e7e2;font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}a{color:inherit}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center;overflow:hidden;background:var(--paper)}
+.slide{position:absolute;inset:0;padding:42px 148px 56px 76px;display:none;background:var(--paper)}.slide.active{display:block;animation:arrive .28s ease-out}@keyframes arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.topline{height:34px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:500;letter-spacing:.06em;color:var(--muted)}.ctk-logo{width:86px;display:block}
+.heading{font-family:Arial,var(--font);font-size:46px;line-height:1.15;letter-spacing:-1px;font-weight:700;margin:30px 0 10px}.sub{font-size:21px;line-height:1.6;color:var(--muted);margin:0;font-weight:500}
+.footer{position:absolute;left:76px;right:148px;bottom:24px;display:flex;justify-content:space-between;font-size:12px;letter-spacing:.04em;color:var(--soft)}
+.em{color:var(--blue)}.tag{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--blue-50);color:var(--blue-700)}
+.ph{border:2px dashed var(--blue-300);border-radius:14px;background:repeating-linear-gradient(45deg,#fff,#fff 14px,#f4f6fb 14px,#f4f6fb 28px);display:flex;align-items:center;justify-content:center;color:var(--blue-700);font-weight:700;font-size:18px;overflow:hidden;position:relative}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:left top}
+.browser{border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden;box-shadow:0 10px 30px rgba(29,36,51,.08)}.browser .bar{height:30px;background:#f1f2f5;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:6px;padding:0 12px}.browser .bar i{width:10px;height:10px;border-radius:50%;background:#d4d7de}.browser .bar span{margin-left:10px;font-size:12px;color:var(--soft)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}.seg button{border:0;background:#fff;padding:9px 18px;font-size:16px;font-weight:700;color:var(--muted)}.seg button[aria-pressed=true]{background:var(--blue);color:#fff}
+.btn{border:0;border-radius:10px;background:var(--blue);color:#fff;font-weight:700;font-size:16px;padding:10px 20px}.btn.ghost{background:#fff;color:var(--blue);border:1px solid var(--blue-300)}
+
+/* 01 cover */
+.cover{background:var(--blue-50)}.cover-title{font-family:Arial,var(--font);font-weight:700;font-size:72px;line-height:1.12;letter-spacing:-2px;margin:96px 0 24px;position:relative;z-index:2}.cover-sub{font-size:26px;font-weight:500;margin:0;color:var(--blue-700);position:relative;z-index:2}
+.cover-art{position:absolute;right:120px;top:150px;width:380px;height:380px}.cover-meta{position:absolute;left:76px;bottom:96px;display:flex;align-items:center;gap:16px;font-size:16px}.cover-meta i{width:34px;height:1px;background:var(--ink)}
+/* about */
+.about{display:grid;grid-template-columns:340px 1fr;gap:44px;margin-top:34px}.since small{font:700 15px Arial;letter-spacing:.15em;color:var(--blue)}.since strong{display:block;font:700 98px/1 Arial;letter-spacing:-5px;margin:12px 0 18px}.since p{font-size:19px;line-height:1.75;color:var(--muted);margin:0}
+.facts{border-top:1px solid var(--line)}.fact{padding:15px 0 16px;border-bottom:1px solid var(--line)}.fact h3{font-size:21px;margin:0 0 5px}.fact p{font-size:17px;line-height:1.6;color:var(--muted);margin:0}
+.cert{display:flex;gap:20px;align-items:center;background:var(--warm);border-radius:16px;margin-top:18px;padding:14px 18px}.cert img{width:84px;height:118px;object-fit:contain;background:#fff;box-shadow:0 4px 12px #0001}.cert h3{font:700 23px Arial;margin:0 0 6px}.cert p{font-size:16px;line-height:1.6;margin:0;color:var(--muted)}
+/* experience table */
+.xtable{width:100%;border-collapse:collapse;margin-top:26px;table-layout:fixed}.xtable th{text-align:left;font-size:13px;color:var(--muted);font-weight:500;padding:0 0 10px}.xtable td{border-top:1px solid var(--line);padding:13px 14px 13px 0;vertical-align:middle;font-size:17px;line-height:1.5}.xtable tr:last-child td{border-bottom:1px solid var(--line)}.xtable td:first-child{font-weight:700;font-size:19px}.xtable td:nth-child(2){color:var(--blue);font-weight:700}.xtable td:last-child{color:var(--muted)}
+/* logo wall */
+.logo-wall{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:30px}.logo-cell{height:92px;border:1px solid var(--line);border-radius:13px;background:#fff;display:flex;align-items:center;justify-content:center;padding:12px 16px}.logo-cell img{max-width:100%;max-height:100%;object-fit:contain}.logo-cell .txt{display:none;font-size:16px;font-weight:800;text-align:center;line-height:1.25}.logo-cell.noimg img{display:none}.logo-cell.noimg .txt{display:block}
+/* three projects */
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:34px}.proj{border-radius:18px;padding:24px 24px 22px;background:#fff;border:1px solid var(--line);min-height:250px;display:flex;flex-direction:column}.proj .date{font:700 34px Arial;color:var(--blue);letter-spacing:-1px}.proj h3{font-size:24px;margin:10px 0 10px}.proj ul{margin:0;padding-left:20px;font-size:17px;line-height:1.75;color:var(--muted)}.proj.b{border-left:5px solid var(--blue)}.proj.c{border-left:5px solid var(--blue)}
+.shared{margin-top:18px;display:grid;grid-template-columns:1fr 2fr;gap:20px}.shared div{border-radius:14px;padding:14px 20px;font-size:18px;font-weight:700}.shared .one{background:var(--warm);color:var(--muted)}.shared .two{background:var(--blue);color:#fff;text-align:center}
+/* section label */
+.chap{display:inline-flex;align-items:center;gap:10px;font:700 14px Arial;letter-spacing:.12em;color:var(--blue)}.chap b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px}
+/* A1 announcements */
+.demo-row{display:grid;grid-template-columns:330px 1fr;gap:28px;margin-top:26px}.ctrl{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px}.ctrl label{font-size:15px;font-weight:700;color:var(--muted)}.ctrl .day{font:700 40px Arial;letter-spacing:-1px;margin:6px 0 10px}.ctrl input[type=range]{width:100%;accent-color:var(--blue)}
+.ann{display:flex;flex-direction:column;gap:12px}.ann-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;transition:opacity .2s}.ann-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.ann-head h4{margin:0;font-size:19px;flex:1 1 300px}.st{font-size:13px;font-weight:800;padding:3px 10px;border-radius:99px}.st.open{background:#e3f4ea;color:#17663a}.st.soon{background:#fff1dc;color:#8a4a00}.st.closed{background:#eceef2;color:#5d6574}
+.ann-meta{font-size:14px;color:var(--soft);margin-top:4px}.ann-body{font-size:15px;color:var(--muted);margin-top:8px;line-height:1.6}.ann-item.closed .ann-body{display:none}.ann-item .src{display:none;font-size:14px;color:var(--blue);margin-top:8px}.ann-item.closed .src{display:block}
+/* A2 types */
+.prog{margin-top:22px;border:1px solid var(--line);border-radius:16px;background:#fff;overflow:hidden}.prog-head{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px}.prog-head h3{margin:0;font-size:24px}.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);padding:0 16px}.tabs span{padding:13px 16px;font-size:16px;font-weight:700;color:var(--muted)}.tabs span.on{color:var(--blue);box-shadow:inset 0 -3px 0 var(--blue)}.tabs span.hide{display:none}
+.prog-body{padding:20px 24px;min-height:250px}.plist{width:100%;border-collapse:collapse;font-size:15px}.plist th{text-align:left;color:var(--soft);font-weight:500;padding:6px 8px}.plist td{border-top:1px solid var(--line);padding:9px 8px}
+.tree{display:flex;flex-direction:column;align-items:center;gap:14px}.node{border:1px solid var(--line);border-radius:12px;padding:10px 18px;background:var(--blue-50);font-weight:700;font-size:16px;text-align:center}.node small{display:block;font-weight:500;color:var(--muted);font-size:13px}.kids{display:flex;gap:16px}.kids .node{background:#fff}
+.view-a .only-b,.view-b .only-a{display:none}
+/* A3 admin mock */
+.admin{display:grid;grid-template-columns:1.25fr 1fr;gap:24px;margin-top:22px}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px}.panel h4{margin:0 0 12px;font-size:15px;color:var(--soft);letter-spacing:.06em}
+.bi{display:grid;grid-template-columns:1fr 1fr;gap:12px}.fld{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}.fld span{font-size:13px;font-weight:700;color:var(--muted)}.fld input,.fld select{font:inherit;font-size:16px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff}
+.sw{display:flex;gap:8px}.sw button{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px var(--line)}.sw button[aria-pressed=true]{box-shadow:0 0 0 2px var(--ink)}
+.card-prev{border-radius:14px;border:1px solid var(--line);overflow:hidden}.card-prev .band{height:10px}.card-prev .in{padding:16px 18px}.card-prev h5{margin:6px 0 4px;font-size:20px}.card-prev p{margin:0;color:var(--muted);font-size:15px}
+.sync{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:8px}.sync li{font-size:16px;font-weight:700;padding:9px 14px;border-radius:10px;background:#f4f5f8;color:var(--soft);transition:all .25s}.sync li.ok{background:#e3f4ea;color:#17663a}.sync li.ok::before{content:'✓ '}
+/* timeline */
+.tl{position:relative;margin-top:60px;display:grid;grid-template-columns:repeat(7,1fr)}.tl::before{content:'';position:absolute;left:0;right:0;top:27px;height:3px;background:var(--line)}.tl div{position:relative;text-align:center;padding-top:50px}.tl div::before{content:'';position:absolute;left:50%;top:18px;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:#fff;border:4px solid var(--blue-300)}.tl div.key::before{background:var(--blue);border-color:var(--blue)}.tl b{display:block;font:700 26px Arial;letter-spacing:-.5px}.tl span{display:block;font-size:16px;color:var(--muted);margin-top:6px;line-height:1.5}
+.note-line{margin-top:44px;font-size:19px;color:var(--muted)}
+/* B1 */
+.b1{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;margin-top:22px}.nine{list-style:none;padding:0;margin:0;counter-reset:n;display:grid;gap:7px}.nine li{counter-increment:n;display:flex;gap:12px;align-items:center;font-size:18px;padding:7px 0;border-bottom:1px solid var(--line)}.nine li::before{content:counter(n);display:grid;place-items:center;flex:none;width:28px;height:28px;border-radius:50%;background:var(--blue-50);color:var(--blue);font:700 14px Arial}
+/* B2 math */
+.math-row{display:grid;grid-template-columns:1fr 300px;gap:30px;margin-top:24px;align-items:start}.mbox{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 26px}.mbox code{display:block;font:15px/1.6 Consolas,monospace;background:#f4f5f8;border-radius:8px;padding:10px 14px;color:#3b4252;margin-bottom:16px;white-space:pre-wrap}
+.mbox math{font-size:30px}.phone{width:300px;height:420px;border:10px solid #1d2433;border-radius:34px;background:#fff;padding:24px 14px;overflow:hidden}.phone p{font-size:14px;line-height:1.7;margin:0 0 10px;color:var(--muted)}.phone .eq{overflow-x:auto;border:1px solid var(--line);border-radius:8px;padding:10px;background:#fafbfc}.phone math{font-size:20px}
+/* B3 word */
+.word{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:26px}.doc{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 26px;min-height:300px;font-size:17px;line-height:1.75}
+.raw .p1{font-family:'Times New Roman',serif;font-size:20px;color:#c00000}.raw .p2{font-family:'PMingLiU',serif;font-size:15px;background:#ffff66}.raw .p3{font-family:Arial;font-size:22px;color:#1f4e79;font-weight:700}
+.clean h5{font-size:21px;margin:0 0 8px}.clean p{margin:0 0 8px}
+.rules{list-style:none;padding:0;margin:0;display:grid;gap:10px}.rules li{font-size:18px;padding:12px 16px;border-radius:12px;background:#fff;border:1px solid var(--line);display:flex;gap:12px;align-items:center}.rules li b{flex:none;font-size:13px;padding:3px 9px;border-radius:99px}.rules .keep b{background:#e3f4ea;color:#17663a}.rules .drop b{background:#fbe9e6;color:#9b2c1f}
+/* CMS grid */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}.cell{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px}.cell h4{margin:0 0 6px;font-size:20px}.cell p{margin:0;font-size:16px;color:var(--muted);line-height:1.6}
+.live{margin-top:26px;display:flex;align-items:center;gap:16px;background:var(--ink);color:#fff;border-radius:14px;padding:16px 22px;font-size:20px;font-weight:700}.live i{width:12px;height:12px;border-radius:50%;background:#ff5a52;box-shadow:0 0 0 6px #ff5a5233}
+/* two col cases */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:30px}.big{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px 28px}.big small{font:700 13px Arial;letter-spacing:.12em;color:var(--blue)}.big h3{font-size:28px;margin:8px 0 12px}.big ul{margin:0;padding-left:20px;font-size:18px;line-height:1.8;color:var(--muted)}
+/* C form engine */
+.engine{display:grid;grid-template-columns:1fr 80px 1.4fr;align-items:center;gap:10px;margin-top:40px}.core{background:var(--blue);color:#fff;border-radius:20px;padding:30px;text-align:center}.core h3{font-size:30px;margin:0 0 10px}.core p{margin:0;font-size:17px;opacity:.9;line-height:1.6}.arrow{font:400 44px Arial;color:var(--blue-300);text-align:center}.uses{display:grid;gap:12px}.use{background:#fff;border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:12px;padding:14px 18px}.use h4{margin:0 0 4px;font-size:20px}.use p{margin:0;font-size:16px;color:var(--muted)}
+/* C2 sync */
+.syncdemo{display:grid;grid-template-columns:330px 1fr;gap:24px;margin-top:22px}.chk{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 14px}.chk label{display:flex;align-items:center;gap:6px;font-size:16px;font-weight:700;padding:6px 12px;border:1px solid var(--line);border-radius:99px;background:#fff;cursor:pointer}
+.outs{display:grid;grid-template-columns:1fr 1fr;gap:14px}.out{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;min-height:150px}.out h5{margin:0 0 10px;font-size:14px;color:var(--soft);letter-spacing:.06em}.ev{border-radius:10px;padding:9px 12px;background:var(--blue-50);font-size:15px;font-weight:700;margin-bottom:6px}.ev.new{background:var(--blue);color:#fff;animation:pop .4s ease-out}@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:none;opacity:1}}
+.fpages{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.fpages div{border:1px solid var(--line);border-radius:8px;padding:6px;font-size:13px;font-weight:700;min-height:70px}.fpages .ev{font-size:12px;padding:5px 6px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:12px;text-align:center}.cal span{padding:6px 0;border-radius:6px;background:#f6f7f9}.cal span.hit{background:var(--blue);color:#fff;font-weight:700}
+/* C3 */
+.c3{display:grid;grid-template-columns:1.3fr 1fr;gap:26px;margin-top:22px}.pts{display:grid;gap:12px}.pt{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 18px}.pt h4{margin:0 0 4px;font-size:19px}.pt p{margin:0;font-size:16px;color:var(--muted);line-height:1.55}
+/* talk table */
+.ttable{width:100%;border-collapse:collapse;margin-top:24px}.ttable td{border-top:1px solid var(--line);padding:13px 0;font-size:18px;line-height:1.5;vertical-align:top}.ttable tr:last-child td{border-bottom:1px solid var(--line)}.ttable td:first-child{width:200px;font-weight:700}.ttable td:last-child{color:var(--muted)}
+/* gantt */
+.gantt{margin-top:24px;display:grid;grid-template-columns:150px repeat(11,minmax(0,1fr));row-gap:10px;font-size:14px}.gantt .m{text-align:center;color:var(--soft);font-weight:700;border-bottom:1px solid var(--line);padding-bottom:6px}.gantt .lbl{font-weight:700;font-size:16px;display:flex;align-items:center}.bar{height:34px;border-radius:8px;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;padding:0 10px;white-space:nowrap}.bar{overflow:hidden;text-overflow:ellipsis}.bar.lt{background:var(--blue-300)}.bar.ms{background:var(--ink)}.bar.after{background:repeating-linear-gradient(45deg,#e7ebf6,#e7ebf6 8px,#f4f6fb 8px,#f4f6fb 16px);color:var(--blue-700);border:1px dashed var(--blue-300)}
+.yr{grid-column:2/-1;display:flex;justify-content:space-between;font:700 13px Arial;color:var(--blue)}
+.gnote{margin-top:22px;display:flex;gap:14px;align-items:center;background:var(--warm);border-radius:14px;padding:14px 18px;font-size:17px}.gnote b{color:var(--blue-700)}
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px}.step{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px}.step small{font:700 34px Arial;color:var(--blue-300)}.step h4{font-size:21px;margin:6px 0 8px}.step p{margin:0;font-size:16px;color:var(--muted);line-height:1.65}
+/* questions */
+.ask{background:var(--blue-50)}.qs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}.q{background:#fff;border-radius:16px;padding:18px 22px;font-size:19px;font-weight:700;line-height:1.55;display:flex;gap:14px}.q span{font:700 14px Arial;color:var(--blue);padding-top:4px}
+.qmark{position:absolute;right:150px;top:70px;font:400 230px/.9 Arial;color:var(--blue);opacity:.08;pointer-events:none}
+/* thanks */
+.thanks{background:var(--ink);color:#fff}.thanks .topline{color:#aab3c5}.thanks .heading{font:400 108px/1 Arial;letter-spacing:-5px;margin-top:150px}.thanks .footer{color:#aab3c5}.ring{position:absolute;right:170px;top:200px;width:270px;height:270px;border:54px solid var(--blue);border-radius:50%;box-shadow:0 0 0 22px #2f4fb044,0 0 0 44px #2f4fb022}
+/* nav */
+.nav{position:fixed;right:22px;bottom:13px;display:flex;align-items:center;gap:8px;z-index:20;color:#526058;user-select:none}.nav button{background:#fffffff0;border:1px solid var(--line);border-radius:50%;width:30px;height:30px;display:grid;place-items:center;padding:0}.nav button:disabled{opacity:.3;cursor:default}.nav svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5}.count{font:500 12px Arial;letter-spacing:.08em;min-width:48px;text-align:center}.progress{position:fixed;bottom:0;left:0;height:3px;width:0;background:var(--blue);z-index:20;transition:width .25s}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+/* 投影字級放大（2026-11-13 截圖檢查後） */
+.xtable td{font-size:19px;padding:18px 14px 18px 0}.xtable td:first-child{font-size:21px}
+.ann-item{padding:18px 22px}.ann-head h4{font-size:22px}.ann-meta{font-size:15px}.ann-body{font-size:17px}
+.plist{font-size:18px}.plist td{padding:13px 8px}.prog-body{min-height:300px}.tabs span{font-size:18px}.node{font-size:18px;padding:14px 22px}
+.fld input,.fld select{font-size:18px}.fld span{font-size:14px}.card-prev h5{font-size:24px}.sync li{font-size:18px;padding:12px 16px}
+.tl b{font-size:30px}.tl span{font-size:18px}.note-line{font-size:21px}
+.nine li{font-size:20px;padding:9px 0}
+.rules li{font-size:20px;padding:16px 18px}.doc{font-size:19px;min-height:330px}
+.cell{padding:24px 24px}.cell h4{font-size:23px}.cell p{font-size:18px}.live{margin-top:34px;font-size:22px;padding:20px 24px}
+.big{padding:30px 32px}.big h3{font-size:30px}.big ul{font-size:20px;line-height:1.9}
+.core{padding:40px 30px}.core h3{font-size:34px}.core p{font-size:19px}.use{padding:18px 22px}.use h4{font-size:22px}.use p{font-size:18px}.uses{gap:16px}
+.ev{font-size:16px}.pt{padding:22px 22px}.pt h4{font-size:22px}.pt p{font-size:18px}.pts{gap:16px}
+.ttable td{font-size:21px;padding:20px 0}.ttable td:first-child{width:220px}
+.gantt{font-size:15px;row-gap:18px;margin-top:34px}.gantt .lbl{font-size:18px}.bar{height:44px;font-size:14px}.gnote{margin-top:34px;font-size:19px;padding:18px 22px}
+.step{padding:26px 24px;min-height:270px}.step small{font-size:40px}.step h4{font-size:24px}.step p{font-size:18px;line-height:1.75}
+.q{font-size:22px;padding:24px 26px}.qs{gap:18px}
+.proj ul{font-size:19px}.proj h3{font-size:26px}.shared div{font-size:20px;padding:18px 22px}
+
+/* v2（2026-11-13 使用者回饋） */
+.heading{margin-top:28px}
+.proj{min-height:270px}.shared3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:16px}.shared3 div{border-radius:14px;padding:0 22px;height:64px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700}.shared3 .s-one{background:var(--warm);color:var(--muted)}.shared3 .s-all{grid-column:2/4;background:var(--blue);color:#fff}
+.ctrl2{display:flex;align-items:center;gap:22px;margin:22px 0 16px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 22px}.ctrl2 .lab{font-size:16px;font-weight:700;color:var(--muted)}.ctrl2 .day{font:700 30px Arial;min-width:160px;letter-spacing:-.5px}.ctrl2 input{flex:1;accent-color:var(--blue)}
+.prog{margin-top:16px}.prog-body{display:grid;grid-template-columns:1.55fr 1fr;gap:22px;min-height:290px}.plist .go{color:var(--blue);font-size:22px;text-align:right;width:24px}.plist tr[data-k]{cursor:pointer}.plist tr[data-k]:hover td,.plist tr.sel td{background:var(--blue-50)}
+button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{border-color:var(--blue-300)}.node.sel{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue)}
+.detail{border-left:1px solid var(--line);padding-left:22px}.detail h5{font-size:21px;margin:2px 0 10px}.detail dl{display:grid;grid-template-columns:72px 1fr;gap:7px 12px;font-size:16px;margin:0}.detail dt{color:var(--soft)}.detail dd{margin:0}.detail ul{margin:8px 0 0;padding-left:18px;font-size:16px;line-height:1.7}.detail .past{color:var(--soft)}
+.lanes{margin-top:40px;display:grid;gap:30px}.lane{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:16px}.lane-t{font-size:21px;font-weight:900;color:var(--blue)}.lane-items{display:flex;gap:12px;position:relative}.lane-items::before{content:'';position:absolute;left:0;right:0;top:50%;height:2px;background:var(--line)}
+.it{position:relative;flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 16px}.it b{display:block;font:700 24px Arial;letter-spacing:-.5px}.it span{display:block;font-size:16px;color:var(--muted);margin-top:4px}.it.key{background:var(--blue);border-color:var(--blue);color:#fff}.it.key span{color:#dfe6ff}.lane.after .it:not(.key){background:var(--blue-50);border-color:#d5ddf3}
+.word{grid-template-columns:1.1fr 1fr;margin-top:18px}.doc{min-height:360px}.raw .p4{font-family:'Comic Sans MS',cursive;font-size:16px;color:#7030a0}
+.sg{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 24px}.sg-h1{font-size:28px;font-weight:900;margin-bottom:6px}.sg-h2{font-size:22px;font-weight:700;color:var(--blue-700);margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid var(--blue-50)}.sg-h3{font-size:18px;font-weight:700;margin-bottom:6px}.sg-p{font-size:16px;line-height:1.7;margin:0 0 6px;color:var(--ink)}.sg-ul{margin:0 0 8px;padding-left:20px;font-size:16px;line-height:1.6}
+.sg-t{border-collapse:collapse;font-size:14px;margin-bottom:8px}.sg-t th,.sg-t td{border:1px solid var(--line);padding:4px 14px}.sg-t th{background:var(--blue-50)}.sg-q{margin:0 0 8px;border-left:4px solid var(--blue-300);padding:2px 12px;color:var(--muted);font-size:16px}.sg-call{background:#fff6e5;border-left:4px solid #e0a030;border-radius:6px;padding:6px 12px;font-size:16px;margin-bottom:8px}
+.clean .sg-h2{font-size:24px}.clean .sg-p,.clean .sg-ul,.clean .sg-call{font-size:18px}
+.wp-seg{margin-top:4px}.wp-seg button{padding:8px 16px;font-size:15px}
+.wp{position:relative;display:grid;grid-template-columns:150px 1fr;margin-top:16px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;height:400px}
+.wp-side{background:#1f2633;display:flex;flex-direction:column;padding:10px 0}.wp-side span{color:#c3c9d4;font-size:15px;padding:9px 16px}.wp-side span.on{background:var(--blue);color:#fff}
+.wp-main{padding:14px 18px}.wp-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}.wp-top b{font-size:22px}.wp-add{border:1px solid var(--blue);color:var(--blue);border-radius:6px;padding:2px 10px;font-size:14px;font-weight:700}
+.wp-bar{display:flex;gap:8px;margin-bottom:10px}.ctl{border:1px solid var(--line);border-radius:6px;padding:5px 10px;font-size:14px;color:var(--muted)}.ctl.grow{flex:1}
+.wp-t{width:100%;border-collapse:collapse;font-size:15px}.wp-t th{text-align:left;color:var(--soft);font-weight:500;padding:6px 8px;border-bottom:1px solid var(--line)}.wp-t td{padding:9px 8px;border-bottom:1px solid #eef0f3}.cb{display:inline-block;width:15px;height:15px;border:1.5px solid #b6bcc8;border-radius:3px;vertical-align:middle}
+.wp-t i{font-style:normal;font-size:13px;font-weight:700;padding:2px 8px;border-radius:99px}.pub{background:#e3f4ea;color:#17663a}.sch{background:#fff1dc;color:#8a4a00}.drf{background:#eceef2;color:#5d6574}
+.wp-pop{position:absolute;right:16px;bottom:16px;width:330px;background:#fff;border:1px solid var(--blue-300);border-radius:12px;box-shadow:0 12px 30px rgba(29,36,51,.16);padding:14px 16px;font-size:15px}.wp-pop h5{margin:0 0 8px;font-size:17px;color:var(--blue-700)}.wp-pop ul{list-style:none;margin:0;padding:0}.wp-pop li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid #eef0f3}.wp-pop li:last-child{border:0}.wp-pop .lnk{color:var(--blue);font-weight:700}.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.thumbs span{height:54px;border-radius:6px;display:flex;align-items:flex-end;justify-content:flex-end;padding:3px 5px;font-size:11px;color:#fff;font-weight:700}
+.wp[data-focus=sch] .r1 td{background:#fff8ec}.wp[data-focus=bulk] .r0 .cb,.wp[data-focus=bulk] .r2 .cb,.wp[data-focus=bulk] .r4 .cb{background:var(--blue);border-color:var(--blue)}.wp[data-focus=bulk] .bulkctl{border-color:var(--blue);color:var(--blue);font-weight:700}.wp[data-focus=role] .m-role,.wp[data-focus=media] .m-media{background:#34405a;color:#fff;box-shadow:inset 4px 0 0 var(--blue-300)}.wp[data-focus=rev] .r0 td{background:var(--blue-50)}
+.ill{display:block;width:100%;height:150px;margin-bottom:10px}.big{padding:22px 28px}.big ul{font-size:19px;line-height:1.8}
+.ic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}.ic-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px;min-height:180px}.ic-card svg{width:52px;height:52px;fill:none;stroke:var(--blue);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;background:var(--blue-50);border-radius:12px;padding:7px}.ic-card h4{font-size:22px;margin:12px 0 6px}.ic-card p{margin:0;font-size:17px;line-height:1.6;color:var(--muted)}
+
+/* v3（11/13 第二輪回饋） */
+.gnav{position:relative;display:grid;grid-template-columns:repeat(7,1fr);margin-top:34px}.gnav:before{content:'';position:absolute;left:7%;right:7%;top:47px;height:3px;background:var(--line);border-radius:3px}
+.gnav button{position:relative;border:0;background:none;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:9px;color:var(--soft)}.gnav b{font:700 21px Arial}.gnav i{width:20px;height:20px;border-radius:50%;background:var(--blue-300);border:4px solid var(--paper);box-shadow:0 0 0 1px var(--line)}.gnav span{font-size:16px;font-weight:700}
+.gnav button.on{color:var(--ink)}.gnav button.on i{background:var(--blue);transform:scale(1.35);box-shadow:0 0 0 6px var(--blue-50)}
+.gstage{display:grid;grid-template-columns:280px 1fr;gap:22px;margin-top:40px;height:262px}.gyear{background:var(--blue);color:#fff;border-radius:16px;padding:30px 30px}.gyear b{display:block;font:700 76px/1 Arial;letter-spacing:-3px}.gyear span{display:block;margin-top:16px;font-size:24px;font-weight:700}
+.gmain{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px 34px;display:flex;flex-direction:column}.gmain h3{font-size:30px;margin:0 0 10px}.gmain p{font-size:20px;line-height:1.7;color:var(--muted);margin:0}
+.gfor{margin-top:auto;display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--line);padding-top:16px}.gfor small{flex:none;font-size:15px;font-weight:700;color:var(--blue);letter-spacing:.06em}.gfor span{font-size:20px;font-weight:700}
+.xwrap{display:grid;grid-template-columns:1.25fr 1fr;gap:26px;margin-top:24px}.xt{width:100%;border-collapse:collapse}.xt th{text-align:left;font-size:14px;color:var(--muted);font-weight:500;padding:0 0 10px}.xt td{border-top:1px solid var(--line);padding:13px 12px 13px 0;font-size:18px;vertical-align:middle}.xt tr:last-child td{border-bottom:1px solid var(--line)}.xt td:first-child{font-weight:700;font-size:20px;white-space:nowrap;width:46%}.xt td:last-child{color:var(--blue-700)}
+.xt tr[data-x]{cursor:pointer}.xt tr[data-x]:hover td{background:#fff}.xt tr.sel td{background:var(--blue-50)}.xt tr.sel td:first-child{box-shadow:inset 4px 0 0 var(--blue)}
+.xic{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:11px;background:#fff;border:1px solid var(--line);margin:0 14px 0 12px;vertical-align:middle}.xic svg{width:24px;height:24px;fill:none;stroke:var(--blue);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.xt tr.sel .xic{background:var(--blue);border-color:var(--blue)}.xt tr.sel .xic svg{stroke:#fff}
+.xdet{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 28px;display:flex;flex-direction:column}.xdet>small{font-size:14px;font-weight:700;color:var(--soft);letter-spacing:.08em}.xdet h3{font-size:24px;margin:6px 0 12px;line-height:1.4}.xdet ul{margin:0 0 16px;padding-left:20px;font-size:19px;line-height:1.85;color:var(--muted)}
+.pwrap{display:grid;grid-template-columns:250px 1fr;gap:24px;margin-top:26px}.pnav{display:flex;flex-direction:column;gap:8px}.pnav button{display:flex;align-items:center;gap:14px;text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px 18px;font:inherit;font-size:19px;font-weight:700;color:var(--muted);cursor:pointer}.pnav small{font:700 16px Arial;color:var(--blue-300)}.pnav button.on{background:var(--blue);border-color:var(--blue);color:#fff}.pnav button.on small{color:#dfe6ff}
+.ppanel{display:grid;grid-template-columns:.8fr 1.2fr;background:#fff;border:1px solid var(--line);border-radius:16px}.pcol{padding:24px 28px}.pcol+.pcol{border-left:1px solid var(--line)}.pcol>small{font-size:14px;font-weight:700;color:var(--blue);letter-spacing:.08em}.pcol ul{margin:12px 0 0;padding-left:20px;font-size:19px;line-height:1.75}.pcol li{margin-bottom:8px}
+.chk{list-style:none;padding:0!important}.chk li{position:relative;padding-left:30px}.chk li:before{content:'';position:absolute;left:2px;top:7px;width:16px;height:9px;border-left:3px solid var(--blue);border-bottom:3px solid var(--blue);transform:rotate(-45deg)}
+.pstrip{display:flex;align-items:center;gap:14px;margin-top:22px;background:var(--warm);border-radius:14px;padding:14px 22px}.pstrip span{font-size:16px;font-weight:700;color:var(--muted);margin-right:6px}.pstrip b{font-size:18px;background:#fff;border-radius:99px;padding:6px 16px}
+.q2grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}.q2{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px;min-height:206px}.qt{display:inline-block;font-size:14px;font-weight:700;color:var(--blue);background:var(--blue-50);border-radius:99px;padding:3px 12px}.q2 h4{font-size:20px;line-height:1.45;margin:12px 0 8px}.q2 p{margin:0;font-size:16px;line-height:1.65;color:var(--muted)}
+.end-art{position:absolute;right:150px;top:190px;width:380px;height:auto}
+
+/* v4 */
+.secno{font:800 52px Arial;color:var(--blue-300);margin-right:18px;letter-spacing:-1px}
+.op{display:grid;grid-template-columns:1.7fr 1fr;gap:30px;margin-top:20px;align-items:start}
+.op-side .when{display:flex;align-items:baseline;gap:10px;font-size:18px;color:var(--muted);margin-bottom:14px}.op-side .when b{font:700 40px Arial;color:var(--blue);letter-spacing:-1px}
+.nine.tight li{font-size:18px;padding:6px 0}
+.bar .go{margin-left:auto;font-size:12px;font-weight:700;color:var(--blue);text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:99px;padding:2px 10px}
+.sites2{display:grid;grid-template-columns:1fr 1.8fr;gap:24px;margin-top:30px;align-items:stretch}
+.site{border:1px solid var(--line);border-radius:16px;background:#fff;overflow:hidden;box-shadow:0 10px 30px rgba(29,36,51,.07);display:flex;flex-direction:column}
+.sbar{height:40px;background:#f1f2f5;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:6px;padding:0 16px}.sbar i{width:10px;height:10px;border-radius:50%;background:#d4d7de}
+.sbar .date{margin-left:auto;font:700 22px Arial;color:var(--blue)}
+.sbody{padding:22px 24px;flex:1}.two-mod{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.mod h3{display:flex;align-items:center;gap:10px;font-size:24px;margin:0 0 12px}.mod h3 em{font:700 15px Arial;font-style:normal;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff}
+.mod ul{margin:0;padding-left:20px;font-size:19px;line-height:1.8;color:var(--muted)}
+.mod.conf{border:2px dashed var(--blue-300);border-radius:12px;padding:14px 18px;margin:-14px 0 0;background:var(--blue-50)}
+.sites-foot{display:grid;grid-template-columns:1fr 1.8fr;gap:24px;margin-top:16px}.sites-foot div{border-radius:14px;height:60px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;background:var(--warm);color:var(--muted)}.sites-foot .all{background:var(--blue);color:#fff}
+.mx{display:grid;grid-template-columns:1fr 1.05fr;gap:26px;margin-top:20px;align-items:start}
+.ed{border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden;box-shadow:0 10px 30px rgba(29,36,51,.07)}
+.ed-top{height:44px;display:flex;align-items:center;gap:10px;padding:0 14px;border-bottom:1px solid var(--line)}
+.ed-add{display:grid;place-items:center;width:28px;height:28px;border-radius:6px;background:#1e1e1e;color:#fff;font-size:18px}.ed-ins{font:15px Consolas,monospace;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:3px 10px}
+.ed-pub{margin-left:auto;background:var(--blue);color:#fff;border-radius:6px;padding:4px 14px;font-size:14px;font-weight:700}
+.ed-doc{padding:20px 24px}.ed-doc p{font-size:17px;line-height:1.7;margin:0 0 12px}
+.ed-math{position:relative;border:2px solid var(--blue);border-radius:8px;padding:16px 16px 12px;margin:0 0 14px}
+.ed-tag{position:absolute;top:-13px;left:12px;background:var(--blue);color:#fff;font-size:12px;font-weight:700;border-radius:4px;padding:2px 8px}
+.ed-math code{display:block;font:14px/1.5 Consolas,monospace;background:#f4f5f8;border-radius:6px;padding:8px 10px;color:#3b4252;margin-bottom:8px;white-space:pre-wrap}.ed-math math{font-size:26px}
+.mpts{display:flex;gap:12px;margin-top:18px}.mpts span{background:var(--blue-50);color:var(--blue-700);border-radius:99px;padding:8px 18px;font-size:17px;font-weight:700}
+.pt.ico{display:flex;gap:16px;align-items:flex-start}.pt.ico svg{flex:none;width:44px;height:44px;padding:9px;border-radius:12px;background:var(--blue-50);fill:none;stroke:var(--blue);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.syncdemo.s2{grid-template-columns:330px 60px 1fr;align-items:center}.fan{width:60px;height:300px}
+.outs2{display:grid;gap:12px}.outs2 .out{min-height:0;padding:12px 16px}.outs2 h5{display:flex;align-items:center;gap:8px;margin:0 0 8px;font-size:17px}.outs2 h5 em{font:700 13px Arial;font-style:normal;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff}.outs2 h5 i{margin-left:auto;font-style:normal;font-size:13px;font-weight:700;color:var(--blue-700);background:var(--blue-50);border-radius:99px;padding:3px 10px}
+.outs2 #outList{display:flex;gap:8px}.outs2 #outList .ev{margin:0;flex:1}.outs2 .ev b{margin-right:8px;font:700 14px Arial}.outs2 .fpages div{min-height:54px}.outs2 .cal{grid-template-columns:repeat(16,1fr)}
+.browser .ph{display:block;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}.browser .ph img{position:static;display:block;width:100%;height:auto}.browser .ph:has(img){font-size:0;background:#fff}
+.browser .ph.zoom img{width:150%;max-width:none;margin-left:-25%}.browser .ph.zoom{overflow-x:hidden}
+/* v6（2026-11-16 裝飾與版面） */
+.opener{z-index:0}.opener::before{content:attr(data-no);position:absolute;right:148px;bottom:0;font:900 230px/1.15 Arial;letter-spacing:-8px;color:var(--blue);opacity:.07;z-index:-1;pointer-events:none;overflow:hidden}
+@keyframes dash{to{background-position:20px 0}}@keyframes dashs{to{stroke-dashoffset:-12}}@keyframes grow{from{transform:scaleX(0);opacity:0}to{transform:none;opacity:1}}
+.lanes{margin-top:110px;gap:70px}.lane-items{gap:30px}.it{padding:24px 18px}.it b{font-size:28px}.it span{font-size:17px}
+.lane-items::before{height:3px;margin-top:-1px;background:repeating-linear-gradient(90deg,var(--blue-300) 0 10px,transparent 10px 20px);animation:dash 1.2s linear infinite}
+.slide.active .lane-items .it{animation:pop .45s both}
+.lane-items .it:nth-child(2){animation-delay:.1s}.lane-items .it:nth-child(3){animation-delay:.2s}.lane-items .it:nth-child(4){animation-delay:.3s}.lane-items .it:nth-child(5){animation-delay:.4s}.lane-items .it:nth-child(6){animation-delay:.5s}
+.lane.after .it:nth-child(1){animation-delay:.7s}.lane.after .it:nth-child(2){animation-delay:.8s}.lane.after .it:nth-child(3){animation-delay:.9s}.lane.after .it:nth-child(4){animation-delay:1s}
+.engine{grid-template-columns:1fr 130px 1.4fr;margin-top:70px;gap:0 14px}.core{min-height:360px;display:flex;flex-direction:column;justify-content:center}.core h3{font-size:38px}
+.fan2{width:130px;height:360px}.flow,.fan path:first-child{stroke-dasharray:6 6;animation:dashs 1s linear infinite}
+.uses{grid-template-rows:repeat(3,1fr);height:360px}.use{display:flex;flex-direction:column;justify-content:center}
+.use.plus{border:2px dashed var(--blue-300);background:transparent;align-items:center;font:300 48px/1 Arial;color:var(--blue-300)}
+.slide.active .uses .use{animation:pop .4s both}.uses .use:nth-child(2){animation-delay:.15s}.uses .use:nth-child(3){animation-delay:.3s}
+.gantt{row-gap:30px;margin-top:56px}.gantt .bar{height:56px;font-size:15px;transform-origin:left}.gnote{margin-top:48px}
+.slide.active .gantt .bar{animation:grow .5s both;animation-delay:calc(var(--c,0)*90ms)}
+.sites2{margin-top:44px}.site{min-height:340px}.sbody:not(.two-mod){display:flex;flex-direction:column;justify-content:center}.two-mod{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-content:center}.site{border:2px solid #c3cbdc;box-shadow:0 14px 34px rgba(29,36,51,.12)}.sbar{height:46px;background:#e8ebf2;border-bottom:2px solid #c3cbdc}.sbar i{background:#b9bfcc}
+.sbody{padding:30px}.mod h3{font-size:27px}.mod ul{font-size:20px;line-height:1.9}.mod.conf{border:2px dashed var(--blue);background:#e9eefc}.sites-foot{margin-top:22px}.sites-foot div{height:66px}
+.ic-grid,.q2grid{gap:18px;margin-top:28px}
+.ic-card,.q2{background:#fff;border:1px solid #cdd4e3;border-top:4px solid var(--blue);border-radius:14px;box-shadow:0 8px 22px rgba(29,36,51,.08);padding:20px 22px;min-height:196px}
+.ic-card h4,.q2 h4{font-size:21px;line-height:1.4;margin:12px 0 6px}.ic-card p,.q2 p{font-size:16px;line-height:1.6;color:#4d5563}.qt{font-size:15px;padding:4px 14px}
+/* v7（2026-11-16 子 agent 回饋） */
+.lane-items .it{flex:auto}.it b{white-space:nowrap}
+.q2{min-height:0;padding:16px 20px}.q2grid{margin-top:22px}.q2 h4{margin:10px 0 6px}
+.nextstep{margin-top:18px;background:var(--blue);color:#fff;border-radius:14px;padding:14px 22px;font-size:19px;font-weight:700}
+.nine.tight li{padding:4px 0}.ann-item{padding:14px 22px}
+/* v9 重點總覽：平常亮一欄，hover 切換；開關全亮 */
+.kp-col{transition:opacity .25s,filter .25s}.kp:not(.all) .kp-col:not(.on){opacity:.3;filter:grayscale(.7)}
+.kp-all{position:absolute;right:148px;top:118px;display:flex;align-items:center;gap:10px;background:none;border:0;font:700 17px var(--font);color:var(--muted);cursor:pointer}
+.kp-all i{width:46px;height:26px;border-radius:99px;background:#cfd5e2;position:relative;transition:background .2s}.kp-all i::after{content:'';position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
+.kp-all[aria-pressed=true]{color:var(--blue)}.kp-all[aria-pressed=true] i{background:var(--blue)}.kp-all[aria-pressed=true] i::after{transform:translateX(20px)}
+/* v8 重點總覽頁 */
+.kp{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px}
+.kp-col{background:#fff;border:2px solid #c3cbdc;border-radius:16px;overflow:hidden;box-shadow:0 10px 26px rgba(29,36,51,.08)}
+.kp-col.conf{border:2px dashed var(--blue)}.kp-col.conf h3{background:#e9eefc}
+.kp-col h3{display:flex;align-items:center;gap:10px;margin:0;padding:10px 18px;background:#e8ebf2;border-bottom:2px solid #c3cbdc;font-size:21px}
+.kp-col h3 em{font:700 14px Arial;font-style:normal;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff}
+.kp-col h3 b{margin-left:auto;font:700 20px Arial;color:var(--blue)}
+.kp-col ul{list-style:none;margin:0;padding:0}
+.kp button{width:100%;display:grid;grid-template-columns:1fr auto;gap:1px 10px;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:8px 18px;font:inherit;color:inherit;cursor:pointer}
+.kp li:last-child button{border-bottom:0}.kp button:hover,.kp-foot:hover{background:var(--blue-50)}
+.kp strong{font-size:18px}.kp span{grid-column:1;font-size:15px;color:var(--muted)}
+.kp i,.kp-foot i{grid-row:1/3;grid-column:2;align-self:center;font:700 14px Arial;font-style:normal;color:var(--blue);background:var(--blue-50);border-radius:99px;padding:2px 9px}
+.kp-foot{margin-top:14px;width:100%;display:flex;align-items:center;gap:16px;background:#fff;border:2px solid #c3cbdc;border-radius:14px;padding:10px 18px;font:inherit;color:inherit;cursor:pointer;text-align:left}
+.kp-foot strong{font-size:18px}.kp-foot span{font-size:16px;color:var(--muted)}.kp-foot i{margin-left:auto}
+/* v10（2026-11-16） */
+.ann3{display:grid;grid-template-columns:1fr 48px 1fr 48px 1fr;align-items:start;margin-top:60px}.a3{width:48px;height:20px;margin-top:170px}
+.s3 .d3{display:block;font:700 30px Arial;color:var(--blue);margin:0 0 12px 4px;letter-spacing:-.5px}
+.ann3 .ann-item{min-height:330px;padding:22px 24px;border:1px solid #cdd4e3;box-shadow:0 8px 22px rgba(29,36,51,.08)}.ann3 .ann-head h4{font-size:20px;flex-basis:100%}
+.ann3 .att{margin-top:10px;font-size:15px;color:var(--blue-700);background:var(--blue-50);border-radius:8px;padding:6px 10px}
+.ann3 .ann-item.closed{background:#f6f7f9;min-height:0}.ann3 .soon .ann-meta{color:#8a4a00;font-weight:700}.ann3 .gone{margin-top:12px;height:130px;border:2px dashed #cfd5e2;border-radius:8px}
+.slide.active .s3{animation:pop .45s both}.s3:nth-of-type(2){animation-delay:.35s}.s3:nth-of-type(3){animation-delay:.7s}
+.rev{display:none;grid-column:2;grid-template-columns:1fr 250px;gap:16px;padding:14px 18px;min-height:0}.wp[data-focus=rev] .rev{display:grid}.wp[data-focus=rev] .wp-main,.wp[data-focus=rev] .wp-pop{display:none}
+.rev-ed{border:1px solid var(--line);border-radius:10px;padding:14px 18px;overflow:hidden}.rev-top{display:flex;align-items:center;gap:12px;margin-bottom:8px}.rev-top b{font-size:20px}.rev-top span{margin-left:auto;font-size:13px;font-weight:700;color:#17663a;background:#e3f4ea;border-radius:99px;padding:2px 10px}
+.rev-ed p{font-size:16px;line-height:1.7;margin:0 0 8px;border-radius:6px;padding:2px 6px;transition:background .3s}
+.rev[data-r="1"] .del{display:none}.rev[data-r="1"] .rev-top span,.rev[data-r="2"] .rev-top span{color:#8a4a00;background:#fff1dc}
+.rev[data-r="2"] .del{background:#fdecec;color:#9b2c2c;text-decoration:line-through}.rev[data-r="3"] .del{background:#e3f4ea}
+.rev-steps{display:flex;gap:6px;margin-bottom:12px}.rev-steps button{flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 0;font:700 14px var(--font);color:var(--muted);cursor:pointer}.rev-steps button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.rev-list{list-style:none;margin:0;padding:0;font-size:14px;opacity:.35;transition:opacity .3s}.rev[data-r="2"] .rev-list,.rev[data-r="3"] .rev-list{opacity:1}
+.rev-list li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 4px;border-bottom:1px solid #eef0f3}.rev-list em{font-style:normal;font-weight:700;color:#9b2c2c}
+.rev-list button{border:0;background:var(--blue);color:#fff;border-radius:6px;padding:3px 10px;font:700 13px var(--font);cursor:pointer}.rev[data-r="2"] .v-ok{background:var(--blue-50)}
+.rev[data-r="0"] .v-bad{display:none}.rev-list .v-new{display:none;color:#17663a;font-weight:700}.rev[data-r="3"] .v-new{display:flex}
+.tm{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
+.tm-people{display:grid;grid-template-columns:1fr 1fr;gap:14px}.tp{background:#fff;border:1px solid #cdd4e3;border-top:4px solid var(--blue);border-radius:14px;box-shadow:0 8px 22px rgba(29,36,51,.08);padding:18px 20px;display:flex;flex-direction:column;gap:4px}
+.tp.wide{grid-column:1/-1}.tp small{font-size:15px;font-weight:700;color:var(--blue)}.tp b{font-size:26px}.tp span{font-size:16px;color:#4d5563}
+.tm-care{background:var(--blue-50);border-radius:16px;padding:18px 22px}.tm-care h3,.tap-ls h3{margin:0 0 6px;font-size:22px;color:var(--blue-700)}
+.cr{display:flex;gap:14px;align-items:center;padding:11px 0;border-bottom:1px solid #d5ddf3}.cr:last-child{border:0}.cr svg{flex:none;width:40px;height:40px;fill:none;stroke:var(--blue);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round;background:#fff;border-radius:10px;padding:7px}
+.cr b{display:block;font-size:19px}.cr span{font-size:15px;color:#4d5563}
+.tap{display:grid;grid-template-columns:1.15fr 1fr;gap:26px;margin-top:22px}
+.tap-tl{list-style:none;margin:0;padding:0 0 0 4px;position:relative}.tap-tl::before{content:'';position:absolute;left:86px;top:14px;bottom:14px;border-left:3px dashed var(--blue-300)}
+.tap-tl li{display:grid;grid-template-columns:80px 1fr;gap:26px;align-items:center;padding:10px 0;position:relative}.tap-tl li::before{content:'';position:absolute;left:77px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px var(--paper)}
+.tap-tl li>b{font:700 20px Arial;color:var(--blue);text-align:right;padding-right:22px;white-space:nowrap}.tap-tl li:nth-child(3)>b{font:700 16px var(--font)}
+.tap-tl div{background:#fff;border:1px solid #cdd4e3;border-radius:12px;padding:12px 16px}.tap-tl strong{display:block;font-size:19px}.tap-tl span{font-size:15px;color:#4d5563}
+.slide.active .tap-tl li{animation:pop .4s both}.tap-tl li:nth-child(2){animation-delay:.15s}.tap-tl li:nth-child(3){animation-delay:.3s}.tap-tl li:nth-child(4){animation-delay:.45s}
+.tap-ls{background:var(--blue-50);border-radius:16px;padding:18px 22px}.ls{padding:13px 0;border-bottom:1px solid #d5ddf3}.ls:last-child{border:0}.ls b{display:block;font-size:20px}.ls span{font-size:16px;color:#4d5563}
+.lane.build .lane-items{gap:14px}.lane.build .it{flex:1 1 0;padding:16px 14px}.lane.build .it b{font-size:23px}.lane.build .it span{font-size:15px}.it em{display:block;font-style:normal;font-size:14px;font-weight:700;color:var(--blue);margin-bottom:4px}.it.key em{color:#dfe6ff}.tm-people{align-content:start}.duo{display:flex;align-items:center;gap:14px}.duo i{font-style:normal;font-size:18px;color:var(--muted)}.spec-logo{height:42px;display:block}.ca-lines path{stroke-dasharray:6 8;animation:caDash 2.4s linear infinite}@keyframes caDash{to{stroke-dashoffset:-28}}.ca-ring{transform-box:fill-box;transform-origin:center;animation:caRing 3s ease-out infinite}.ca-nodes circle{transform-box:fill-box;transform-origin:center;animation:caNode 3s ease-in-out infinite}.ca-nodes circle:nth-child(2){animation-delay:.5s}.ca-nodes circle:nth-child(3){animation-delay:1s}.ca-nodes circle:nth-child(4){animation-delay:1.5s}.ca-nodes circle:nth-child(5){animation-delay:2s}.ca-nodes circle:nth-child(6){animation-delay:2.5s}@keyframes caNode{0%,70%,100%{transform:scale(1);fill:#2f4fb0}15%{transform:scale(1.35);fill:#5b7be0}}@keyframes caRing{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.6);opacity:0}}@media (prefers-reduced-motion:reduce){.ca-lines path,.ca-ring,.ca-nodes circle{animation:none}}
+.vid{margin:14px auto 0;width:820px}.vid video{display:block;width:100%;aspect-ratio:16/9;background:#f1f2f5;cursor:pointer}
+.overflow{outline:4px solid red!important}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{@page{size:1280px 720px;margin:0}html,body{overflow:visible;width:auto;height:auto;background:var(--paper)}#stage{position:static;width:1280px;height:auto;transform:none!important;overflow:visible}.slide,.slide.active{position:relative;display:block!important;width:1280px;height:720px;break-after:page;animation:none!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}.nav,.progress{display:none}}
+</style>
+</head>
+<body>
+<main id="stage" aria-label="計畫網站、中心官網與會議服務簡報">
+
+<!-- 1 封面 -->
+<section class="slide cover active" aria-label="封面">
+  <header class="topline"><span class="duo"><img class="spec-logo" src="images/spec-logo.svg" alt="臺大科學推展中心 SPEC"><i aria-hidden="true">×</i><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></span><span>2026.11.18</span></header>
+  <h1 class="cover-title">一份資料，<br>兩個網站都好用。</h1>
+  <p class="cover-sub">專案計畫網站・中心官網・會議服務</p>
+  <svg class="cover-art" viewBox="0 0 380 380" aria-hidden="true" fill="none"><g class="ca-lines" stroke="#8fa3e3" stroke-width="3"><path d="M60 90 L190 50 L320 120 L270 280 L110 300 Z"/><path d="M60 90 L190 190 L320 120 M190 190 L270 280 M190 190 L110 300 M190 50 L190 190"/></g><circle class="ca-ring" cx="190" cy="190" r="26" stroke="#2f4fb0" stroke-width="2"/><g class="ca-nodes" fill="#2f4fb0"><circle cx="190" cy="190" r="26"/><circle cx="60" cy="90" r="14"/><circle cx="190" cy="50" r="14"/><circle cx="320" cy="120" r="14"/><circle cx="270" cy="280" r="14"/><circle cx="110" cy="300" r="14"/></g></svg>
+  <div class="cover-meta"><i></i><span>CTK Pro｜竑盛科技股份有限公司</span></div>
+</section>
+
+<!-- 2 關於 CTK -->
+<section class="slide" aria-label="關於 CTK Pro">
+  <header class="topline"><span>ABOUT US</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">About CTK Pro.</h2>
+  <div class="about">
+    <div class="since"><small>SINCE</small><strong>2011.</strong><p>從手機 App 的 UI/UX 出發，<br>近十年專注網站開發與長期維運。</p></div>
+    <div class="facts">
+      <div class="fact"><h3>WordPress 客製開發</h3><p>官網、會員、報名、金流與多語系，依需求客製外掛與後台。</p></div>
+      <div class="fact"><h3>上線之後，持續照顧</h3><p>主機代管、版本更新、弱點掃描與修補，客戶多為長年合作。</p></div>
+      <div class="cert"><img src="images/iso-27001-certificate.png" alt="竑盛科技 ISO/IEC 27001:2022 證書"><div><h3>ISO 27001:2022</h3><p>資訊安全管理系統認證<br>網頁設計、開發及主機代管維護作業</p></div></div>
+    </div>
+  </div>
+  <footer class="footer"><span>CTK Pro｜竑盛科技股份有限公司</span></footer>
+</section>
+
+<section class="slide" aria-label="CTK Pro 經驗時間軸">
+  <header class="topline"><span>OUR JOURNEY</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">一路累積的經驗</h2>
+  <div class="gnav" id="gNav"><button type="button" data-g="0" class=on><b>2011</b><i></i><span>公司成立</span></button><button type="button" data-g="1"><b>2019</b><i></i><span>電商與金流</span></button><button type="button" data-g="2"><b>2020</b><i></i><span>國際品牌</span></button><button type="button" data-g="3"><b>2022</b><i></i><span>活動平台</span></button><button type="button" data-g="4"><b>2023</b><i></i><span>公共服務</span></button><button type="button" data-g="5"><b>2024</b><i></i><span>分階段擴充</span></button><button type="button" data-g="6"><b>2025</b><i></i><span>資安管理</span></button></div>
+  <div class="gstage"><div class="gyear"><b id="gY">2011</b><span id="gT">公司成立</span></div><div class="gmain"><h3 id="gH"></h3><p id="gP"></p><div class="gfor"><small>對應這次</small><span id="gF"></span></div></div></div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<!-- 3 相關經驗 -->
+<section class="slide" aria-label="相關實績">
+  <header class="topline"><span>EXPERIENCE</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">相關實績</h2>
+  <div class="xwrap">
+    <table class="xt"><thead><tr><th>需要的能力</th><th>做過的案子</th></tr></thead><tbody><tr data-x="0" tabindex="0" class=sel><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v14H4z"/><path d="M4 10h16M8 3v5M16 3v5"/><path d="m9 15 2 2 4-4"/></svg></span>活動報名與報到</td><td>TAP 報名報到平台</td></tr><tr data-x="1" tabindex="0"><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2 .8 3 2.8 3 6"/></svg></span>學會會員與報名</td><td>台灣鼻科醫學會</td></tr><tr data-x="2" tabindex="0"><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h7l2 2h9v10H3z"/><path d="M9 14h7m-3-3 3 3-3 3"/></svg></span>大量資料移轉</td><td>行政院珍貴史料展示網、海外聯招會、NCN</td></tr><tr data-x="3" tabindex="0"><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h9M8.5 3v2M6 5c0 4 3 7 6 8M11 5c0 4-3 7-7 8"/><path d="m13 21 4-10 4 10M14.5 17.5h5"/></svg></span>AI 多語翻譯</td><td>NCN</td></tr><tr data-x="4" tabindex="0"><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7 7 9 4-2 7-5 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span>無障礙與資安</td><td>李綜合醫院、台灣資安合規中心</td></tr></tbody></table>
+    <div class="xdet"><small>做過的內容</small><h3 id="xH"></h3><ul id="xL"></ul><div class="gfor"><small>對應這次</small><span id="xF"></span></div></div>
+  </div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<!-- 4 Logo 牆 -->
+<section class="slide" aria-label="合作過的客戶">
+  <header class="topline"><span>CLIENTS</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">長期合作的客戶</h2>
+  <div class="logo-wall">
+    <div class="logo-cell"><img src="images/logos/ey.png" alt="行政院" onerror="this.parentElement.classList.add('noimg')"><span class="txt">行政院</span></div>
+    <div class="logo-cell"><img src="images/logos/overseas.png" alt="海外聯招會" onerror="this.parentElement.classList.add('noimg')"><span class="txt">海外聯招會</span></div>
+    <div class="logo-cell"><img src="images/logos/smc.png" alt="新興科技媒體中心" onerror="this.parentElement.classList.add('noimg')"><span class="txt">新興科技<br>媒體中心</span></div>
+    <div class="logo-cell"><img src="images/logos/rhino.png" alt="台灣鼻科醫學會" onerror="this.parentElement.classList.add('noimg')"><span class="txt">台灣鼻科<br>醫學會</span></div>
+    <div class="logo-cell"><img src="images/logos/montue.png" alt="北師美術館" onerror="this.parentElement.classList.add('noimg')"><span class="txt">北師美術館</span></div>
+    <div class="logo-cell"><img src="images/logos/asus.png" alt="ASUS" onerror="this.parentElement.classList.add('noimg')"><span class="txt">ASUS</span></div>
+    <div class="logo-cell"><img src="images/logos/fnac.png" alt="法雅客" onerror="this.parentElement.classList.add('noimg')"><span class="txt">法雅客</span></div>
+    <div class="logo-cell"><img src="images/logos/91app.png" alt="91APP" onerror="this.parentElement.classList.add('noimg')"><span class="txt">91APP</span></div>
+    <div class="logo-cell"><img src="images/logos/bitplay.png" alt="bitplay" onerror="this.parentElement.classList.add('noimg')"><span class="txt">bitplay</span></div>
+    <div class="logo-cell"><img src="images/logos/inteplast.png" alt="Inteplast" onerror="this.parentElement.classList.add('noimg')"><span class="txt">Inteplast</span></div>
+    <div class="logo-cell"><img src="images/logos/hsiyuan.png" alt="西園醫院" onerror="this.parentElement.classList.add('noimg')"><span class="txt">西園醫院</span></div>
+    <div class="logo-cell"><img src="images/logos/yongyue.png" alt="永越健康管理中心" onerror="this.parentElement.classList.add('noimg')"><span class="txt">永越健康<br>管理中心</span></div>
+    <div class="logo-cell"><img src="images/logos/canjune.png" alt="肯園" onerror="this.parentElement.classList.add('noimg')"><span class="txt">肯園</span></div>
+    <div class="logo-cell"><img src="images/logos/kuansliving.png" alt="寬庭" onerror="this.parentElement.classList.add('noimg')"><span class="txt">寬庭</span></div>
+    <div class="logo-cell"><img src="images/logos/everydayobject.png" alt="EVERYDAY OBJECT" onerror="this.parentElement.classList.add('noimg')"><span class="txt">EVERYDAY<br>OBJECT</span></div>
+    <div class="logo-cell"><img src="images/logos/gplus.png" alt="G-Plus" onerror="this.parentElement.classList.add('noimg')"><span class="txt">G-Plus</span></div>
+    <div class="logo-cell"><img src="images/logos/verymulan.png" alt="非常木蘭" onerror="this.parentElement.classList.add('noimg')"><span class="txt">非常木蘭</span></div>
+    <div class="logo-cell"><img src="images/logos/jingdu.png" alt="淨毒五郎" onerror="this.parentElement.classList.add('noimg')"><span class="txt">淨毒五郎</span></div>
+  </div>
+  <footer class="footer"><span>CTK Pro｜竑盛科技股份有限公司</span></footer>
+</section>
+
+<!-- 5 三案 -->
+<section class="slide" aria-label="三項專案，兩個網站">
+  <header class="topline"><span>THE PLAN</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">三項專案，兩個網站</h2>
+  <div class="sites2">
+    <div class="site"><div class="sbar"><i></i><i></i><i></i><b class="date">2/22</b></div><div class="sbody"><div class="mod"><h3><em>1</em>專案計畫網站</h3><ul><li>計畫入口與 A／B 類專屬頁</li><li>跨計畫資料查詢</li><li>公告自動上下架</li></ul></div></div></div>
+    <div class="site"><div class="sbar"><i></i><i></i><i></i><b class="date">8/31</b></div><div class="sbody two-mod"><div class="mod"><h3><em>2</em>中心官網</h3><ul><li>首頁與主要產出</li><li>方程式與內容樣式</li><li>中英雙語、資料移轉</li></ul></div><div class="mod conf"><h3><em>3</em>會議服務</h3><ul><li>建立活動、各頁同步</li><li>名單、匯出與報到</li><li>時間調查、分階段競賽</li></ul></div></div></div>
+  </div>
+  <div class="sites-foot"><div>獨立網站</div><div class="all">同一個後台，活動資料同步</div></div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<section class="slide" aria-label="三項專案的重點">
+  <header class="topline"><span>THE PLAN</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">三項專案的重點</h2>
+  <button type="button" class="kp-all" id="kpAll" aria-pressed="false"><i></i>全部</button>
+  <div class="kp" id="kp"><div class="kp-col on"><h3><em>1</em>專案計畫網站<b>2/22</b></h3><ul><li><button type="button" data-to="計畫網站：兩類計畫同一套模板"><strong>結構化管理</strong><span>兩類計畫共用模板，沒資料自動隱藏</span><i></i></button></li><li><button type="button" data-to="計畫網站：兩類計畫同一套模板"><strong>長期典藏</strong><span>主持人更換、結案後紀錄保留</span><i></i></button></li><li><button type="button" data-to="計畫網站：後台建一次到處出現"><strong>容易維護</strong><span>建檔一次，相關頁面自動出現</span><i></i></button></li><li><button type="button" data-to="計畫網站：公告依日期自動上下架"><strong>公告自動上下架</strong><span>徵求中、即將截止、截止後下架</span><i></i></button></li><li><button type="button" data-to="計畫網站：時程與上線後"><strong>春節前驗收</strong><span>弱點掃描、無障礙複測</span><i></i></button></li></ul></div><div class="kp-col"><h3><em>2</em>中心官網<b>8/31</b></h3><ul><li><button type="button" data-to="中心官網"><strong>一次建檔，多處呈現</strong><span>首頁直接看到主要產出</span><i></i></button></li><li><button type="button" data-to="中心官網：方程式"><strong>好用的後台</strong><span>方程式、貼上 Word</span><i></i></button></li><li><button type="button" data-to="中心官網：一致的內容樣式"><strong>前後台一致</strong><span>排版不再費工</span><i></i></button></li><li><button type="button" data-to="中心官網：長期累積的後台功能"><strong>累積的內容好管理</strong><span>排程、版本、批次作業</span><i></i></button></li><li><button type="button" data-to="中心官網：多語與資料移轉"><strong>完整中英文與資料移轉</strong><span>AI 翻譯只用於公開內容、舊網址轉址</span><i></i></button></li></ul></div><div class="kp-col conf"><h3><em>3</em>會議服務<b>8/31</b></h3><ul><li><button type="button" data-to="會議服務：建立活動"><strong>依情境設定報名</strong><span>身分別、多場次、候補</span><i></i></button></li><li><button type="button" data-to="會議服務：活動建一次自動同步"><strong>活動只建檔一次</strong><span>同步研討會列表、行事曆、四組頁面</span><i></i></button></li><li><button type="button" data-to="會議服務：活動管理與當天報到"><strong>名單與報到</strong><span>匯出前預覽、現場簽到</span><i></i></button></li><li><button type="button" data-to="會議服務：同一套表單延伸用途"><strong>時間調查與分階段競賽</strong><span>key person、只通知進階隊伍</span><i></i></button></li><li><button type="button" data-to="會議服務：其他需求的做法"><strong>繳費與個資</strong><span>第三方金流、只收必要資料</span><i></i></button></li></ul></div></div>
+  <div class="kp-foot"><strong>三項共同</strong><span>無障礙 AA、臺大資安規範、手機平板好用</span></div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<section class="slide opener" data-no="01" aria-label="專案計畫網站">
+  <header class="topline"><span class="chap"><b>01</b>專案計畫網站</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading"><span class="secno">01</span>專案計畫網站</h2>
+  <div class="op"><div class="browser"><div class="bar"><i></i><i></i><i></i><span>專案計畫網站</span><a class="go" data-demo="a" data-path="/" target="_blank" rel="noopener" hidden>開啟 Demo ↗</a></div><div class="ph" style="height:430px;border:0;border-radius:0"><img src="images/a-home-en.jpg" alt="計畫網站首頁" onerror="this.remove()">截圖：計畫網站首頁</div></div><div class="op-side"><div class="when"><b>2/22</b>上線</div><ol class="nine"><li>計畫入口與 A／B 類專屬頁</li><li>跨計畫資料查詢</li><li>公告自動上下架</li><li>中英雙語</li></ol></div></div>
+  <footer class="footer"><span>示意資料</span></footer>
+</section>
+
+<section class="slide" aria-label="計畫網站：兩類計畫同一套模板">
+  <header class="topline"><span class="chap"><b>01</b>專案計畫網站</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">兩類計畫，同一套模板</h2>
+  <div class="vid browser"><div class="bar"><i></i><i></i><i></i><span>專案計畫網站｜Demo</span></div><video src="images/program-demo.mp4" muted playsinline preload="auto" aria-label="Demo 錄影：A 多元型與 B 整合型計畫頁"></video></div>
+  <footer class="footer"><span>示意資料</span></footer>
+</section>
+
+<section class="slide" aria-label="計畫網站：後台建一次到處出現">
+  <header class="topline"><span class="chap"><b>01</b>專案計畫網站</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">後台建立主檔，前台自動帶入</h2>
+  <div class="admin">
+    <div class="panel"><h4>後台｜新增專案計畫</h4>
+      <div class="bi"><label class="fld"><span>計畫名稱</span><input id="adZh" value="精準健康計畫"></label><label class="fld"><span>English title</span><input id="adEn" value="Precision Health Program"></label></div>
+      <div class="bi"><label class="fld"><span>計畫類型</span><select id="adType"><option value="A">A 多元型</option><option value="B" selected>B 整合型</option></select></label><div class="fld"><span>識別色</span><div class="sw" id="adSw"><button type="button" aria-label="藍" aria-pressed="true" style="background:#2f4fb0" data-c="#2f4fb0"></button><button type="button" aria-label="青" aria-pressed="false" style="background:#0e7490" data-c="#0e7490"></button><button type="button" aria-label="紫" aria-pressed="false" style="background:#8b3a8f" data-c="#8b3a8f"></button><button type="button" aria-label="棕" aria-pressed="false" style="background:#7a5a1c" data-c="#7a5a1c"></button></div></div></div>
+      <button class="btn" type="button" id="adSave">儲存並發布</button>
+    </div>
+    <div class="panel"><h4>前台</h4>
+      <div class="card-prev"><div class="band" id="pvBand" style="background:#2f4fb0"></div><div class="in"><span class="tag" id="pvType">B 整合型</span><h5 id="pvZh">精準健康計畫</h5><p id="pvEn">Precision Health Program</p></div></div>
+      <ul class="sync" id="adSync"><li>首頁計畫卡片</li><li>計畫專屬頁</li><li>資料查詢</li><li>站內搜尋</li></ul>
+    </div>
+  </div>
+  <footer class="footer"><span>示意資料</span></footer>
+</section>
+
+<!-- 9 A 實機 -->
+<section class="slide" aria-label="計畫網站：公告依日期自動上下架">
+  <header class="topline"><span class="chap"><b>01</b>專案計畫網站</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">公告依日期自動上下架</h2>
+  <div class="ann3"><div class="s3"><b class="d3">1/2</b><div class="ann-item open"><div class="ann-head"><h4>卓越領航計畫 2027 年度計畫徵求</h4><span class="st open">徵求中</span></div><div class="ann-meta">卓越領航｜截止 2027/1/12</div><div class="ann-body">徵求對象、期程與申請方式，請見國科會原公告。</div><div class="att">附件　徵求說明.pdf</div><div class="src">國科會原公告 ↗</div></div></div><svg class="a3" viewBox="0 0 48 20" aria-hidden="true"><path class="flow" d="M2 10H40" fill="none" stroke="#8fa3e3" stroke-width="2.5"/><path d="M36 4l8 6-8 6" fill="none" stroke="#8fa3e3" stroke-width="2.5"/></svg><div class="s3"><b class="d3">1/5</b><div class="ann-item soon"><div class="ann-head"><h4>卓越領航計畫 2027 年度計畫徵求</h4><span class="st soon">即將截止</span></div><div class="ann-meta">卓越領航｜截止 2027/1/12</div><div class="ann-body">徵求對象、期程與申請方式，請見國科會原公告。</div><div class="att">附件　徵求說明.pdf</div><div class="src">國科會原公告 ↗</div></div></div><svg class="a3" viewBox="0 0 48 20" aria-hidden="true"><path class="flow" d="M2 10H40" fill="none" stroke="#8fa3e3" stroke-width="2.5"/><path d="M36 4l8 6-8 6" fill="none" stroke="#8fa3e3" stroke-width="2.5"/></svg><div class="s3"><b class="d3">1/13</b><div class="ann-item closed"><div class="ann-head"><h4>卓越領航計畫 2027 年度計畫徵求</h4><span class="st closed">已截止</span></div><div class="ann-meta">卓越領航｜截止 2027/1/12</div><div class="src">國科會原公告 ↗</div></div></div></div>
+  <footer class="footer"><span>示意資料</span></footer>
+</section>
+
+<!-- 7 A2 兩類 -->
+<section class="slide" aria-label="計畫網站：時程與上線後">
+  <header class="topline"><span class="chap"><b>01</b>專案計畫網站</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">時程與上線後</h2>
+  <div class="lanes">
+    <div class="lane build"><span class="lane-t">建置</span><div class="lane-items">
+      <div class="it"><em>設計</em><b>12/16</b><span>UI 初稿與意見</span></div>
+      <div class="it"><em>開發</em><b>12/18–1/8</b><span>功能開發</span></div>
+      <div class="it"><em>上稿</em><b>1/8–1/22</b><span>匯入資料、預掃</span></div>
+      <div class="it key"><em>Demo</em><b>1/22</b><span>真實資料 Demo</span></div>
+      <div class="it"><em>測試・驗收</em><b>1/25–2/4</b><span>測試與弱掃</span></div>
+      <div class="it"><em>上線準備</em><b>2/15–19</b><span>部署與備份演練</span></div>
+    </div></div>
+    <div class="lane after"><span class="lane-t">上線後</span><div class="lane-items">
+      <div class="it key"><b>2/22</b><span>正式上線</span></div>
+      <div class="it"><b>3–4 月</b><span>無障礙標章申請</span></div>
+      <div class="it"><b>全年</b><span>主機、更新與備份</span></div>
+      <div class="it"><b>依需求</b><span>功能與版面微調</span></div>
+    </div></div>
+  </div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<!-- 11 B1 首頁 -->
+<section class="slide" aria-label="中心官網">
+  <header class="topline"><span class="chap"><b>02</b>中心官網</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading"><span class="secno">02</span>中心官網</h2>
+  <div class="op"><div class="browser"><div class="bar"><i></i><i></i><i></i><span>中心官網</span><a class="go" data-demo="b" data-path="/" target="_blank" rel="noopener" hidden>開啟 Demo ↗</a></div><div class="ph" style="height:430px;border:0;border-radius:0"><img src="images/b-home-full.jpg" alt="中心官網首頁" onerror="this.remove()">截圖：中心官網首頁</div></div><div class="op-side"><div class="when"><b>8/31</b>上線</div><ol class="nine tight"><li>重點產出</li><li>公告（自動排序）</li><li>研究亮點與科學人物</li><li>研討會與演講</li><li>學術行事曆</li><li>國科會計畫時程</li><li>科學影音</li><li>電子報</li><li>常用搜尋關鍵字</li></ol></div></div>
+  <footer class="footer"><span>示意資料</span></footer>
+</section>
+
+<section class="slide" aria-label="中心官網：方程式">
+  <header class="topline"><span class="chap"><b>02</b>中心官網</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">方程式：編輯器直接輸入</h2>
+  <div class="mx"><div class="ed"><div class="ed-top"><span class="ed-add">＋</span><span class="ed-ins">/數學</span><span class="ed-pub">發布</span></div><div class="ed-doc"><p>研究團隊以下列方程式描述電子在晶格中的行為：</p><div class="ed-math"><span class="ed-tag">數學</span><code>i\hbar\frac{\partial}{\partial t}\Psi = \left[-\frac{\hbar^2}{2m}\nabla^2 + V\right]\Psi</code><math display="block"><mrow><mi>i</mi><mi>ℏ</mi><mfrac><mo>∂</mo><mrow><mo>∂</mo><mi>t</mi></mrow></mfrac><mi>Ψ</mi><mo>=</mo><mrow><mo>[</mo><mo>−</mo><mfrac><msup><mi>ℏ</mi><mn>2</mn></msup><mrow><mn>2</mn><mi>m</mi></mrow></mfrac><msup><mo>∇</mo><mn>2</mn></msup><mo>+</mo><mi>V</mi><mo>]</mo></mrow><mi>Ψ</mi></mrow></math></div><p>其中 <math><mi>ℏ</mi></math> 為約化普朗克常數。</p></div></div><div class="browser"><div class="bar"><i></i><i></i><i></i><span>研究亮點</span><a class="go" data-demo="b" data-path="/research/quantum-wavepacket" target="_blank" rel="noopener" hidden>開啟 Demo ↗</a></div><div class="ph zoom" style="height:400px;border:0;border-radius:0"><img src="images/b-article.jpg" alt="文章頁" onerror="this.remove()">截圖：文章頁</div></div></div>
+  <footer class="footer"><span>示意資料</span></footer>
+</section>
+
+<section class="slide" aria-label="中心官網：一致的內容樣式">
+  <header class="topline"><span class="chap"><b>02</b>中心官網</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">貼上 Word，套用網站樣式</h2>
+  <div class="seg" role="group" aria-label="貼上方式"><button type="button" data-w="raw" aria-pressed="true">原樣貼上</button><button type="button" data-w="clean" aria-pressed="false">套用網站樣式</button></div>
+  <div class="word">
+    <div class="doc raw" id="wordDoc"><div class="rawv"><p class="p3">2027 量子材料國際研討會</p><p class="p1">報名截止：3 月 15 日（逾期恕不受理）</p><p class="p2">H<sub>2</sub>O 分子在 10<sup>−3</sup> Pa 下的吸附行為……</p><p class="p4">● 主辦單位：物理組</p></div><div class="cleanv" hidden><div class="sg-h2">2027 量子材料國際研討會</div><div class="sg-call"><strong>報名截止：3 月 15 日</strong>（逾期恕不受理）</div><p class="sg-p">H<sub>2</sub>O 分子在 10<sup>−3</sup> Pa 下的吸附行為……</p><ul class="sg-ul"><li>主辦單位：物理組</li></ul></div></div>
+    <div class="sg"><div class="sg-h1">H1　頁面標題</div><div class="sg-h2">H2　段落標題</div><div class="sg-h3">H3　小標題</div><p class="sg-p">內文的字級、行距與段距全站統一。</p><ul class="sg-ul"><li>清單</li><li>上標 10<sup>3</sup>、下標 H<sub>2</sub>O</li></ul><table class="sg-t"><tr><th>表格</th><th>欄位</th></tr><tr><td>內容</td><td>內容</td></tr></table><blockquote class="sg-q">引言</blockquote><div class="sg-call">醒目提示</div></div>
+  </div>
+  <footer class="footer"><span>示意資料</span></footer>
+</section>
+
+<!-- 14 B 後台 -->
+<section class="slide" aria-label="中心官網：長期累積的後台功能">
+  <header class="topline"><span class="chap"><b>02</b>中心官網</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">長期累積的後台功能</h2>
+  <div class="seg wp-seg" role="group" aria-label="後台功能"><button type="button" data-f="rev" aria-pressed="true">版本還原</button><button type="button" data-f="sch" aria-pressed="false">排程發布</button><button type="button" data-f="bulk" aria-pressed="false">批次作業</button><button type="button" data-f="role" aria-pressed="false">權限</button><button type="button" data-f="media" aria-pressed="false">媒體庫</button></div>
+  <div class="wp" id="wp" data-focus="rev">
+    <aside class="wp-side"><span>儀表板</span><span class="on">最新消息</span><span>學術活動</span><span>研究與人物</span><span>科學傳播</span><span>會議服務</span><span class="m-media">媒體庫</span><span class="m-role">使用者與權限</span></aside>
+    <div class="wp-main">
+      <div class="wp-top"><b>最新消息</b><span class="wp-add">新增</span></div>
+      <div class="wp-bar"><span class="ctl bulkctl">批次操作 ▾</span><span class="ctl">所有領域 ▾</span><span class="ctl">所有類型 ▾</span><span class="ctl grow">搜尋</span></div>
+      <table class="wp-t"><thead><tr><th></th><th>標題</th><th>類型</th><th>領域</th><th>狀態</th><th>日期</th></tr></thead><tbody><tr class="r0"><td><span class="cb"></span></td><td>2027 量子材料國際研討會</td><td>研討會</td><td>物理</td><td><i class="pub">已發布</i></td><td>11/12</td></tr><tr class="r1"><td><span class="cb"></span></td><td>卓越領航計畫 2027 年度徵求</td><td>計畫徵求</td><td>跨領域</td><td><i class="sch">排程 11/20 09:00</i></td><td>11/12</td></tr><tr class="r2"><td><span class="cb"></span></td><td>專訪：黑板前的二十年</td><td>人物專訪</td><td>數學</td><td><i class="pub">已發布</i></td><td>11/08</td></tr><tr class="r3"><td><span class="cb"></span></td><td>海岸岩層裡的地震紀錄</td><td>研究亮點</td><td>地科</td><td><i class="drf">草稿</i></td><td>11/05</td></tr><tr class="r4"><td><span class="cb"></span></td><td>化學館停電檢修公告</td><td>重要公告</td><td>化學</td><td><i class="pub">已發布</i></td><td>11/03</td></tr></tbody></table>
+    </div>
+    <div class="rev" id="rev" data-r="0">
+      <div class="rev-ed"><div class="rev-top"><b>專訪：黑板前的二十年</b><span id="revSaved">已儲存 11/12 10:21</span></div>
+        <p>數學系的黑板上，留著二十年沒擦掉的一角。</p>
+        <p class="del">王○○ 教授從博士班開始研究非線性偏微分方程，那一角寫的是當年卡住的第一個問題。</p>
+        <p class="del">他說，最好的問題常常來自學生的一句「為什麼」。</p>
+        <p>專訪全文請見「研究與人物」。</p></div>
+      <div class="rev-side"><div class="rev-steps"><button type="button" data-r="1">① 誤刪</button><button type="button" data-r="2">② 找版本</button><button type="button" data-r="3">③ 還原</button></div>
+        <ul class="rev-list"><li class="v-new"><span>11/12 14:10　還原自 10:21</span></li><li class="v-bad"><span>11/12 14:03　執行編輯</span><em>−2 段</em></li><li class="v-ok"><span>11/12 10:21　執行編輯</span><button type="button" data-r="3">還原</button></li><li><span>11/11 17:45　物理組窗口</span></li></ul></div>
+    </div>
+    <div class="wp-pop" id="wpPop"></div>
+  </div>
+  <footer class="footer"><span>示意資料</span></footer>
+</section>
+
+<!-- 15 B 雙語與搬家 -->
+<section class="slide" aria-label="中心官網：多語與資料移轉">
+  <header class="topline"><span class="chap"><b>02</b>中心官網</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">多語與資料移轉</h2>
+  <div class="two">
+    <div class="big"><svg viewBox="0 0 420 150" aria-hidden="true" class="ill"><rect x="20" y="30" width="110" height="90" rx="12" fill="#fff" stroke="#c9d1e6" stroke-width="2"/><text x="75" y="88" text-anchor="middle" font-size="44" font-weight="700" fill="#1d2433">中</text><path d="M150 75 H230" stroke="#8fa3e3" stroke-width="3" stroke-dasharray="6 6"/><path d="M222 66 L236 75 L222 84" fill="none" stroke="#8fa3e3" stroke-width="3"/><g transform="translate(190 42)"><path d="M0 -10 L3 -3 L10 0 L3 3 L0 10 L-3 3 L-10 0 L-3 -3Z" fill="#2f4fb0"/></g><g font-weight="700" font-size="20" text-anchor="middle"><rect x="252" y="18" width="70" height="40" rx="20" fill="#2f4fb0"/><text x="287" y="45" fill="#fff">EN</text><rect x="330" y="50" width="70" height="40" rx="20" fill="#eef1fb" stroke="#8fa3e3"/><text x="365" y="77" fill="#223a86">ID</text><rect x="252" y="88" width="70" height="40" rx="20" fill="#eef1fb" stroke="#8fa3e3"/><text x="287" y="115" fill="#223a86">VI</text></g></svg><small>AI TRANSLATION</small><h3>AI 翻譯草稿</h3><ul><li>NCN：中文一鍵產生英文草稿</li><li>同一做法也用於印尼文、越南文</li><li>只翻公開內容，個資不送翻譯</li><li>編輯確認後發布</li></ul></div>
+    <div class="big"><svg viewBox="0 0 420 150" aria-hidden="true" class="ill"><rect x="20" y="25" width="120" height="100" rx="12" fill="#f1f2f5" stroke="#c4c9d2" stroke-width="2"/><g fill="#c4c9d2"><rect x="38" y="45" width="84" height="10" rx="4"/><rect x="38" y="65" width="64" height="10" rx="4"/><rect x="38" y="85" width="74" height="10" rx="4"/></g><text x="80" y="145" text-anchor="middle" font-size="14" fill="#8b93a1">舊站</text><g stroke="#2f4fb0" stroke-width="3" fill="none"><path d="M155 60 H255"/><path d="M247 52 L258 60 L247 68"/><path d="M155 90 H255"/><path d="M247 82 L258 90 L247 98"/></g><rect x="178" y="62" width="54" height="26" rx="13" fill="#fff" stroke="#2f4fb0" stroke-width="2"/><text x="205" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#2f4fb0">301</text><rect x="275" y="25" width="125" height="100" rx="12" fill="#eef1fb" stroke="#2f4fb0" stroke-width="2"/><g fill="#2f4fb0"><rect x="293" y="45" width="40" height="30" rx="5"/><rect x="341" y="45" width="40" height="30" rx="5" opacity=".6"/><rect x="293" y="83" width="88" height="10" rx="4" opacity=".4"/><rect x="293" y="101" width="60" height="10" rx="4" opacity=".4"/></g><text x="337" y="145" text-anchor="middle" font-size="14" fill="#223a86">新站</text></svg><small>MIGRATION</small><h3>大量資料移轉</h3><ul><li>行政院珍貴史料展示網、海外聯招會、NCN</li><li>舊網址對應新網址，301 轉址</li><li>清理失效連結，補上領域與標籤</li><li>抽查圖片與附件</li></ul></div>
+  </div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<!-- 16 C 表單引擎 -->
+<section class="slide opener" data-no="03" aria-label="會議服務">
+  <header class="topline"><span class="chap"><b>03</b>會議服務</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading"><span class="secno">03</span>會議服務</h2>
+  <div class="op"><div class="browser"><div class="bar"><i></i><i></i><i></i><span>會議服務</span><a class="go" data-demo="b" data-path="/event/e4" target="_blank" rel="noopener" hidden>開啟 Demo ↗</a></div><div class="ph" style="height:430px;border:0;border-radius:0"><img src="images/c-event.jpg" alt="活動頁" onerror="this.remove()">截圖：活動頁</div></div><div class="op-side"><div class="when"><b>8/31</b>上線</div><ol class="nine"><li>建立活動、各頁同步</li><li>名單、匯出與報到</li><li>時間調查、分階段競賽</li><li>線上繳費與通知信</li></ol></div></div>
+  <footer class="footer"><span>示意資料</span></footer>
+</section>
+
+<section class="slide" aria-label="會議服務：建立活動">
+  <header class="topline"><span class="chap"><b>03</b>會議服務</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">建立活動</h2>
+  <div class="browser" style="margin-top:22px"><div class="bar"><i></i><i></i><i></i><span>會議服務｜建立活動</span><a class="go" data-demo="b" data-path="/services/new" target="_blank" rel="noopener" hidden>開啟 Demo ↗</a></div><div class="ph" style="height:440px;border:0;border-radius:0"><img src="images/c-builder.jpg" alt="建立活動畫面" onerror="this.remove()">截圖：建立活動</div></div>
+  <footer class="footer"><span>示意資料</span></footer>
+</section>
+
+<!-- 18 C2 同步 -->
+<section class="slide" aria-label="會議服務：活動建一次自動同步">
+  <header class="topline"><span class="chap"><b>03</b>會議服務</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">活動建立一次，各頁同步</h2>
+  <div class="syncdemo s2">
+    <div class="panel"><h4>建立活動</h4>
+      <label class="fld"><span>活動名稱</span><input id="evName" value="數據科學工作坊"></label>
+      <label class="fld"><span>日期</span><input id="evDate" type="date" value="2027-03-18" min="2027-03-01" max="2027-03-31"></label>
+      <div class="fld"><span>領域</span><div class="chk" id="evFields"><label><input type="checkbox" value="物理" checked>物理</label><label><input type="checkbox" value="化學">化學</label><label><input type="checkbox" value="地科">地科</label><label><input type="checkbox" value="數學" checked>數學</label></div></div>
+      <button class="btn" type="button" id="evPub">發布</button>
+    </div>
+    <svg class="fan" viewBox="0 0 60 300" aria-hidden="true"><path d="M4 150 C30 150 30 40 56 40 M4 150 H56 M4 150 C30 150 30 260 56 260" fill="none" stroke="#8fa3e3" stroke-width="2.5" stroke-dasharray="5 5"/><path d="M50 34l7 6-7 6M50 144l7 6-7 6M50 254l7 6-7 6" fill="none" stroke="#8fa3e3" stroke-width="2.5"/></svg>
+    <div class="outs2">
+      <div class="out"><h5><em>1</em>研討會列表<i>依日期排序</i></h5><div id="outList"><div class="ev" data-d="5"><b>3/5</b>表面化學前沿講座</div><div class="ev" data-d="25"><b>3/25</b>地震預警研討會</div></div></div>
+      <div class="out"><h5><em>2</em>學術行事曆｜3 月<i>依活動日期</i></h5><div class="cal" id="outCal"></div></div>
+      <div class="out"><h5><em>3</em>各組頁面<i>依勾選領域</i></h5><div class="fpages" id="outF"><div data-f="物理">物理</div><div data-f="化學">化學</div><div data-f="地科">地科</div><div data-f="數學">數學</div></div></div>
+    </div>
+  </div>
+  <footer class="footer"><span>示意資料</span></footer>
+</section>
+
+<!-- 19 C3 Dashboard -->
+<section class="slide" aria-label="會議服務：活動管理與當天報到">
+  <header class="topline"><span class="chap"><b>03</b>會議服務</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">名單、匯出與報到</h2>
+  <div class="c3">
+    <div class="browser"><div class="bar"><i></i><i></i><i></i><span>活動管理</span><a class="go" data-demo="b" data-path="/manage/e-past" target="_blank" rel="noopener" hidden>開啟 Demo ↗</a></div><div class="ph" style="height:400px;border:0;border-radius:0"><img src="images/c-dashboard.jpg" alt="活動管理畫面" onerror="this.remove()">截圖：活動管理</div></div>
+    <div class="pts">
+      <div class="pt ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m-4-4 4 4 4-4M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg><div><h4>最常用的三種，一鍵匯出</h4><p>完整名單、簽到表、名牌</p></div></div>
+      <div class="pt ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h11M4 18h6M18 14v6m-2.5-2.5L18 20l2.5-2.5"/></svg><div><h4>排序自己設，存成範本</h4><p>領域 → 身分別 → 單位筆劃</p></div></div>
+      <div class="pt ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M9 7h2.5v2.5H9zM12.5 7H15v2.5h-2.5zM9 10.5h2.5V13H9zM13.5 11.5h1.5v1.5"/><path d="M11 18h2"/></svg><div><h4>手機、平板就能報到</h4><p>工作人員登入掃 QR Code，不必另購設備</p></div></div>
+    </div>
+  </div>
+  <footer class="footer"><span>示意資料</span></footer>
+</section>
+
+<!-- 20 C 其他做法 -->
+<section class="slide" aria-label="會議服務：同一套表單延伸用途">
+  <header class="topline"><span class="chap"><b>03</b>會議服務</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">同一套表單，延伸到其他用途</h2>
+  <div class="engine">
+    <div class="core"><h3>表單系統</h3><p>題型、條件題、身分別<br>名額、候補、上傳</p></div>
+    <svg class="fan2" viewBox="0 0 130 360" aria-hidden="true"><path class="flow" d="M4 180 C70 180 60 55 122 55 M4 180 H122 M4 180 C70 180 60 305 122 305" fill="none" stroke="#8fa3e3" stroke-width="2.5"/><path d="M115 49l8 6-8 6M115 174l8 6-8 6M115 299l8 6-8 6" fill="none" stroke="#8fa3e3" stroke-width="2.5"/></svg>
+    <div class="uses">
+      <div class="use"><h4>會議時間調查</h4><p>零散時段、可以／勉強／不行、標示 key person</p></div>
+      <div class="use"><h4>分階段競賽</h4><p>晉級隊伍才收到補填表單，淘汰隊伍不寄信</p></div>
+      <div class="use plus" aria-hidden="true">+</div>
+    </div>
+  </div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<!-- 17 C1 建立活動 -->
+<section class="slide" aria-label="會議服務：其他需求的做法">
+  <header class="topline"><span class="chap"><b>03</b>會議服務</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">其他需求的做法</h2>
+  <div class="ic-grid"><div class="ic-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4z"/><path d="M4 10h16"/><path d="M7 14h4"/></svg><h4>線上繳費</h4><p>報名成功才付款，付款結果回寫報名，可對帳；可線上申請退款，處理狀態留紀錄</p></div><div class="ic-card"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="12" r="3.5"/><path d="M11.5 12H20v3M17 12v2"/></svg><h4>登入</h4><p>Google 登入；一般帳號依臺大資安規範設定密碼強度</p></div><div class="ic-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg><h4>通知信</h4><p>系統排程寄送，5 分鐘內寄出；各類通知可預覽</p></div><div class="ic-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6M9 18h4"/></svg><h4>議程表</h4><p>提供 AI 提示詞，以底圖與議程資料產出中英議程表</p></div><div class="ic-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v4H4z"/><path d="M6 11v9h12v-9"/><path d="M10 15h4"/></svg><h4>gomeeting 舊資料</h4><p>搬移必要資料，其餘封存，需要時可轉入新系統</p></div><div class="ic-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7 7 9 4-2 7-5 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg><h4>個資</h4><p>每場告知同意；查看與匯出留紀錄；到期封存或刪除</p></div></div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<!-- 21 執行時程 -->
+<section class="slide" aria-label="執行規劃與時程">
+  <header class="topline"><span class="chap"><b>04</b>執行方式</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">執行時程</h2>
+  <div class="gantt">
+    <div></div><div class="yr" style="grid-column:2/3">2026</div><div class="yr" style="grid-column:3/-1">2027</div>
+    <div></div><div class="m">12</div><div class="m">1</div><div class="m">2</div><div class="m">3</div><div class="m">4</div><div class="m">5</div><div class="m">6</div><div class="m">7</div><div class="m">8</div><div class="m">9</div><div class="m">10</div>
+    <div class="lbl">計畫網站</div><div class="bar" style="--c:0;grid-column:2/4">UI、開發、匯入</div><div class="bar ms" style="--c:2;grid-column:4/5">2/22 上線</div><div class="bar after" style="--c:3;grid-column:5/7">標章申請</div><div style="grid-column:7/13"></div>
+    <div class="lbl">官網・會議服務</div><div class="bar lt" style="--c:0;grid-column:2/4">訪談、系統盤點</div><div style="grid-column:4/5"></div><div class="bar lt" style="--c:3;grid-column:5/6">設計</div><div class="bar" style="--c:4;grid-column:6/8">開發、資料移轉</div><div class="bar lt" style="--c:6;grid-column:8/10">測試、驗收</div><div class="bar ms" style="--c:8;grid-column:10/11">8/31 上線</div><div class="bar after" style="--c:9;grid-column:11/13">標章申請</div>
+    <div class="lbl">檢測</div><div style="grid-column:2/3"></div><div class="bar lt" style="--c:1;grid-column:3/4">弱點掃描</div><div style="grid-column:4/8"></div><div class="bar lt" style="--c:6;grid-column:8/9">弱點掃描</div><div class="bar" style="--c:7;grid-column:9/10">修補複測</div><div style="grid-column:10/13"></div>
+  </div>
+  <div class="gnote"><span><b>無障礙標章</b>要網站上線後才能申請，約需 1–2 個月；審查期間網站照常使用。</span></div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<!-- 22 執行方式 -->
+<section class="slide" aria-label="執行方式">
+  <header class="topline"><span class="chap"><b>04</b>執行方式</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">執行方式</h2>
+  <div class="pwrap">
+    <div class="pnav" id="pNav"><button type="button" data-p="0" class=on><small>01</small>啟動盤點</button><button type="button" data-p="1"><small>02</small>畫面確認</button><button type="button" data-p="2"><small>03</small>開發與測試站</button><button type="button" data-p="3"><small>04</small>資料與檢測</button><button type="button" data-p="4"><small>05</small>上線與交付</button></div>
+    <div class="ppanel"><div class="pcol"><small>交付</small><ul id="pD"></ul></div><div class="pcol"><small>我們會注意</small><ul id="pN" class="chk"></ul></div></div>
+  </div>
+  <div class="pstrip"><span>進度掌握</span><b>測試站即時可見</b><b>意見集中一張清單</b><b>每階段確認後再往下</b></div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<section class="slide" aria-label="本案團隊與上線後的聯繫">
+  <header class="topline"><span class="chap"><b>05</b>團隊與實例</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">誰來協助您</h2>
+  <div class="tm">
+    <div class="tm-people">
+      <div class="tp wide"><small>專案經理・維護窗口</small><b>Aron</b><span>建置到上線後同一位：需求、進度、驗收、維護</span></div>
+      <div class="tp wide"><small>工程與資安</small><b>Alfred</b><span>開發、資料移轉、弱點掃描與修補</span></div>
+    </div>
+    <div class="tm-care"><h3>上線後</h3>
+      <div class="cr"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg><div><b>專屬 LINE 群組</b><span>上班時間 4 小時內回覆，緊急問題當日處理</span></div></div>
+      <div class="cr"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6z"/><path d="M9 12h6M9 16h4"/></svg><div><b>每月維運報告</b><span>更新紀錄、備份狀態、弱點掃描結果</span></div></div>
+      <div class="cr"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6l8-3 8 3-8 3z"/><path d="M7 8v5c3 2 7 2 10 0V8"/></svg><div><b>教育訓練與操作手冊</b><span>同仁自己就能更新</span></div></div>
+      <div class="cr"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg><div><b>原始碼完整移交</b><span>日後由誰維護都能接手</span></div></div>
+    </div>
+  </div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<section class="slide" aria-label="實例：TAP 報名報到平台">
+  <header class="topline"><span class="chap"><b>05</b>團隊與實例</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">實例：TAP 報名報到平台</h2>
+  <div class="tap">
+    <ol class="tap-tl">
+      <li><b>2022</b><div><strong>建置</strong><span>線上報名、綠界金流、QR Code 報到、名牌與證書信</span></div></li>
+      <li><b>2024</b><div><strong>依回饋擴充</strong><span>驗證後購票、票券審核、多票種報到</span></div></li>
+      <li><b>每場活動</b><div><strong>活動日前加大主機</strong><span>報名、報到高峰過後再調回</span></div></li>
+      <li><b>2026</b><div><strong>現場報到加速</strong><span>名單即開即查，現場不用等</span></div></li>
+    </ol>
+    <div class="tap-ls"><h3>帶進本案</h3>
+      <div class="ls"><b>現場報到最怕等</b><span>報到頁上線前，用真實名單量測速度</span></div>
+      <div class="ls"><b>付款人不一定是出席者</b><span>名單用付款人、出席者都搜得到</span></div>
+      <div class="ls"><b>窗口不一定是工程背景</b><span>操作手冊照實際流程寫，常見誤操作先擋掉</span></div>
+    </div>
+  </div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<!-- 23 請教 -->
+<section class="slide" aria-label="想與您確認的做法">
+  <header class="topline"><span class="chap"><b>06</b>想與您確認</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">建議做法與確認</h2>
+  <div class="q2grid"><div class="q2"><span class="qt">金流</span><h4>沿用華南 ATM 子帳號與信用卡</h4><p>每筆報名對應一個子帳號，入帳自動對帳。子帳號能依報名編號產生嗎？銀行有提供對帳檔嗎？</p></div><div class="q2"><span class="qt">候補</span><h4>預設人工確認後遞補</h4><p>也可改為自動遞補並設付款期限。哪些場次需要自動遞補？</p></div><div class="q2"><span class="qt">匯出</span><h4>先做附件二的三種版本</h4><p>完整名單、簽到表、名牌，欄位之後可在後台調整。還有其他常用格式嗎？</p></div><div class="q2"><span class="qt">權限</span><h4>依角色分權</h4><p>主管、行政專員、執行編輯、各組窗口各看所需資料。各組需要看報名名單嗎？</p></div><div class="q2"><span class="qt">線上會議</span><h4>自動產生 Meet 連結</h4><p>需授權中心 Google 帳號；不便授權時由承辦貼上連結。中心可以授權嗎？</p></div><div class="q2"><span class="qt">時間調查</span><h4>與報名共用表單系統</h4><p>資料與名單在同一個後台。要全面改用，還是只做結果彙整？</p></div></div>
+  <div class="nextstep">會後我們整理成確認清單，您回覆後即開始啟動盤點。</div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<!-- 24 Thanks -->
+<section class="slide thanks" aria-label="謝謝">
+  <header class="topline"><img class="ctk-logo" src="images/ctkpro-logo-white.png" alt="CTK Pro"><span>2026.11.18</span></header>
+  <h2 class="heading">Thank you.</h2>
+  <svg class="end-art" viewBox="0 0 360 300" aria-hidden="true"><rect x="10" y="80" width="130" height="130" rx="10" fill="#2a3245" stroke="#8fa3e3" stroke-width="2"/><g fill="#8fa3e3" opacity=".7"><rect x="24" y="98" width="70" height="8" rx="4"/><rect x="24" y="116" width="102" height="44" rx="5" opacity=".4"/><rect x="24" y="170" width="80" height="8" rx="4" opacity=".5"/></g><rect x="160" y="30" width="190" height="230" rx="10" fill="#2f4fb0"/><g fill="#fff"><rect x="176" y="48" width="70" height="8" rx="4"/><rect x="176" y="66" width="158" height="58" rx="5" opacity=".25"/><rect x="176" y="134" width="120" height="8" rx="4" opacity=".5"/></g><rect x="176" y="158" width="158" height="86" rx="8" fill="#fff" opacity=".9"/><g fill="#2f4fb0" opacity=".55"><rect x="190" y="174" width="60" height="8" rx="4"/><rect x="190" y="192" width="130" height="10" rx="5" opacity=".5"/><rect x="190" y="210" width="130" height="10" rx="5" opacity=".5"/><rect x="190" y="228" width="50" height="8" rx="4"/></g></svg>
+  <footer class="footer"><span>CTK Pro｜竑盛科技股份有限公司｜ctkpro.com</span></footer>
+</section>
+
+
+
+</main>
+<nav class="nav" aria-label="投影片導覽"><button id="prev" type="button" aria-label="上一頁"><svg viewBox="0 0 16 16"><path d="M10.5 3 5.5 8l5 5"/></svg></button><span class="count"><span id="current">1</span> / <span id="total"></span></span><button id="next" type="button" aria-label="下一頁"><svg viewBox="0 0 16 16"><path d="m5.5 3 5 5-5 5"/></svg></button></nav>
+<div class="progress" id="progress" aria-hidden="true"></div><p id="announcement" class="sr-only" aria-live="polite"></p>
+<script>
+// 內容依據：Bid_Writing/company/profile.md、中心 1113 修訂企劃書、20_我們的整理/1118_簡報架構。示意資料皆為虛構。
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function press(group,btn){group.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));}
+
+
+// A2 計畫類型
+
+// A3 後台
+const pv=()=>{$('#pvZh').textContent=$('#adZh').value;$('#pvEn').textContent=$('#adEn').value;$('#pvType').textContent=$('#adType').selectedOptions[0].text;};
+['#adZh','#adEn','#adType'].forEach(s=>$(s).addEventListener('input',pv));
+$$('#adSw button').forEach(b=>b.addEventListener('click',()=>{press($('#adSw'),b);$('#pvBand').style.background=b.dataset.c;}));
+$('#adSave').addEventListener('click',()=>{const li=$$('#adSync li');li.forEach(l=>l.classList.remove('ok'));li.forEach((l,i)=>setTimeout(()=>l.classList.add('ok'),180*(i+1)));});
+
+// B Word
+$$('[data-w]').forEach(b=>b.addEventListener('click',()=>{press(b.parentElement,b);const c=b.dataset.w==='clean';$('#wordDoc').className='doc '+(c?'clean':'raw');$('#wordDoc .rawv').hidden=c;$('#wordDoc .cleanv').hidden=!c;}));
+
+// C2 同步
+const cal=$('#outCal');cal.innerHTML=Array.from({length:31},(_,i)=>`<span data-d="${i+1}">${i+1}</span>`).join('');
+$('#evPub').addEventListener('click',()=>{const n=$('#evName').value||'新活動';const fs=$$('#evFields input:checked').map(i=>i.value);const d=+(($('#evDate').value||'2027-03-18').split('-')[2]);
+  $$('.ev.new').forEach(e=>e.remove());$$('#outCal .hit').forEach(e=>e.classList.remove('hit'));
+  const el=document.createElement('div');el.className='ev new';el.dataset.d=d;el.innerHTML=`<b>3/${d}</b>${n}`;const after=[...$$('#outList .ev')].find(x=>+x.dataset.d>d);$('#outList').insertBefore(el,after||null);
+  $(`#outCal [data-d="${d}"]`)?.classList.add('hit');
+  $$('#outF [data-f]').forEach(x=>{if(fs.includes(x.dataset.f))x.insertAdjacentHTML('beforeend',`<div class="ev new">${n}</div>`);});});
+
+
+// v2：計畫頁可點選、後台功能聚焦
+const pops={sch:'<h5>排程發布</h5><ul><li><span>發布時間</span><b>2026/11/20 09:00</b></li><li><span>到期下架</span><span>不下架</span></li><li><span>狀態</span><span class="lnk">已排程</span></li></ul>',
+rev:'<h5>版本紀錄</h5><ul><li><span>11/12 14:03　執行編輯</span><span class="lnk">還原</span></li><li><span>11/12 10:21　執行編輯</span><span class="lnk">還原</span></li><li><span>11/11 17:45　物理組窗口</span><span class="lnk">還原</span></li></ul>',
+bulk:'<h5>批次作業</h5><ul><li><span>已選取</span><b>3 則</b></li><li><span>操作</span><span>下架／改標籤／改領域</span></li><li><span>匯入</span><span class="lnk">CSV 匯入</span></li></ul>',
+role:'<h5>角色權限</h5><ul><li><span>主管</span><span>全部</span></li><li><span>行政專員</span><span>會議服務、報名名單</span></li><li><span>執行編輯</span><span>官網內容</span></li><li><span>四組窗口</span><span>所屬領域</span></li></ul>',
+media:'<h5>媒體庫</h5><div class="thumbs"><span style="background:#2f4fb0">#1024</span><span style="background:#0e7490">#1025</span><span style="background:#7a5a1c">#1026</span><span style="background:#8b3a8f">#1027</span><span style="background:#223a86">#1028</span><span style="background:#5d6574">#1029</span></div>'};
+function wpFocus(k){$('#wp').dataset.focus=k;$('#wpPop').innerHTML=pops[k];}
+$$('[data-f]').forEach(b=>b.addEventListener('click',()=>{press(b.parentElement,b);wpFocus(b.dataset.f);}));wpFocus('rev');
+
+
+// v3：經驗時間軸、相關實績、執行方式
+const G=[["2011", "公司成立", "從手機 App 的介面體驗出發", "跨裝置操作與資訊層級，是後來所有網站的基礎。", "兩個網站在手機、平板上都好用。"], ["2019", "電商與金流", "法雅客電商建置與多年維護", "付款流程、對帳與上線後營運要一起考量。", "報名繳費、對帳流程可以順利接上。"], ["2020", "國際品牌", "PUFsecurity 多語官網", "技術內容用清楚的頁面結構，面向國際讀者。", "中英雙語不是翻譯完就好，結構也要一致。"], ["2022", "活動平台", "TAP 報名報到平台", "線上報名、綠界金流、QR Code 報到、名牌與證書信。", "會議服務的報名、繳費、報到，都跑過真實活動。"], ["2023", "公共服務", "行政院珍貴史料展示網重構", "大量舊資料整理、轉址與多語部署。", "中心舊資料與 gomeeting 資料的移轉與封存。"], ["2024", "分階段擴充", "TAP 依使用回饋擴充功能", "上線後依實際使用調整，而不是一次做到滿。", "會議服務先上線核心，再依中心需求微調。"], ["2025", "資安管理", "ISO 27001:2022 認證", "權限、掃描、修補與紀錄都有管理流程。", "臺大弱點掃描與資安要求，有既定流程對應。"]];
+function showG(i){$$('#gNav button').forEach((b,k)=>b.classList.toggle('on',k===i));const g=G[i];$('#gY').textContent=g[0];$('#gT').textContent=g[1];$('#gH').textContent=g[2];$('#gP').textContent=g[3];$('#gF').textContent=g[4];}
+$$('#gNav button').forEach(b=>b.addEventListener('click',()=>showG(+b.dataset.g)));showG(0);
+const X=[["TAP 報名報到平台", ["線上報名、綠界金流", "QR Code 報到、名牌列印", "證書信寄送"], "會議服務：報名、繳費、報到"], ["台灣鼻科醫學會", ["會員申請與審核", "活動報名與繳費紀錄", "學分登錄"], "身分別審核、繳費紀錄"], ["行政院珍貴史料展示網、海外聯招會、NCN", ["舊站資料整理與移轉", "舊網址 301 轉址", "多語系部署"], "官網舊資料、gomeeting 封存"], ["NCN", ["中文一鍵產生英文草稿", "另含印尼文、越南文", "編輯確認後發布"], "官網英文版內容"], ["李綜合醫院、台灣資安合規中心", ["無障礙 AA 檢測", "弱點掃描與修補", "結構化資料、SEO"], "無障礙標章、臺大弱點掃描"]];
+function showX(i){$$('.xt tr[data-x]').forEach((r,k)=>r.classList.toggle('sel',k===i));$('#xH').textContent=X[i][0];$('#xL').innerHTML=X[i][1].map(t=>'<li>'+t+'</li>').join('');$('#xF').textContent=X[i][2];}
+$$('.xt tr[data-x]').forEach(r=>{r.addEventListener('click',()=>showX(+r.dataset.x));r.addEventListener('keydown',e=>{if(e.key==='Enter')showX(+r.dataset.x);});});showX(0);
+const P=[["頁面與欄位清單", "帳號與權限對照表", "舊資料盤點與移轉範圍", ["欄位一次定義：中英欄位、必填、顯示位置", "確認每類資料由誰提供、何時到位", "先列出驗收依據，避免後期認知落差"]], ["首頁與代表內頁 UI", "手機版畫面", "可操作的 Demo", ["對比、字級、焦點順序從設計稿就符合無障礙", "用真實內容排版，不用假字", "確認後才進開發，減少返工"]], ["測試站網址", "定期進度回報", "單一意見清單", ["意見依「待處理／處理中／待確認／完成」追蹤", "每項修改可在測試站直接驗證", "權限依角色實測：主管、專員、編輯、各組窗口"]], ["資料匯入與抽查", "弱點掃描預掃", "無障礙自檢", ["匯入後抽查圖片、附件與連結", "主要功能完成即預掃，預留修補與複測時間", "舊網址逐筆對應新網址"]], ["正式上線", "原始碼、文件、操作手冊", "教育訓練", ["上線檢查：SSL、備份、寄信、GA4、轉址", "上線後申請無障礙標章，審查期間照常使用", "交接後由固定窗口處理維護與微調"]]];
+function showP(i){$$('#pNav button').forEach((b,k)=>b.classList.toggle('on',k===i));const p=P[i];$('#pD').innerHTML=[p[0],p[1],p[2]].map(t=>'<li>'+t+'</li>').join('');$('#pN').innerHTML=p[3].map(t=>'<li>'+t+'</li>').join('');}
+$$('#pNav button').forEach(b=>b.addEventListener('click',()=>showP(+b.dataset.p)));showP(0);
+
+// Demo 連結：推到 ctkpro.cc 子網域後填入網址，例如 a:'https://xxx.ctkpro.cc'；空白就不顯示
+const DEMO={a:'https://trc.ctkpro.cc',b:'https://spec.ctkpro.cc'};
+document.querySelectorAll('.go').forEach(a=>{const b=DEMO[a.dataset.demo];if(b){a.href=b.replace(/\/$/,'')+a.dataset.path;a.hidden=false;}});
+// 截圖：短圖框高隨圖縮；長圖可捲動，data-start 為起始捲動比例
+const shotRO=new ResizeObserver(es=>es.forEach(e=>{const ph=e.target,img=ph.querySelector('img');if(!img||!img.offsetHeight||ph.dataset.done)return;ph.dataset.done=1;if(ph.dataset.start)ph.scrollTop=img.offsetHeight*ph.dataset.start;else if(img.offsetHeight<ph.clientHeight)ph.style.height=img.offsetHeight+'px';}));
+document.querySelectorAll('.browser .ph').forEach(ph=>{const img=ph.querySelector('img');if(img)img.complete?shotRO.observe(ph):img.addEventListener('load',()=>shotRO.observe(ph));});
+// v9 重點總覽：hover／focus 切換亮起的欄（停在最後一次），開關全亮
+$$('#kp .kp-col').forEach(c=>['mouseenter','focusin'].forEach(ev=>c.addEventListener(ev,()=>$$('#kp .kp-col').forEach(x=>x.classList.toggle('on',x===c)))));
+$('#kpAll').addEventListener('click',e=>{const on=$('#kp').classList.toggle('all');e.currentTarget.setAttribute('aria-pressed',on);});
+// v8 重點總覽：點項目跳到對應頁，頁碼自動算
+$$('[data-to]').forEach(b=>{const i=$$('.slide').findIndex(s=>s.getAttribute('aria-label')===b.dataset.to);if(i<0){console.warn('kp target missing',b.dataset.to);return;}b.querySelector('i').textContent=i+1;b.addEventListener('click',()=>show(i));});
+// v10 版本還原情境：誤刪 → 找版本 → 還原
+const revSaved=['已儲存 11/12 10:21','已儲存 11/12 14:03','已儲存 11/12 14:03','已還原自 11/12 10:21'];
+$$('#rev [data-r]').forEach(b=>b.addEventListener('click',()=>{const r=b.dataset.r;$('#rev').dataset.r=r;$('#revSaved').textContent=revSaved[r];$$('.rev-steps button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.r===r)));}));
+const vid=$('.vid video');
+vid.addEventListener('click',()=>vid.paused?vid.play():vid.pause());
+new MutationObserver(()=>{if(vid.closest('.slide').classList.contains('active')){vid.currentTime=0;vid.play().catch(()=>{});}else vid.pause();}).observe(vid.closest('.slide'),{attributes:true,attributeFilter:['class']});
+// 導覽（同 genabot-intro）
+const slides=$$('.slide'),stage=$('#stage'),prev=$('#prev'),next=$('#next');let current=0;$('#total').textContent=slides.length;
+function fit(){stage.style.transform=`translate(-50%,-50%) scale(${Math.min(innerWidth/1280,innerHeight/720)})`;}
+function show(i,upd=true){current=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,k)=>{const a=k===current;s.classList.toggle('active',a);s.setAttribute('aria-hidden',String(!a));s.inert=!a;});
+  $('#current').textContent=current+1;$('#progress').style.width=`${current/(slides.length-1)*100}%`;$('#announcement').textContent=`第 ${current+1} 頁：${slides[current].getAttribute('aria-label')}`;
+  prev.disabled=current===0;next.disabled=current===slides.length-1;if(upd)history.replaceState(null,'',`#${current+1}`);checkOverflow();}
+function checkOverflow(){const s=slides[current];s.classList.remove('overflow');if(s.scrollHeight>720||s.scrollWidth>1280){s.classList.add('overflow');console.warn('內容溢出：第',current+1,'頁');}}
+function readHash(){const n=Number(location.hash.slice(1));show(Number.isInteger(n)&&n>=1&&n<=slides.length?n-1:0,false);}
+prev.addEventListener('click',()=>show(current-1));next.addEventListener('click',()=>show(current+1));
+addEventListener('keydown',e=>{if(e.altKey||e.ctrlKey||e.metaKey||e.target.closest('input,textarea,select'))return;if(e.target.closest('button,a')&&(e.key===' '||e.key==='Enter'))return;
+  if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();show(current+1);}else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();show(current-1);}
+  else if(e.key==='Home'){e.preventDefault();show(0);}else if(e.key==='End'){e.preventDefault();show(slides.length-1);}
+  else if(e.key.toLowerCase()==='f'){e.preventDefault();(document.fullscreenElement?document.exitFullscreen?.():document.documentElement.requestFullscreen?.())?.catch(()=>{});}});
+stage.addEventListener('click',e=>{if(e.target.closest('a,button,input,select,label,.panel,.ctrl,.ctrl2,.prog,.wp,tr')||getSelection()?.toString())return;const r=stage.getBoundingClientRect(),x=(e.clientX-r.left)/r.width;if(x<1/6)show(current-1);else if(x>5/6)show(current+1);});
+addEventListener('resize',fit);addEventListener('hashchange',readHash);fit();readHash();
+</script>
+</body>
+</html>

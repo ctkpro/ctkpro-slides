@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>客戶開始自己帶稿來｜CTK Pro 竑盛科技</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#e11f27;
+    --brand-50:#FBEFEC;
+    --teal:#0E7490;
+    --teal-700:#155E75;
+    --teal-50:#EAF4F6;
+    --ink:#211d1b;
+    --muted:#5b5350;
+    --soft:#8e8681;
+    --line:#E4DED6;
+    --bg:#FBFAF7;
+    --paper:#F8F7F3;
+    --quiet:#F1EEE8;
+    --shadow:0 16px 40px rgba(33,29,27,.07);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:100%;height:100%;overflow:hidden;background:#e9e6e0;}
+  body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+    color:var(--ink);-webkit-font-smoothing:antialiased;}
+  #stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;
+    transform-origin:center center;background:var(--bg);overflow:hidden;}
+
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;
+    padding:44px 148px 52px 76px;background:var(--bg);}
+  .slide.active{display:flex;}
+  .body{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0;}
+  .head{flex:none;}
+
+  .logo-tr{position:absolute;top:38px;right:148px;height:28px;width:auto;}
+  .pageno{position:absolute;left:76px;bottom:18px;font-size:12.5px;font-weight:700;letter-spacing:1px;color:var(--soft);}
+
+  .kicker{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:900;letter-spacing:2.5px;color:var(--brand);}
+  .kicker::before{content:"";width:28px;height:3px;border-radius:2px;background:var(--brand);}
+  .page-title{font-size:46px;font-weight:900;line-height:1.16;color:var(--ink);margin:11px 0 7px;}
+  .page-title.big{font-size:58px;}
+  .em{color:var(--brand);font-style:normal;}
+  .page-sub{font-size:19px;line-height:1.6;color:var(--muted);max-width:900px;}
+  .lead-line{font-size:20px;line-height:1.6;color:var(--muted);}
+  .eyebrow{font-size:13px;font-weight:900;letter-spacing:2px;color:var(--brand);margin-bottom:10px;}
+  .eyebrow.t{color:var(--teal);}
+  .note{margin-top:14px;border-left:4px solid var(--line);background:var(--quiet);border-radius:0 8px 8px 0;
+    padding:12px 16px;font-size:15px;line-height:1.6;color:var(--muted);}
+  .note b{color:var(--ink);}
+
+  /* P1 狀況列 */
+  .seen{display:flex;flex-direction:column;gap:11px;}
+  .seen .row{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--brand);
+    border-radius:0 9px 9px 0;padding:14px 18px;box-shadow:var(--shadow);}
+  .seen .row b{display:block;font-size:18px;color:var(--ink);margin-bottom:5px;}
+  .seen .row span{font-size:16px;line-height:1.5;color:var(--muted);}
+  .idbar{margin-top:auto;border-top:1px solid var(--line);padding-top:14px;display:flex;
+    justify-content:space-between;font-size:15.5px;color:var(--muted);}
+  .idbar b{color:var(--ink);}
+
+  /* P2 四題 + 六件事 */
+  .qs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .qs div{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--brand);
+    border-radius:0 9px 9px 0;padding:16px 16px;font-size:20px;font-weight:900;color:var(--ink);}
+  .cover6{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .cv{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:13px 17px 15px;box-shadow:var(--shadow);}
+  .cv .top{display:flex;align-items:center;justify-content:space-between;}
+  .cv i{font-style:normal;font-size:12px;font-weight:900;letter-spacing:1.5px;color:var(--brand);}
+  .cv .lv{font-size:11px;font-weight:900;letter-spacing:1px;padding:3px 9px;border-radius:999px;
+    background:var(--quiet);color:var(--soft);border:1px solid var(--line);}
+  .cv .lv.plus{color:var(--teal);border-color:var(--teal);background:var(--teal-50);}
+  .cv b{display:block;font-size:20px;color:var(--ink);margin:5px 0 5px;}
+  .cv p{font-size:14.5px;line-height:1.5;color:var(--muted);}
+
+  /* P3 資安 */
+  .p3{display:grid;grid-template-columns:.82fr 1.4fr;gap:20px;align-items:stretch;}
+  .iso{border-radius:10px;padding:24px;display:flex;flex-direction:column;justify-content:flex-end;
+    position:relative;overflow:hidden;min-height:340px;background:#1a1614;}
+  .iso::before{content:"";position:absolute;inset:0;opacity:.34;
+    background:url("images/iso-27001-certificate.png") center -120px/cover no-repeat;}
+  .iso::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(26,22,20,0) 34%,rgba(26,22,20,.9) 76%,rgba(26,22,20,.97) 100%);}
+  .iso .lb{font-size:13px;font-weight:900;letter-spacing:2px;color:#ff8a8f;margin-bottom:auto;position:relative;z-index:1;}
+  .iso .big{font-size:48px;font-weight:900;color:#fff;line-height:1.04;margin-bottom:12px;position:relative;z-index:1;}
+  .iso p{font-size:16px;line-height:1.55;color:rgba(255,255,255,.82);font-weight:700;position:relative;z-index:1;}
+  .qa-panel{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:10px;
+    overflow:hidden;background:var(--paper);box-shadow:var(--shadow);}
+  .qa2{padding:13px 17px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);}
+  .qa2:nth-child(2n){border-right:none;}
+  .qa2:nth-last-child(-n+2){border-bottom:none;}
+  .qa2 b{display:flex;align-items:flex-start;gap:9px;font-size:16.5px;font-weight:900;color:var(--ink);line-height:1.35;}
+  .qa2 b::before{content:"Q";font-size:12px;font-weight:900;color:#fff;background:var(--brand);
+    width:20px;height:20px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;flex:none;margin-top:1px;}
+  .qa2 span{display:block;padding:7px 0 0 29px;font-size:14.5px;line-height:1.5;color:var(--muted);}
+  .qa2 span em{color:var(--teal);font-style:normal;font-weight:900;}
+
+  /* P4 合作 */
+  .promise{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;}
+  .promise div{background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--teal);
+    border-radius:9px;padding:17px 18px;}
+  .promise b{display:block;font-size:19px;color:var(--ink);margin-bottom:7px;}
+  .promise span{font-size:15px;line-height:1.5;color:var(--muted);}
+  .chips{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:16px;}
+  .chips div{background:var(--quiet);border:1px solid var(--line);border-radius:9px;padding:13px 15px;
+    font-size:16px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px;min-height:56px;}
+  .chips div i{font-style:normal;font-size:12px;font-weight:900;color:var(--brand);}
+  .end-foot{display:flex;align-items:center;gap:20px;margin-top:20px;border-top:1px solid var(--line);padding-top:18px;}
+  .qr{display:flex;align-items:center;gap:13px;}
+  .qr img{width:84px;height:84px;border:1px solid var(--line);border-radius:8px;padding:6px;background:#fff;}
+  .qr .qt b{font-size:16px;color:var(--ink);}
+  .qr .qt span{display:block;font-size:13px;color:var(--muted);margin-top:3px;}
+  .contact{font-size:15.5px;line-height:1.7;color:var(--muted);}
+  .contact b{color:var(--ink);}
+
+  /* 導覽（螢幕看時用，列印不出現） */
+  .navbar{position:fixed;right:24px;bottom:16px;display:flex;align-items:center;gap:10px;z-index:40;color:var(--muted);user-select:none;}
+  .nav-arrow{border:none;background:none;cursor:pointer;line-height:1;font-size:26px;color:var(--soft);
+    padding:2px 9px;border-radius:8px;}
+  .nav-arrow:hover{color:var(--brand);background:var(--brand-50);}
+  .nav-count{font-size:15px;font-weight:700;letter-spacing:.12em;min-width:56px;text-align:center;}
+  .nav-count b{color:var(--ink);}
+  #help{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;background:rgba(33,29,27,.88);
+    color:#fff;font-size:13px;padding:8px 16px;border-radius:999px;transition:opacity .6s;pointer-events:none;}
+
+  /* 列印／另存 PDF：一頁一張，16:9 原尺寸 */
+  @media print{
+    *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+    @page{size:1280px 720px;margin:0;}
+    html,body{width:auto;height:auto;overflow:visible;background:#fff;}
+    #stage{position:static;transform:none!important;width:1280px;height:auto;overflow:visible;}
+    .slide{position:relative;inset:auto;display:flex!important;width:1280px;height:720px;
+      break-after:page;page-break-after:always;break-inside:avoid;}
+    .slide:last-child{break-after:auto;page-break-after:auto;}
+    .navbar,#help{display:none!important;}
+    .cv,.st,.seen .row,.qa-panel,.promise div{box-shadow:none;}
+  }
+</style>
+</head>
+<body>
+
+<div id="stage">
+
+  <!-- 1 這一年變了什麼（兼封面：帶 logo 與識別列） -->
+  <section class="slide">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <div class="head">
+      <div class="kicker">What Changed</div>
+      <h2 class="page-title big">客戶開始<span class="em">自己帶稿來</span></h2>
+      <p class="page-sub">近一年，很多案子的起點變成 AI 產出的稿或半成品。</p>
+    </div>
+    <div class="body">
+      <div class="seen">
+        <div class="row"><b>拿 AI 產的設計稿來問「這個做得出來嗎」</b>
+          <span>畫面很完整，但沒有內容長短的變化、沒有手機版，也沒想過之後誰上稿。</span></div>
+        <div class="row"><b>自己用 AI 生了一版網站或小工具</b>
+          <span>首頁跑得動，點深一點就露餡：表單沒反應、資料沒真的存、手機版跑掉。</span></div>
+        <div class="row"><b>用 AI 整理出一份 feedback</b>
+          <span>一次三十條，有些互相矛盾，但每一條看起來都有道理。</span></div>
+      </div>
+      <p class="lead-line" style="margin-top:20px;">破綻不難看出來。<span class="em">難的是怎麼講，才不會變成在否定客戶。</span></p>
+    </div>
+    <div class="idbar">
+      <div><b>CTK Pro 竑盛科技</b>　網站建置、資安與長期維運</div>
+      <div>ctkpro.com</div>
+    </div>
+    <div class="pageno">1 / 4</div>
+  </section>
+
+  <!-- 2 四題 → 六件事（可單獨截圖） -->
+  <section class="slide">
+    <div class="head">
+      <div class="kicker">Same Questions</div>
+      <h2 class="page-title">不管稿子從哪來，都要回答<span class="em">同樣四題</span></h2>
+    </div>
+    <div class="body">
+      <div class="qs">
+        <div>可穩定上線嗎？</div>
+        <div>日後好維護嗎？</div>
+        <div>資安審得過嗎？</div>
+        <div>出狀況誰接？</div>
+      </div>
+      <div style="margin-top:26px;">
+        <div class="eyebrow">這四題背後，是這六件事　—　前五項接案就會做，無障礙依需求另外規劃</div>
+        <div class="cover6">
+          <div class="cv"><div class="top"><i>01</i><span class="lv">標配</span></div>
+            <b>順利運作</b><p>各種瀏覽器、手機、平板都不跑掉。</p></div>
+          <div class="cv"><div class="top"><i>02</i><span class="lv">標配</span></div>
+            <b>程式效能</b><p>載入速度、圖片與動態效果的代價，先算過。</p></div>
+          <div class="cv"><div class="top"><i>03</i><span class="lv">標配</span></div>
+            <b>資安</b><p>弱點掃描、套件與系統更新、後台權限。</p></div>
+          <div class="cv"><div class="top"><i>04</i><span class="lv">標配</span></div>
+            <b>個人資料</b><p>收什麼、存多久、誰看得到，先講清楚。</p></div>
+          <div class="cv"><div class="top"><i>05</i><span class="lv">標配</span></div>
+            <b>後續維運</b><p>備份、監控、出狀況有人接。</p></div>
+          <div class="cv"><div class="top"><i>06</i><span class="lv plus">加值</span></div>
+            <b>無障礙</b><p>對比、鍵盤操作、表單提示與語意結構。</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="pageno">2 / 4</div>
+  </section>
+
+  <!-- 3 客戶 IT 六題（可單獨截圖） -->
+  <section class="slide">
+    <div class="head">
+      <div class="kicker">Security</div>
+      <h2 class="page-title">客戶 IT 最常問的<span class="em">六題</span></h2>
+      <p class="page-sub">這六題都有現成答案，不用回去問了再回覆。</p>
+    </div>
+    <div class="body">
+      <div class="p3">
+        <div class="iso">
+          <div class="lb">CERTIFIED</div>
+          <div class="big">ISO<br>27001:2022</div>
+          <p>問到制度面時：後面是通過 ISO 27001 驗證的團隊，文件也出得來。</p>
+        </div>
+        <div class="qa-panel">
+          <div class="qa2"><b>資料放哪裡？誰能存取？</b>
+            <span>主機位置固定，後台<em>誰有什麼權限，有一份清單</em>。</span></div>
+          <div class="qa2"><b>有沒有備份？多久一次？</b>
+            <span><em>定期自動備份、保留週期明確</em>，也做過還原演練。</span></div>
+          <div class="qa2"><b>有漏洞怎麼辦？</b>
+            <span><em>定期弱掃、修補有時限</em>，套件與系統更新都在維護範圍。</span></div>
+          <div class="qa2"><b>個資外洩怎麼通報？</b>
+            <span>有<em>事故通報流程</em>：誰通知誰、多久內、改善報告怎麼出。</span></div>
+          <div class="qa2"><b>出狀況誰處理？多久回？</b>
+            <span>有<em>回應時間與對外窗口</em>，技術端直接對接。</span></div>
+          <div class="qa2"><b>企業資安問卷誰填？</b>
+            <span>客戶的 IT 問卷與稽核表單，<em>我們直接回</em>。</span></div>
+        </div>
+      </div>
+      <div class="note">有時候資安會讓做法需要折衷——開放上傳任何檔案、直接嵌外部字型、個資欄位收好收滿。
+        這種時候<b>會給理由，也會給替代方案</b>，而且在設計階段就講，不是等到上線前才說做不到。</div>
+    </div>
+    <div class="pageno">3 / 4</div>
+  </section>
+
+  <!-- 4 怎麼開始 -->
+  <section class="slide">
+    <img class="logo-tr" src="images/ctkpro-logo.png" alt="CTK Pro">
+    <div class="head">
+      <div class="kicker">Start Small</div>
+      <h2 class="page-title">合作，可以從<span class="em">很小的地方</span>開始</h2>
+      <p class="page-sub">不用一開始就是一個完整的案子。設計方向由你們主導，我們只補後面那段。</p>
+    </div>
+    <div class="body">
+      <div class="promise">
+        <div><b>客戶是你們的</b><span>窗口由你們決定，我們不會繞過你們接觸客戶。</span></div>
+        <div><b>掛名你們挑</b><span>完全白牌、共同掛名或技術協力，都可以。</span></div>
+        <div><b>出狀況我們上</b><span>技術端的說明與處理由我們對外，不讓你們單獨面對客戶的 IT。</span></div>
+      </div>
+      <div class="chips">
+        <div><i>01</i>舊網站狀況體檢</div>
+        <div><i>02</i>設計稿可行性看一輪</div>
+        <div><i>03</i>客戶臨時要的小功能</div>
+        <div><i>04</i>客戶 IT 問卷代回</div>
+      </div>
+      <p class="lead-line" style="margin-top:18px;">手上有已經上線的舊案，最容易看見真實狀況。<span class="em">先交換經驗，再談合作方式。</span></p>
+      <div class="end-foot">
+        <div class="qr">
+          <img src="images/qr-ctkpro.png" alt="ctkpro.com QR Code" onerror="this.style.display='none'">
+          <div class="qt"><b>ctkpro.com</b><span>掃描了解更多</span></div>
+        </div>
+        <div class="contact"><b>CTK Pro 竑盛科技</b><br>設計團隊的網站落地、資安與長期維運夥伴</div>
+      </div>
+    </div>
+    <div class="pageno">4 / 4</div>
+  </section>
+
+</div>
+
+<div class="navbar" id="navbar">
+  <button class="nav-arrow" id="prevBtn" aria-label="上一頁">‹</button>
+  <span class="nav-count"><b id="curNo">1</b> / 4</span>
+  <button class="nav-arrow" id="nextBtn" aria-label="下一頁">›</button>
+</div>
+<div id="help">← → / 點兩側 翻頁　·　Ctrl+P 另存 PDF（4 頁 16:9）</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const total=slides.length;
+  let cur=0;
+  const stage=document.getElementById('stage');
+  const curNo=document.getElementById('curNo');
+
+  function show(i){
+    cur=Math.max(0,Math.min(total-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    curNo.textContent=cur+1;
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  const next=()=>show(cur+1), prev=()=>show(cur-1);
+
+  function fit(){
+    const s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    stage.style.transform=`translate(-50%,-50%) scale(${s})`;
+  }
+  window.addEventListener('resize',fit);
+
+  document.addEventListener('keydown',e=>{
+    switch(e.key){
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': next();e.preventDefault();break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': prev();e.preventDefault();break;
+      case 'f': case 'F':
+        document.fullscreenElement?document.exitFullscreen?.():document.documentElement.requestFullscreen?.();
+        e.preventDefault();break;
+    }
+  });
+  document.getElementById('prevBtn').addEventListener('click',e=>{e.stopPropagation();prev();});
+  document.getElementById('nextBtn').addEventListener('click',e=>{e.stopPropagation();next();});
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#navbar,button,a'))return;
+    const w=window.innerWidth;
+    if(e.clientX<w/6) prev(); else if(e.clientX>w*5/6) next();
+  });
+
+  fit();
+  const h=parseInt(location.hash.replace('#',''),10);
+  show(h>=1&&h<=total?h-1:0);
+  setTimeout(()=>{document.getElementById('help').style.opacity='0';},6000);
+</script>
+</body>
+</html>
