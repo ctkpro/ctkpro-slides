@@ -17,3 +17,6 @@ Thumbs.db
 *.log
 temp/
 .playwright-mcp/
+
+# 內部講者筆記（repo 公開，不推）
+**/講者*

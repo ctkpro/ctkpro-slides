@@ -141,7 +141,7 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
 .ic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}.ic-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px;min-height:180px}.ic-card svg{width:52px;height:52px;fill:none;stroke:var(--blue);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;background:var(--blue-50);border-radius:12px;padding:7px}.ic-card h4{font-size:22px;margin:12px 0 6px}.ic-card p{margin:0;font-size:17px;line-height:1.6;color:var(--muted)}
 
 /* v3（11/13 第二輪回饋） */
-.gnav{position:relative;display:grid;grid-template-columns:repeat(7,1fr);margin-top:34px}.gnav:before{content:'';position:absolute;left:7%;right:7%;top:47px;height:3px;background:var(--line);border-radius:3px}
+.gnav{position:relative;display:grid;grid-template-columns:repeat(6,1fr);margin-top:34px}.gnav:before{content:'';position:absolute;left:7%;right:7%;top:47px;height:3px;background:var(--line);border-radius:3px}
 .gnav button{position:relative;border:0;background:none;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:9px;color:var(--soft)}.gnav b{font:700 21px Arial}.gnav i{width:20px;height:20px;border-radius:50%;background:var(--blue-300);border:4px solid var(--paper);box-shadow:0 0 0 1px var(--line)}.gnav span{font-size:16px;font-weight:700}
 .gnav button.on{color:var(--ink)}.gnav button.on i{background:var(--blue);transform:scale(1.35);box-shadow:0 0 0 6px var(--blue-50)}
 .gstage{display:grid;grid-template-columns:280px 1fr;gap:22px;margin-top:40px;height:262px}.gyear{background:var(--blue);color:#fff;border-radius:16px;padding:30px 30px}.gyear b{display:block;font:700 76px/1 Arial;letter-spacing:-3px}.gyear span{display:block;margin-top:16px;font-size:24px;font-weight:700}
@@ -265,6 +265,16 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
 .tap-ls{background:var(--blue-50);border-radius:16px;padding:18px 22px}.ls{padding:13px 0;border-bottom:1px solid #d5ddf3}.ls:last-child{border:0}.ls b{display:block;font-size:20px}.ls span{font-size:16px;color:#4d5563}
 .lane.build .lane-items{gap:14px}.lane.build .it{flex:1 1 0;padding:16px 14px}.lane.build .it b{font-size:23px}.lane.build .it span{font-size:15px}.it em{display:block;font-style:normal;font-size:14px;font-weight:700;color:var(--blue);margin-bottom:4px}.it.key em{color:#dfe6ff}.tm-people{align-content:start}.duo{display:flex;align-items:center;gap:14px}.duo i{font-style:normal;font-size:18px;color:var(--muted)}.spec-logo{height:42px;display:block}.ca-lines path{stroke-dasharray:6 8;animation:caDash 2.4s linear infinite}@keyframes caDash{to{stroke-dashoffset:-28}}.ca-ring{transform-box:fill-box;transform-origin:center;animation:caRing 3s ease-out infinite}.ca-nodes circle{transform-box:fill-box;transform-origin:center;animation:caNode 3s ease-in-out infinite}.ca-nodes circle:nth-child(2){animation-delay:.5s}.ca-nodes circle:nth-child(3){animation-delay:1s}.ca-nodes circle:nth-child(4){animation-delay:1.5s}.ca-nodes circle:nth-child(5){animation-delay:2s}.ca-nodes circle:nth-child(6){animation-delay:2.5s}@keyframes caNode{0%,70%,100%{transform:scale(1);fill:#2f4fb0}15%{transform:scale(1.35);fill:#5b7be0}}@keyframes caRing{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.6);opacity:0}}@media (prefers-reduced-motion:reduce){.ca-lines path,.ca-ring,.ca-nodes circle{animation:none}}
 .vid{margin:14px auto 0;width:820px}.vid video{display:block;width:100%;aspect-ratio:16/9;background:#f1f2f5;cursor:pointer}
+.op-wide{grid-template-columns:2.6fr 1fr;gap:34px}.op-wide .nine li{font-size:19px;padding:12px 0}.op-wide .nine.tight li{font-size:18px;padding:5px 0}
+[aria-label="會議服務：同一套表單延伸用途"] .engine{max-width:940px;margin:64px auto 0;grid-template-columns:1fr 110px 1.4fr}
+[aria-label="會議服務：同一套表單延伸用途"] .core{min-height:290px;padding:30px}[aria-label="會議服務：同一套表單延伸用途"] .core h3{font-size:32px}
+[aria-label="會議服務：同一套表單延伸用途"] .uses{height:290px;gap:18px}[aria-label="會議服務：同一套表單延伸用途"] .use{padding:12px 20px}[aria-label="會議服務：同一套表單延伸用途"] .use h4{font-size:20px}[aria-label="會議服務：同一套表單延伸用途"] .use p{font-size:16px}
+[aria-label="會議服務：其他需求的做法"] .ic-grid{max-width:1000px;margin:40px auto 0;gap:24px 28px}[aria-label="會議服務：其他需求的做法"] .ic-card{min-height:0;padding:16px 20px}[aria-label="會議服務：其他需求的做法"] .ic-card svg{width:42px;height:42px}[aria-label="會議服務：其他需求的做法"] .ic-card h4{font-size:19px;margin:8px 0 4px}[aria-label="會議服務：其他需求的做法"] .ic-card p{font-size:15px}
+.tm .tm-people{grid-template-rows:1fr 1fr;align-content:stretch}.tp.wide{flex-direction:row;gap:18px;align-items:center}.tp-id{flex:0 0 42%;display:flex;flex-direction:column;gap:4px}
+.tp-cv{flex:1;margin:0;padding:0 0 0 18px;border-left:1px solid var(--line);list-style:none;display:grid;gap:6px;font-size:15px;line-height:1.45;color:#4d5563}.tp-cv li::before{content:'・';color:var(--blue)}
+.qx{display:grid;grid-template-columns:1fr 1.25fr;gap:26px;margin-top:26px;align-items:stretch}
+.q-ex{display:flex;flex-direction:column;align-items:flex-start}.q-ex h4{font-size:24px}.q-ex p{font-size:18px}.q-ex .qq{align-self:stretch;margin-top:auto;padding-top:14px;border-top:1px dashed #cdd4e3;color:var(--blue-700);font-weight:700;font-size:19px}
+.q-list{list-style:none;margin:0;padding:0;display:grid;align-content:stretch}.q-list li{display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--line);font-size:19px;padding:12px 4px}.q-list li:first-child{border-top:1px solid var(--line)}.q-list .qt{flex:0 0 96px;text-align:center}
 .overflow{outline:4px solid red!important}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media print{@page{size:1280px 720px;margin:0}html,body{overflow:visible;width:auto;height:auto;background:var(--paper)}#stage{position:static;width:1280px;height:auto;transform:none!important;overflow:visible}.slide,.slide.active{position:relative;display:block!important;width:1280px;height:720px;break-after:page;animation:none!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}.nav,.progress{display:none}}
@@ -285,7 +295,7 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
 <!-- 2 關於 CTK -->
 <section class="slide" aria-label="關於 CTK Pro">
   <header class="topline"><span>ABOUT US</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
-  <h2 class="heading">About CTK Pro.</h2>
+  <h2 class="heading">關於 CTK Pro</h2>
   <div class="about">
     <div class="since"><small>SINCE</small><strong>2011.</strong><p>從手機 App 的 UI/UX 出發，<br>近十年專注網站開發與長期維運。</p></div>
     <div class="facts">
@@ -300,7 +310,7 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
 <section class="slide" aria-label="CTK Pro 經驗時間軸">
   <header class="topline"><span>OUR JOURNEY</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
   <h2 class="heading">一路累積的經驗</h2>
-  <div class="gnav" id="gNav"><button type="button" data-g="0" class=on><b>2011</b><i></i><span>公司成立</span></button><button type="button" data-g="1"><b>2019</b><i></i><span>電商與金流</span></button><button type="button" data-g="2"><b>2020</b><i></i><span>國際品牌</span></button><button type="button" data-g="3"><b>2022</b><i></i><span>活動平台</span></button><button type="button" data-g="4"><b>2023</b><i></i><span>公共服務</span></button><button type="button" data-g="5"><b>2024</b><i></i><span>分階段擴充</span></button><button type="button" data-g="6"><b>2025</b><i></i><span>資安管理</span></button></div>
+  <div class="gnav" id="gNav"><button type="button" data-g="0" class=on><b>2011</b><i></i><span>公司成立</span></button><button type="button" data-g="1"><b>2019</b><i></i><span>電商與金流</span></button><button type="button" data-g="2"><b>2020</b><i></i><span>國際品牌</span></button><button type="button" data-g="3"><b>2023</b><i></i><span>學會與報名</span></button><button type="button" data-g="4"><b>2024</b><i></i><span>分階段擴充</span></button><button type="button" data-g="5"><b>2025</b><i></i><span>資安管理</span></button></div>
   <div class="gstage"><div class="gyear"><b id="gY">2011</b><span id="gT">公司成立</span></div><div class="gmain"><h3 id="gH"></h3><p id="gP"></p><div class="gfor"><small>對應這次</small><span id="gF"></span></div></div></div>
   <footer class="footer"><span>CTK Pro</span></footer>
 </section>
@@ -310,7 +320,7 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
   <header class="topline"><span>EXPERIENCE</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
   <h2 class="heading">相關實績</h2>
   <div class="xwrap">
-    <table class="xt"><thead><tr><th>需要的能力</th><th>做過的案子</th></tr></thead><tbody><tr data-x="0" tabindex="0" class=sel><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v14H4z"/><path d="M4 10h16M8 3v5M16 3v5"/><path d="m9 15 2 2 4-4"/></svg></span>活動報名與報到</td><td>TAP 報名報到平台</td></tr><tr data-x="1" tabindex="0"><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2 .8 3 2.8 3 6"/></svg></span>學會會員與報名</td><td>台灣鼻科醫學會</td></tr><tr data-x="2" tabindex="0"><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h7l2 2h9v10H3z"/><path d="M9 14h7m-3-3 3 3-3 3"/></svg></span>大量資料移轉</td><td>行政院珍貴史料展示網、海外聯招會、NCN</td></tr><tr data-x="3" tabindex="0"><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h9M8.5 3v2M6 5c0 4 3 7 6 8M11 5c0 4-3 7-7 8"/><path d="m13 21 4-10 4 10M14.5 17.5h5"/></svg></span>AI 多語翻譯</td><td>NCN</td></tr><tr data-x="4" tabindex="0"><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7 7 9 4-2 7-5 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span>無障礙與資安</td><td>李綜合醫院、台灣資安合規中心</td></tr></tbody></table>
+    <table class="xt"><thead><tr><th>需要的能力</th><th>做過的案子</th></tr></thead><tbody><tr data-x="0" tabindex="0" class=sel><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2 .8 3 2.8 3 6"/></svg></span>學會會員與活動報名</td><td>鼻科醫學會、TAP 報名平台</td></tr><tr data-x="1" tabindex="0"><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h7l2 2h9v10H3z"/><path d="M9 14h7m-3-3 3 3-3 3"/></svg></span>大量資料移轉</td><td>行政院珍貴史料展示網、海外聯招會</td></tr><tr data-x="2" tabindex="0"><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h9M8.5 3v2M6 5c0 4 3 7 6 8M11 5c0 4-3 7-7 8"/><path d="m13 21 4-10 4 10M14.5 17.5h5"/></svg></span>AI 多語翻譯</td><td>海外聯招會</td></tr><tr data-x="3" tabindex="0"><td><span class="xic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7 7 9 4-2 7-5 7-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span>無障礙與資安</td><td>李綜合醫院、資策會-資安合規中心</td></tr></tbody></table>
     <div class="xdet"><small>做過的內容</small><h3 id="xH"></h3><ul id="xL"></ul><div class="gfor"><small>對應這次</small><span id="xF"></span></div></div>
   </div>
   <footer class="footer"><span>CTK Pro</span></footer>
@@ -359,7 +369,7 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
   <header class="topline"><span>THE PLAN</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
   <h2 class="heading">三項專案的重點</h2>
   <button type="button" class="kp-all" id="kpAll" aria-pressed="false"><i></i>全部</button>
-  <div class="kp" id="kp"><div class="kp-col on"><h3><em>1</em>專案計畫網站<b>2/22</b></h3><ul><li><button type="button" data-to="計畫網站：兩類計畫同一套模板"><strong>結構化管理</strong><span>兩類計畫共用模板，沒資料自動隱藏</span><i></i></button></li><li><button type="button" data-to="計畫網站：兩類計畫同一套模板"><strong>長期典藏</strong><span>主持人更換、結案後紀錄保留</span><i></i></button></li><li><button type="button" data-to="計畫網站：後台建一次到處出現"><strong>容易維護</strong><span>建檔一次，相關頁面自動出現</span><i></i></button></li><li><button type="button" data-to="計畫網站：公告依日期自動上下架"><strong>公告自動上下架</strong><span>徵求中、即將截止、截止後下架</span><i></i></button></li><li><button type="button" data-to="計畫網站：時程與上線後"><strong>春節前驗收</strong><span>弱點掃描、無障礙複測</span><i></i></button></li></ul></div><div class="kp-col"><h3><em>2</em>中心官網<b>8/31</b></h3><ul><li><button type="button" data-to="中心官網"><strong>一次建檔，多處呈現</strong><span>首頁直接看到主要產出</span><i></i></button></li><li><button type="button" data-to="中心官網：方程式"><strong>好用的後台</strong><span>方程式、貼上 Word</span><i></i></button></li><li><button type="button" data-to="中心官網：一致的內容樣式"><strong>前後台一致</strong><span>排版不再費工</span><i></i></button></li><li><button type="button" data-to="中心官網：長期累積的後台功能"><strong>累積的內容好管理</strong><span>排程、版本、批次作業</span><i></i></button></li><li><button type="button" data-to="中心官網：多語與資料移轉"><strong>完整中英文與資料移轉</strong><span>AI 翻譯只用於公開內容、舊網址轉址</span><i></i></button></li></ul></div><div class="kp-col conf"><h3><em>3</em>會議服務<b>8/31</b></h3><ul><li><button type="button" data-to="會議服務：建立活動"><strong>依情境設定報名</strong><span>身分別、多場次、候補</span><i></i></button></li><li><button type="button" data-to="會議服務：活動建一次自動同步"><strong>活動只建檔一次</strong><span>同步研討會列表、行事曆、四組頁面</span><i></i></button></li><li><button type="button" data-to="會議服務：活動管理與當天報到"><strong>名單與報到</strong><span>匯出前預覽、現場簽到</span><i></i></button></li><li><button type="button" data-to="會議服務：同一套表單延伸用途"><strong>時間調查與分階段競賽</strong><span>key person、只通知進階隊伍</span><i></i></button></li><li><button type="button" data-to="會議服務：其他需求的做法"><strong>繳費與個資</strong><span>第三方金流、只收必要資料</span><i></i></button></li></ul></div></div>
+  <div class="kp" id="kp"><div class="kp-col on"><h3><em>1</em>專案計畫網站<b>2/22</b></h3><ul><li><button type="button" data-to="計畫網站：兩類計畫同一套模板"><strong>結構化管理</strong><span>兩類計畫共用模板，沒資料自動隱藏</span></button></li><li><button type="button" data-to="計畫網站：兩類計畫同一套模板"><strong>長期典藏</strong><span>主持人更換、結案後紀錄保留</span></button></li><li><button type="button" data-to="計畫網站：後台建一次到處出現"><strong>容易維護</strong><span>建檔一次，相關頁面自動出現</span></button></li><li><button type="button" data-to="計畫網站：公告依日期自動上下架"><strong>公告自動上下架</strong><span>徵求中、即將截止、截止後下架</span></button></li><li><button type="button" data-to="計畫網站：時程與上線後"><strong>春節前驗收</strong><span>弱點掃描、無障礙複測</span></button></li></ul></div><div class="kp-col"><h3><em>2</em>中心官網<b>8/31</b></h3><ul><li><button type="button" data-to="中心官網"><strong>一次建檔，網站前台統一更新</strong><span>首頁直接看到主要產出</span></button></li><li><button type="button" data-to="中心官網：方程式"><strong>好用的後台</strong><span>方程式、貼上 Word</span></button></li><li><button type="button" data-to="中心官網：一致的內容樣式"><strong>前後台一致</strong><span>排版不再費工</span></button></li><li><button type="button" data-to="中心官網：長期累積的後台功能"><strong>累積的內容好管理</strong><span>排程、版本、批次作業</span></button></li><li><button type="button" data-to="中心官網：多語與資料移轉"><strong>完整中英文與資料移轉</strong><span>AI 翻譯只用於公開內容、舊網址轉址</span></button></li></ul></div><div class="kp-col conf"><h3><em>3</em>會議服務<b>8/31</b></h3><ul><li><button type="button" data-to="會議服務：建立活動"><strong>依情境設定報名</strong><span>身分別、多場次、候補</span></button></li><li><button type="button" data-to="會議服務：活動建一次自動同步"><strong>活動只建檔一次</strong><span>同步研討會列表、行事曆、四組頁面</span></button></li><li><button type="button" data-to="會議服務：活動管理與當天報到"><strong>名單與報到</strong><span>匯出前預覽、現場簽到</span></button></li><li><button type="button" data-to="會議服務：同一套表單延伸用途"><strong>時間調查與分階段競賽</strong><span>key person、只通知進階隊伍</span></button></li><li><button type="button" data-to="會議服務：其他需求的做法"><strong>繳費與個資</strong><span>第三方金流、只收必要資料</span></button></li></ul></div></div>
   <div class="kp-foot"><strong>三項共同</strong><span>無障礙 AA、臺大資安規範、手機平板好用</span></div>
   <footer class="footer"><span>CTK Pro</span></footer>
 </section>
@@ -367,7 +377,7 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
 <section class="slide opener" data-no="01" aria-label="專案計畫網站">
   <header class="topline"><span class="chap"><b>01</b>專案計畫網站</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
   <h2 class="heading"><span class="secno">01</span>專案計畫網站</h2>
-  <div class="op"><div class="browser"><div class="bar"><i></i><i></i><i></i><span>專案計畫網站</span><a class="go" data-demo="a" data-path="/" target="_blank" rel="noopener" hidden>開啟 Demo ↗</a></div><div class="ph" style="height:430px;border:0;border-radius:0"><img src="images/a-home-en.jpg" alt="計畫網站首頁" onerror="this.remove()">截圖：計畫網站首頁</div></div><div class="op-side"><div class="when"><b>2/22</b>上線</div><ol class="nine"><li>計畫入口與 A／B 類專屬頁</li><li>跨計畫資料查詢</li><li>公告自動上下架</li><li>中英雙語</li></ol></div></div>
+  <div class="op op-wide"><div class="browser"><div class="bar"><i></i><i></i><i></i><span>專案計畫網站</span></div><div class="ph" style="height:440px;border:0;border-radius:0"><img src="images/a-home-en.jpg" alt="計畫網站首頁" onerror="this.remove()">截圖：計畫網站首頁</div></div><div class="op-side"><ol class="nine"><li>計畫入口與 A／B 類專屬頁</li><li>跨計畫資料查詢</li><li>公告自動上下架</li><li>中英雙語</li></ol></div></div>
   <footer class="footer"><span>示意資料</span></footer>
 </section>
 
@@ -385,7 +395,7 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
     <div class="panel"><h4>後台｜新增專案計畫</h4>
       <div class="bi"><label class="fld"><span>計畫名稱</span><input id="adZh" value="精準健康計畫"></label><label class="fld"><span>English title</span><input id="adEn" value="Precision Health Program"></label></div>
       <div class="bi"><label class="fld"><span>計畫類型</span><select id="adType"><option value="A">A 多元型</option><option value="B" selected>B 整合型</option></select></label><div class="fld"><span>識別色</span><div class="sw" id="adSw"><button type="button" aria-label="藍" aria-pressed="true" style="background:#2f4fb0" data-c="#2f4fb0"></button><button type="button" aria-label="青" aria-pressed="false" style="background:#0e7490" data-c="#0e7490"></button><button type="button" aria-label="紫" aria-pressed="false" style="background:#8b3a8f" data-c="#8b3a8f"></button><button type="button" aria-label="棕" aria-pressed="false" style="background:#7a5a1c" data-c="#7a5a1c"></button></div></div></div>
-      <button class="btn" type="button" id="adSave">儲存並發布</button>
+      <button class="btn" type="button" id="adSave">發布</button>
     </div>
     <div class="panel"><h4>前台</h4>
       <div class="card-prev"><div class="band" id="pvBand" style="background:#2f4fb0"></div><div class="in"><span class="tag" id="pvType">B 整合型</span><h5 id="pvZh">精準健康計畫</h5><p id="pvEn">Precision Health Program</p></div></div>
@@ -430,14 +440,14 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
 <section class="slide" aria-label="中心官網">
   <header class="topline"><span class="chap"><b>02</b>中心官網</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
   <h2 class="heading"><span class="secno">02</span>中心官網</h2>
-  <div class="op"><div class="browser"><div class="bar"><i></i><i></i><i></i><span>中心官網</span><a class="go" data-demo="b" data-path="/" target="_blank" rel="noopener" hidden>開啟 Demo ↗</a></div><div class="ph" style="height:430px;border:0;border-radius:0"><img src="images/b-home-full.jpg" alt="中心官網首頁" onerror="this.remove()">截圖：中心官網首頁</div></div><div class="op-side"><div class="when"><b>8/31</b>上線</div><ol class="nine tight"><li>重點產出</li><li>公告（自動排序）</li><li>研究亮點與科學人物</li><li>研討會與演講</li><li>學術行事曆</li><li>國科會計畫時程</li><li>科學影音</li><li>電子報</li><li>常用搜尋關鍵字</li></ol></div></div>
+  <div class="op op-wide"><div class="browser"><div class="bar"><i></i><i></i><i></i><span>中心官網</span></div><div class="ph" style="height:430px;border:0;border-radius:0"><img src="images/b-home-full.jpg" alt="中心官網首頁" onerror="this.remove()">截圖：中心官網首頁</div></div><div class="op-side"><ol class="nine tight"><li>重點產出</li><li>公告（自動排序）</li><li>研究亮點與科學人物</li><li>研討會與演講</li><li>學術行事曆</li><li>國科會計畫時程</li><li>科學影音</li><li>電子報</li><li>常用搜尋關鍵字</li></ol></div></div>
   <footer class="footer"><span>示意資料</span></footer>
 </section>
 
 <section class="slide" aria-label="中心官網：方程式">
   <header class="topline"><span class="chap"><b>02</b>中心官網</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
   <h2 class="heading">方程式：編輯器直接輸入</h2>
-  <div class="mx"><div class="ed"><div class="ed-top"><span class="ed-add">＋</span><span class="ed-ins">/數學</span><span class="ed-pub">發布</span></div><div class="ed-doc"><p>研究團隊以下列方程式描述電子在晶格中的行為：</p><div class="ed-math"><span class="ed-tag">數學</span><code>i\hbar\frac{\partial}{\partial t}\Psi = \left[-\frac{\hbar^2}{2m}\nabla^2 + V\right]\Psi</code><math display="block"><mrow><mi>i</mi><mi>ℏ</mi><mfrac><mo>∂</mo><mrow><mo>∂</mo><mi>t</mi></mrow></mfrac><mi>Ψ</mi><mo>=</mo><mrow><mo>[</mo><mo>−</mo><mfrac><msup><mi>ℏ</mi><mn>2</mn></msup><mrow><mn>2</mn><mi>m</mi></mrow></mfrac><msup><mo>∇</mo><mn>2</mn></msup><mo>+</mo><mi>V</mi><mo>]</mo></mrow><mi>Ψ</mi></mrow></math></div><p>其中 <math><mi>ℏ</mi></math> 為約化普朗克常數。</p></div></div><div class="browser"><div class="bar"><i></i><i></i><i></i><span>研究亮點</span><a class="go" data-demo="b" data-path="/research/quantum-wavepacket" target="_blank" rel="noopener" hidden>開啟 Demo ↗</a></div><div class="ph zoom" style="height:400px;border:0;border-radius:0"><img src="images/b-article.jpg" alt="文章頁" onerror="this.remove()">截圖：文章頁</div></div></div>
+  <div class="mx"><div class="ed"><div class="ed-top"><span class="ed-add">＋</span><span class="ed-ins">/數學</span><span class="ed-pub">發布</span></div><div class="ed-doc"><p>研究團隊以下列方程式描述電子在晶格中的行為：</p><div class="ed-math"><span class="ed-tag">數學</span><code>i\hbar\frac{\partial}{\partial t}\Psi = \left[-\frac{\hbar^2}{2m}\nabla^2 + V\right]\Psi</code><math display="block"><mrow><mi>i</mi><mi>ℏ</mi><mfrac><mo>∂</mo><mrow><mo>∂</mo><mi>t</mi></mrow></mfrac><mi>Ψ</mi><mo>=</mo><mrow><mo>[</mo><mo>−</mo><mfrac><msup><mi>ℏ</mi><mn>2</mn></msup><mrow><mn>2</mn><mi>m</mi></mrow></mfrac><msup><mo>∇</mo><mn>2</mn></msup><mo>+</mo><mi>V</mi><mo>]</mo></mrow><mi>Ψ</mi></mrow></math></div><p>其中 <math><mi>ℏ</mi></math> 為約化普朗克常數。</p></div></div><div class="browser"><div class="bar"><i></i><i></i><i></i><span>研究亮點</span></div><div class="ph zoom" style="height:400px;border:0;border-radius:0"><img src="images/b-article.jpg" alt="文章頁" onerror="this.remove()">截圖：文章頁</div></div></div>
   <footer class="footer"><span>示意資料</span></footer>
 </section>
 
@@ -483,8 +493,8 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
   <header class="topline"><span class="chap"><b>02</b>中心官網</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
   <h2 class="heading">多語與資料移轉</h2>
   <div class="two">
-    <div class="big"><svg viewBox="0 0 420 150" aria-hidden="true" class="ill"><rect x="20" y="30" width="110" height="90" rx="12" fill="#fff" stroke="#c9d1e6" stroke-width="2"/><text x="75" y="88" text-anchor="middle" font-size="44" font-weight="700" fill="#1d2433">中</text><path d="M150 75 H230" stroke="#8fa3e3" stroke-width="3" stroke-dasharray="6 6"/><path d="M222 66 L236 75 L222 84" fill="none" stroke="#8fa3e3" stroke-width="3"/><g transform="translate(190 42)"><path d="M0 -10 L3 -3 L10 0 L3 3 L0 10 L-3 3 L-10 0 L-3 -3Z" fill="#2f4fb0"/></g><g font-weight="700" font-size="20" text-anchor="middle"><rect x="252" y="18" width="70" height="40" rx="20" fill="#2f4fb0"/><text x="287" y="45" fill="#fff">EN</text><rect x="330" y="50" width="70" height="40" rx="20" fill="#eef1fb" stroke="#8fa3e3"/><text x="365" y="77" fill="#223a86">ID</text><rect x="252" y="88" width="70" height="40" rx="20" fill="#eef1fb" stroke="#8fa3e3"/><text x="287" y="115" fill="#223a86">VI</text></g></svg><small>AI TRANSLATION</small><h3>AI 翻譯草稿</h3><ul><li>NCN：中文一鍵產生英文草稿</li><li>同一做法也用於印尼文、越南文</li><li>只翻公開內容，個資不送翻譯</li><li>編輯確認後發布</li></ul></div>
-    <div class="big"><svg viewBox="0 0 420 150" aria-hidden="true" class="ill"><rect x="20" y="25" width="120" height="100" rx="12" fill="#f1f2f5" stroke="#c4c9d2" stroke-width="2"/><g fill="#c4c9d2"><rect x="38" y="45" width="84" height="10" rx="4"/><rect x="38" y="65" width="64" height="10" rx="4"/><rect x="38" y="85" width="74" height="10" rx="4"/></g><text x="80" y="145" text-anchor="middle" font-size="14" fill="#8b93a1">舊站</text><g stroke="#2f4fb0" stroke-width="3" fill="none"><path d="M155 60 H255"/><path d="M247 52 L258 60 L247 68"/><path d="M155 90 H255"/><path d="M247 82 L258 90 L247 98"/></g><rect x="178" y="62" width="54" height="26" rx="13" fill="#fff" stroke="#2f4fb0" stroke-width="2"/><text x="205" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#2f4fb0">301</text><rect x="275" y="25" width="125" height="100" rx="12" fill="#eef1fb" stroke="#2f4fb0" stroke-width="2"/><g fill="#2f4fb0"><rect x="293" y="45" width="40" height="30" rx="5"/><rect x="341" y="45" width="40" height="30" rx="5" opacity=".6"/><rect x="293" y="83" width="88" height="10" rx="4" opacity=".4"/><rect x="293" y="101" width="60" height="10" rx="4" opacity=".4"/></g><text x="337" y="145" text-anchor="middle" font-size="14" fill="#223a86">新站</text></svg><small>MIGRATION</small><h3>大量資料移轉</h3><ul><li>行政院珍貴史料展示網、海外聯招會、NCN</li><li>舊網址對應新網址，301 轉址</li><li>清理失效連結，補上領域與標籤</li><li>抽查圖片與附件</li></ul></div>
+    <div class="big"><svg viewBox="0 0 420 150" aria-hidden="true" class="ill"><rect x="20" y="30" width="110" height="90" rx="12" fill="#fff" stroke="#c9d1e6" stroke-width="2"/><text x="75" y="88" text-anchor="middle" font-size="44" font-weight="700" fill="#1d2433">中</text><path d="M150 75 H230" stroke="#8fa3e3" stroke-width="3" stroke-dasharray="6 6"/><path d="M222 66 L236 75 L222 84" fill="none" stroke="#8fa3e3" stroke-width="3"/><g transform="translate(190 42)"><path d="M0 -10 L3 -3 L10 0 L3 3 L0 10 L-3 3 L-10 0 L-3 -3Z" fill="#2f4fb0"/></g><g font-weight="700" font-size="20" text-anchor="middle"><rect x="252" y="18" width="70" height="40" rx="20" fill="#2f4fb0"/><text x="287" y="45" fill="#fff">EN</text><rect x="330" y="50" width="70" height="40" rx="20" fill="#eef1fb" stroke="#8fa3e3"/><text x="365" y="77" fill="#223a86">ID</text><rect x="252" y="88" width="70" height="40" rx="20" fill="#eef1fb" stroke="#8fa3e3"/><text x="287" y="115" fill="#223a86">VI</text></g></svg><small>AI TRANSLATION</small><h3>AI 翻譯草稿</h3><ul><li>海外聯招會：中文一鍵產生英文草稿</li><li>同一做法也用於印尼文、越南文</li><li>只翻公開內容，個資不送翻譯</li><li>編輯確認後發布</li></ul></div>
+    <div class="big"><svg viewBox="0 0 420 150" aria-hidden="true" class="ill"><rect x="20" y="25" width="120" height="100" rx="12" fill="#f1f2f5" stroke="#c4c9d2" stroke-width="2"/><g fill="#c4c9d2"><rect x="38" y="45" width="84" height="10" rx="4"/><rect x="38" y="65" width="64" height="10" rx="4"/><rect x="38" y="85" width="74" height="10" rx="4"/></g><text x="80" y="145" text-anchor="middle" font-size="14" fill="#8b93a1">舊站</text><g stroke="#2f4fb0" stroke-width="3" fill="none"><path d="M155 60 H255"/><path d="M247 52 L258 60 L247 68"/><path d="M155 90 H255"/><path d="M247 82 L258 90 L247 98"/></g><rect x="178" y="62" width="54" height="26" rx="13" fill="#fff" stroke="#2f4fb0" stroke-width="2"/><text x="205" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#2f4fb0">301</text><rect x="275" y="25" width="125" height="100" rx="12" fill="#eef1fb" stroke="#2f4fb0" stroke-width="2"/><g fill="#2f4fb0"><rect x="293" y="45" width="40" height="30" rx="5"/><rect x="341" y="45" width="40" height="30" rx="5" opacity=".6"/><rect x="293" y="83" width="88" height="10" rx="4" opacity=".4"/><rect x="293" y="101" width="60" height="10" rx="4" opacity=".4"/></g><text x="337" y="145" text-anchor="middle" font-size="14" fill="#223a86">新站</text></svg><small>MIGRATION</small><h3>大量資料移轉</h3><ul><li>行政院珍貴史料展示網、海外聯招會</li><li>舊網址對應新網址，301 轉址</li><li>清理失效連結，補上領域與標籤</li><li>抽查圖片與附件</li></ul></div>
   </div>
   <footer class="footer"><span>CTK Pro</span></footer>
 </section>
@@ -493,14 +503,14 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
 <section class="slide opener" data-no="03" aria-label="會議服務">
   <header class="topline"><span class="chap"><b>03</b>會議服務</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
   <h2 class="heading"><span class="secno">03</span>會議服務</h2>
-  <div class="op"><div class="browser"><div class="bar"><i></i><i></i><i></i><span>會議服務</span><a class="go" data-demo="b" data-path="/event/e4" target="_blank" rel="noopener" hidden>開啟 Demo ↗</a></div><div class="ph" style="height:430px;border:0;border-radius:0"><img src="images/c-event.jpg" alt="活動頁" onerror="this.remove()">截圖：活動頁</div></div><div class="op-side"><div class="when"><b>8/31</b>上線</div><ol class="nine"><li>建立活動、各頁同步</li><li>名單、匯出與報到</li><li>時間調查、分階段競賽</li><li>線上繳費與通知信</li></ol></div></div>
+  <div class="op op-wide"><div class="browser"><div class="bar"><i></i><i></i><i></i><span>會議服務</span></div><div class="ph" style="height:430px;border:0;border-radius:0"><img src="images/c-event.jpg" alt="活動頁" onerror="this.remove()">截圖：活動頁</div></div><div class="op-side"><ol class="nine"><li>建立活動、各頁同步</li><li>名單、匯出與報到</li><li>時間調查、分階段競賽</li><li>線上繳費與通知信</li></ol></div></div>
   <footer class="footer"><span>示意資料</span></footer>
 </section>
 
 <section class="slide" aria-label="會議服務：建立活動">
   <header class="topline"><span class="chap"><b>03</b>會議服務</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
   <h2 class="heading">建立活動</h2>
-  <div class="browser" style="margin-top:22px"><div class="bar"><i></i><i></i><i></i><span>會議服務｜建立活動</span><a class="go" data-demo="b" data-path="/services/new" target="_blank" rel="noopener" hidden>開啟 Demo ↗</a></div><div class="ph" style="height:440px;border:0;border-radius:0"><img src="images/c-builder.jpg" alt="建立活動畫面" onerror="this.remove()">截圖：建立活動</div></div>
+  <div class="browser" style="margin-top:22px"><div class="bar"><i></i><i></i><i></i><span>會議服務｜建立活動</span></div><div class="ph" style="height:440px;border:0;border-radius:0"><img src="images/c-builder.jpg" alt="建立活動畫面" onerror="this.remove()">截圖：建立活動</div></div>
   <footer class="footer"><span>示意資料</span></footer>
 </section>
 
@@ -530,7 +540,7 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
   <header class="topline"><span class="chap"><b>03</b>會議服務</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
   <h2 class="heading">名單、匯出與報到</h2>
   <div class="c3">
-    <div class="browser"><div class="bar"><i></i><i></i><i></i><span>活動管理</span><a class="go" data-demo="b" data-path="/manage/e-past" target="_blank" rel="noopener" hidden>開啟 Demo ↗</a></div><div class="ph" style="height:400px;border:0;border-radius:0"><img src="images/c-dashboard.jpg" alt="活動管理畫面" onerror="this.remove()">截圖：活動管理</div></div>
+    <div class="browser"><div class="bar"><i></i><i></i><i></i><span>活動管理</span></div><div class="ph" style="height:400px;border:0;border-radius:0"><img src="images/c-dashboard.jpg" alt="活動管理畫面" onerror="this.remove()">截圖：活動管理</div></div>
     <div class="pts">
       <div class="pt ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11m-4-4 4 4 4-4M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg><div><h4>最常用的三種，一鍵匯出</h4><p>完整名單、簽到表、名牌</p></div></div>
       <div class="pt ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h11M4 18h6M18 14v6m-2.5-2.5L18 20l2.5-2.5"/></svg><div><h4>排序自己設，存成範本</h4><p>領域 → 身分別 → 單位筆劃</p></div></div>
@@ -592,12 +602,12 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
 </section>
 
 <section class="slide" aria-label="本案團隊與上線後的聯繫">
-  <header class="topline"><span class="chap"><b>05</b>團隊與實例</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <header class="topline"><span class="chap"><b>05</b>本案團隊</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
   <h2 class="heading">誰來協助您</h2>
   <div class="tm">
     <div class="tm-people">
-      <div class="tp wide"><small>專案經理・維護窗口</small><b>Aron</b><span>建置到上線後同一位：需求、進度、驗收、維護</span></div>
-      <div class="tp wide"><small>工程與資安</small><b>Alfred</b><span>開發、資料移轉、弱點掃描與修補</span></div>
+      <div class="tp wide"><div class="tp-id"><small>專案經理・維護窗口</small><b>Aron</b><span>建置到上線後同一位：需求、進度、驗收、維護</span></div><ul class="tp-cv"><li>網站專案管理 8 年</li><li>網站行銷與 SEO 10 年</li><li>GA 證照、資安證照</li><li>世新大學 公廣所碩士</li></ul></div>
+      <div class="tp wide"><div class="tp-id"><small>工程與資安</small><b>Alfred</b><span>開發、資料移轉、弱點掃描與修補</span></div><ul class="tp-cv"><li>資安領域 6 年</li><li>iPAS 資安工程師中級證照</li><li>前紐約 LBi 首席網站開發</li><li>Pratt Institute 數位藝術碩士</li></ul></div>
     </div>
     <div class="tm-care"><h3>上線後</h3>
       <div class="cr"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg><div><b>專屬 LINE 群組</b><span>上班時間 4 小時內回覆，緊急問題當日處理</span></div></div>
@@ -609,8 +619,29 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
   <footer class="footer"><span>CTK Pro</span></footer>
 </section>
 
+
+<!-- 23 請教 -->
+<section class="slide" aria-label="想與您確認的做法">
+  <header class="topline"><span class="chap"><b>06</b>想與您確認</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <h2 class="heading">建議做法與確認</h2>
+  <div class="qx">
+    <div class="q2 q-ex"><span class="qt">金流</span><h4>沿用華南 ATM 子帳號與信用卡</h4><p>每筆報名對應一個子帳號，入帳自動對帳。</p><p class="qq">子帳號能依報名編號產生嗎？<br>銀行有提供對帳檔嗎？</p></div>
+    <ul class="q-list"><li><span class="qt">候補</span>哪些場次需要自動遞補？</li><li><span class="qt">匯出</span>還有其他常用的名單格式嗎？</li><li><span class="qt">權限</span>各組需要看報名名單嗎？</li><li><span class="qt">線上會議</span>中心可以授權 Google 帳號產生 Meet 連結嗎？</li><li><span class="qt">時間調查</span>要全面改用，還是只做結果彙整？</li></ul>
+  </div>
+  <div class="nextstep">會後我們整理成確認清單，您回覆後即開始啟動盤點。</div>
+  <footer class="footer"><span>CTK Pro</span></footer>
+</section>
+
+<!-- 24 Thanks -->
+<section class="slide thanks" aria-label="謝謝">
+  <header class="topline"><img class="ctk-logo" src="images/ctkpro-logo-white.png" alt="CTK Pro"><span>2026.11.18</span></header>
+  <h2 class="heading">Thank you.</h2>
+  <svg class="end-art" viewBox="0 0 360 300" aria-hidden="true"><rect x="10" y="80" width="130" height="130" rx="10" fill="#2a3245" stroke="#8fa3e3" stroke-width="2"/><g fill="#8fa3e3" opacity=".7"><rect x="24" y="98" width="70" height="8" rx="4"/><rect x="24" y="116" width="102" height="44" rx="5" opacity=".4"/><rect x="24" y="170" width="80" height="8" rx="4" opacity=".5"/></g><rect x="160" y="30" width="190" height="230" rx="10" fill="#2f4fb0"/><g fill="#fff"><rect x="176" y="48" width="70" height="8" rx="4"/><rect x="176" y="66" width="158" height="58" rx="5" opacity=".25"/><rect x="176" y="134" width="120" height="8" rx="4" opacity=".5"/></g><rect x="176" y="158" width="158" height="86" rx="8" fill="#fff" opacity=".9"/><g fill="#2f4fb0" opacity=".55"><rect x="190" y="174" width="60" height="8" rx="4"/><rect x="190" y="192" width="130" height="10" rx="5" opacity=".5"/><rect x="190" y="210" width="130" height="10" rx="5" opacity=".5"/><rect x="190" y="228" width="50" height="8" rx="4"/></g></svg>
+  <footer class="footer"><span>CTK Pro｜竑盛科技股份有限公司｜ctkpro.com</span></footer>
+</section>
+
 <section class="slide" aria-label="實例：TAP 報名報到平台">
-  <header class="topline"><span class="chap"><b>05</b>團隊與實例</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
+  <header class="topline"><span class="chap">附錄</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
   <h2 class="heading">實例：TAP 報名報到平台</h2>
   <div class="tap">
     <ol class="tap-tl">
@@ -626,23 +657,6 @@ button.node{cursor:pointer;font-family:inherit;color:inherit}button.node:hover{b
     </div>
   </div>
   <footer class="footer"><span>CTK Pro</span></footer>
-</section>
-
-<!-- 23 請教 -->
-<section class="slide" aria-label="想與您確認的做法">
-  <header class="topline"><span class="chap"><b>06</b>想與您確認</span><img class="ctk-logo" src="images/ctkpro-logo.png" alt="CTK Pro"></header>
-  <h2 class="heading">建議做法與確認</h2>
-  <div class="q2grid"><div class="q2"><span class="qt">金流</span><h4>沿用華南 ATM 子帳號與信用卡</h4><p>每筆報名對應一個子帳號，入帳自動對帳。子帳號能依報名編號產生嗎？銀行有提供對帳檔嗎？</p></div><div class="q2"><span class="qt">候補</span><h4>預設人工確認後遞補</h4><p>也可改為自動遞補並設付款期限。哪些場次需要自動遞補？</p></div><div class="q2"><span class="qt">匯出</span><h4>先做附件二的三種版本</h4><p>完整名單、簽到表、名牌，欄位之後可在後台調整。還有其他常用格式嗎？</p></div><div class="q2"><span class="qt">權限</span><h4>依角色分權</h4><p>主管、行政專員、執行編輯、各組窗口各看所需資料。各組需要看報名名單嗎？</p></div><div class="q2"><span class="qt">線上會議</span><h4>自動產生 Meet 連結</h4><p>需授權中心 Google 帳號；不便授權時由承辦貼上連結。中心可以授權嗎？</p></div><div class="q2"><span class="qt">時間調查</span><h4>與報名共用表單系統</h4><p>資料與名單在同一個後台。要全面改用，還是只做結果彙整？</p></div></div>
-  <div class="nextstep">會後我們整理成確認清單，您回覆後即開始啟動盤點。</div>
-  <footer class="footer"><span>CTK Pro</span></footer>
-</section>
-
-<!-- 24 Thanks -->
-<section class="slide thanks" aria-label="謝謝">
-  <header class="topline"><img class="ctk-logo" src="images/ctkpro-logo-white.png" alt="CTK Pro"><span>2026.11.18</span></header>
-  <h2 class="heading">Thank you.</h2>
-  <svg class="end-art" viewBox="0 0 360 300" aria-hidden="true"><rect x="10" y="80" width="130" height="130" rx="10" fill="#2a3245" stroke="#8fa3e3" stroke-width="2"/><g fill="#8fa3e3" opacity=".7"><rect x="24" y="98" width="70" height="8" rx="4"/><rect x="24" y="116" width="102" height="44" rx="5" opacity=".4"/><rect x="24" y="170" width="80" height="8" rx="4" opacity=".5"/></g><rect x="160" y="30" width="190" height="230" rx="10" fill="#2f4fb0"/><g fill="#fff"><rect x="176" y="48" width="70" height="8" rx="4"/><rect x="176" y="66" width="158" height="58" rx="5" opacity=".25"/><rect x="176" y="134" width="120" height="8" rx="4" opacity=".5"/></g><rect x="176" y="158" width="158" height="86" rx="8" fill="#fff" opacity=".9"/><g fill="#2f4fb0" opacity=".55"><rect x="190" y="174" width="60" height="8" rx="4"/><rect x="190" y="192" width="130" height="10" rx="5" opacity=".5"/><rect x="190" y="210" width="130" height="10" rx="5" opacity=".5"/><rect x="190" y="228" width="50" height="8" rx="4"/></g></svg>
-  <footer class="footer"><span>CTK Pro｜竑盛科技股份有限公司｜ctkpro.com</span></footer>
 </section>
 
 
@@ -687,19 +701,16 @@ $$('[data-f]').forEach(b=>b.addEventListener('click',()=>{press(b.parentElement,
 
 
 // v3：經驗時間軸、相關實績、執行方式
-const G=[["2011", "公司成立", "從手機 App 的介面體驗出發", "跨裝置操作與資訊層級，是後來所有網站的基礎。", "兩個網站在手機、平板上都好用。"], ["2019", "電商與金流", "法雅客電商建置與多年維護", "付款流程、對帳與上線後營運要一起考量。", "報名繳費、對帳流程可以順利接上。"], ["2020", "國際品牌", "PUFsecurity 多語官網", "技術內容用清楚的頁面結構，面向國際讀者。", "中英雙語不是翻譯完就好，結構也要一致。"], ["2022", "活動平台", "TAP 報名報到平台", "線上報名、綠界金流、QR Code 報到、名牌與證書信。", "會議服務的報名、繳費、報到，都跑過真實活動。"], ["2023", "公共服務", "行政院珍貴史料展示網重構", "大量舊資料整理、轉址與多語部署。", "中心舊資料與 gomeeting 資料的移轉與封存。"], ["2024", "分階段擴充", "TAP 依使用回饋擴充功能", "上線後依實際使用調整，而不是一次做到滿。", "會議服務先上線核心，再依中心需求微調。"], ["2025", "資安管理", "ISO 27001:2022 認證", "權限、掃描、修補與紀錄都有管理流程。", "臺大弱點掃描與資安要求，有既定流程對應。"]];
+const G=[["2011", "公司成立", "從手機 App 的介面體驗出發", "跨裝置操作與資訊層級，是後來所有網站的基礎。", "兩個網站在手機、平板上都好用。"], ["2019", "電商與金流", "法雅客電商建置與多年維護", "付款流程、對帳與上線後營運要一起考量。", "報名繳費、對帳流程可以順利接上。"], ["2020", "國際品牌", "PUFsecurity 多語官網", "技術內容用清楚的頁面結構，面向國際讀者。", "中英雙語不是翻譯完就好，結構也要一致。"], ["2023", "學會與報名", "台灣鼻科醫學會會員與報名系統", "會員申請審核、活動報名與繳費紀錄；線上報名、金流、QR Code 報到都跑過真實活動。", "會議服務的身分別審核、報名、繳費、報到。"], ["2024", "分階段擴充", "報名平台依使用回饋擴充功能", "上線後依實際使用調整，而不是一次做到滿。", "會議服務先上線核心，再依中心需求微調。"], ["2025", "資安管理", "ISO 27001:2022 認證", "權限、掃描、修補與紀錄都有管理流程。", "臺大弱點掃描與資安要求，有既定流程對應。"]];
 function showG(i){$$('#gNav button').forEach((b,k)=>b.classList.toggle('on',k===i));const g=G[i];$('#gY').textContent=g[0];$('#gT').textContent=g[1];$('#gH').textContent=g[2];$('#gP').textContent=g[3];$('#gF').textContent=g[4];}
 $$('#gNav button').forEach(b=>b.addEventListener('click',()=>showG(+b.dataset.g)));showG(0);
-const X=[["TAP 報名報到平台", ["線上報名、綠界金流", "QR Code 報到、名牌列印", "證書信寄送"], "會議服務：報名、繳費、報到"], ["台灣鼻科醫學會", ["會員申請與審核", "活動報名與繳費紀錄", "學分登錄"], "身分別審核、繳費紀錄"], ["行政院珍貴史料展示網、海外聯招會、NCN", ["舊站資料整理與移轉", "舊網址 301 轉址", "多語系部署"], "官網舊資料、gomeeting 封存"], ["NCN", ["中文一鍵產生英文草稿", "另含印尼文、越南文", "編輯確認後發布"], "官網英文版內容"], ["李綜合醫院、台灣資安合規中心", ["無障礙 AA 檢測", "弱點掃描與修補", "結構化資料、SEO"], "無障礙標章、臺大弱點掃描"]];
+const X=[["鼻科醫學會、TAP 報名平台", ["會員申請審核、繳費紀錄", "線上報名、綠界金流", "QR Code 報到、名牌列印"], "會議服務的報名、繳費、報到"], ["行政院珍貴史料展示網、海外聯招會", ["舊站資料整理與移轉", "舊網址 301 轉址", "多語系部署"], "官網舊資料、gomeeting 封存"], ["海外聯招會", ["中文一鍵產生英文草稿", "另含印尼文、越南文", "編輯確認後發布"], "官網英文版內容"], ["李綜合醫院、資策會-資安合規中心", ["無障礙 AA 檢測", "弱點掃描與修補", "結構化資料、SEO"], "無障礙標章、臺大弱點掃描"]];
 function showX(i){$$('.xt tr[data-x]').forEach((r,k)=>r.classList.toggle('sel',k===i));$('#xH').textContent=X[i][0];$('#xL').innerHTML=X[i][1].map(t=>'<li>'+t+'</li>').join('');$('#xF').textContent=X[i][2];}
 $$('.xt tr[data-x]').forEach(r=>{r.addEventListener('click',()=>showX(+r.dataset.x));r.addEventListener('keydown',e=>{if(e.key==='Enter')showX(+r.dataset.x);});});showX(0);
 const P=[["頁面與欄位清單", "帳號與權限對照表", "舊資料盤點與移轉範圍", ["欄位一次定義：中英欄位、必填、顯示位置", "確認每類資料由誰提供、何時到位", "先列出驗收依據，避免後期認知落差"]], ["首頁與代表內頁 UI", "手機版畫面", "可操作的 Demo", ["對比、字級、焦點順序從設計稿就符合無障礙", "用真實內容排版，不用假字", "確認後才進開發，減少返工"]], ["測試站網址", "定期進度回報", "單一意見清單", ["意見依「待處理／處理中／待確認／完成」追蹤", "每項修改可在測試站直接驗證", "權限依角色實測：主管、專員、編輯、各組窗口"]], ["資料匯入與抽查", "弱點掃描預掃", "無障礙自檢", ["匯入後抽查圖片、附件與連結", "主要功能完成即預掃，預留修補與複測時間", "舊網址逐筆對應新網址"]], ["正式上線", "原始碼、文件、操作手冊", "教育訓練", ["上線檢查：SSL、備份、寄信、GA4、轉址", "上線後申請無障礙標章，審查期間照常使用", "交接後由固定窗口處理維護與微調"]]];
 function showP(i){$$('#pNav button').forEach((b,k)=>b.classList.toggle('on',k===i));const p=P[i];$('#pD').innerHTML=[p[0],p[1],p[2]].map(t=>'<li>'+t+'</li>').join('');$('#pN').innerHTML=p[3].map(t=>'<li>'+t+'</li>').join('');}
 $$('#pNav button').forEach(b=>b.addEventListener('click',()=>showP(+b.dataset.p)));showP(0);
 
-// Demo 連結：推到 ctkpro.cc 子網域後填入網址，例如 a:'https://xxx.ctkpro.cc'；空白就不顯示
-const DEMO={a:'https://trc.ctkpro.cc',b:'https://spec.ctkpro.cc'};
-document.querySelectorAll('.go').forEach(a=>{const b=DEMO[a.dataset.demo];if(b){a.href=b.replace(/\/$/,'')+a.dataset.path;a.hidden=false;}});
 // 截圖：短圖框高隨圖縮；長圖可捲動，data-start 為起始捲動比例
 const shotRO=new ResizeObserver(es=>es.forEach(e=>{const ph=e.target,img=ph.querySelector('img');if(!img||!img.offsetHeight||ph.dataset.done)return;ph.dataset.done=1;if(ph.dataset.start)ph.scrollTop=img.offsetHeight*ph.dataset.start;else if(img.offsetHeight<ph.clientHeight)ph.style.height=img.offsetHeight+'px';}));
 document.querySelectorAll('.browser .ph').forEach(ph=>{const img=ph.querySelector('img');if(img)img.complete?shotRO.observe(ph):img.addEventListener('load',()=>shotRO.observe(ph));});
@@ -707,7 +718,7 @@ document.querySelectorAll('.browser .ph').forEach(ph=>{const img=ph.querySelecto
 $$('#kp .kp-col').forEach(c=>['mouseenter','focusin'].forEach(ev=>c.addEventListener(ev,()=>$$('#kp .kp-col').forEach(x=>x.classList.toggle('on',x===c)))));
 $('#kpAll').addEventListener('click',e=>{const on=$('#kp').classList.toggle('all');e.currentTarget.setAttribute('aria-pressed',on);});
 // v8 重點總覽：點項目跳到對應頁，頁碼自動算
-$$('[data-to]').forEach(b=>{const i=$$('.slide').findIndex(s=>s.getAttribute('aria-label')===b.dataset.to);if(i<0){console.warn('kp target missing',b.dataset.to);return;}b.querySelector('i').textContent=i+1;b.addEventListener('click',()=>show(i));});
+$$('[data-to]').forEach(b=>{const i=$$('.slide').findIndex(s=>s.getAttribute('aria-label')===b.dataset.to);if(i<0){console.warn('kp target missing',b.dataset.to);return;}b.addEventListener('click',()=>show(i));});
 // v10 版本還原情境：誤刪 → 找版本 → 還原
 const revSaved=['已儲存 11/12 10:21','已儲存 11/12 14:03','已儲存 11/12 14:03','已還原自 11/12 10:21'];
 $$('#rev [data-r]').forEach(b=>b.addEventListener('click',()=>{const r=b.dataset.r;$('#rev').dataset.r=r;$('#revSaved').textContent=revSaved[r];$$('.rev-steps button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.r===r)));}));
